@@ -9,9 +9,10 @@ import $ from 'jquery';
 import { useDispatch } from "react-redux";
 import {message} from 'antd';
 import { MAP_SERVER } from '../../main/Access';
-import { InvInit } from '../../_actions/map_actions';
+import { InvestigationListInit,MarineZoneListInit } from '../../_actions/map_actions';
 import {view} from '../../main/CommonMethods';
-import {getInvServiceLayer} from '../../main/CommonMethods'
+import {getInvestigationServiceList, getInvServiceLayer} from '../../entities/InvestigationZone'
+import { getMarineZoneList } from '../../entities/MarineZone';
 
 function MainMap() {
     
@@ -64,24 +65,13 @@ function MainMap() {
       })
       message.success("양식장정보를 성공적으로 불러왔습니다.")
 
-      //조사사업 목록 불러오기
-      let parser = new GeoJSON();
-      message.warn("조사사업 목록을 불러옵니다.")
-      $.ajax({ //그리드형 데이터
-          url: MAP_SERVER,
-          dataType: 'json',
-          data : {
-              "service" : "WFS",
-              "request" : "GetFeature",
-              "version" : "1.3.0",
-              "typeName" : "REQM:ENG_INV",
-              "outputFormat" : "application/json",
-          },
-          jsonpCallback: 'parseResponse'
-      }).then((response)=>{
-          let result = parser.readFeatures(response);
-          message.success("조사사업 목록을 성공적으로 불러왔습니다.")
-          dispatch(InvInit(result));
+      //조사사업 정보 목록 호출
+      getInvestigationServiceList().then(result=>{
+        dispatch(InvestigationListInit(result));
+      })
+      //해구정보 목록 호출
+      getMarineZoneList().then(result=>{
+        dispatch(MarineZoneListInit(result));
       })
 
 

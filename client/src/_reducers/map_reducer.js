@@ -2,7 +2,8 @@ import {
     LOAD_MARINE_ZONE,
     LOAD_MAIN_MAP,
     LOAD_INV_LIST,
-    VIEW_INIT
+    VIEW_INIT,
+    LOAD_MARINE_ZONE_LIST
 } from '../_actions/types';
  
 
@@ -14,6 +15,8 @@ export default function(state={},action){
             return {...state, mainMap: action.payload }
         case LOAD_INV_LIST:
             return {...state, invList: action.payload}
+        case LOAD_MARINE_ZONE_LIST:
+            return {...state, marineZoneList : action.payload}
         case VIEW_INIT:
             return {...state, view: action.payload}
         default:

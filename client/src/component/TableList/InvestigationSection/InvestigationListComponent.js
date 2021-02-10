@@ -1,44 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { Card, List, message, Typography,Input,Pagination } from 'antd';
-import { useSelector } from 'react-redux';
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
-import { mapMove,invServiceDisplay } from '../../main/CommonMethods';
 
 const {Text} = Typography;
 const {Search} = Input;
 
-function TableList(props) {
-    const [contentList, setcontentList] = useState([]); //표출할 리스트
-    const ListinReducer = useSelector(state => state.mapReducer); //리듀서에서 가져온 항목
-    const type = props.type;
+function InvestigationListComponent(props) {
+
+    const {contentList} = props;
+
+    const [DisplayList, setDisplayList] = useState([]);
     const [ListPage, setListPage] = useState(1) //첫시작 페이지
     const [SearchTerm, setSearchTerm] = useState(""); //검색어
     const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
-    const [TotalCount, setTotalCount] = useState(0); //전체 갯수
-    const [AllList, setAllList] = useState([]); //전체 목록
-
-
+    const [TotalCount, setTotalCount] = useState(0)
+    const [SinglePage, setSinglePage] = useState(false);
+    
     useEffect(() => {
-        switch (type) {
-            case "invList":      
-            if(ListinReducer.invList===undefined)
-                return ;
-            let tmpList = ListinReducer.invList.filter(x=>x.seq>=(((ListPage-1)*CountPerPage)+1) && x.seq<=(ListPage*CountPerPage));
-            setcontentList(tmpList);
-            setAllList(ListinReducer.invList);
-            setTotalCount(ListinReducer.invList.length);
-            break;
-        
-            default:
-                break;
-        }
-        
-    }, [ListinReducer])
+        let tmpList = contentList.filter(x=>x.seq>=(((ListPage-1)*CountPerPage)+1) && x.seq<=(ListPage*CountPerPage));
+        setTotalCount(contentList.length);
+        setDisplayList(tmpList);
+    }, [contentList])
+
     const onSearchHandler=(e)=>{
         SearchList(e.currentTarget.value,1)
+        setSearchTerm(e.currentTarget.value);
     }
     const SearchList=(value,page)=>{
-        let newList = AllList.filter(x=>
+        let newList = contentList.filter(x=>
             x.place.indexOf(value)>-1
             || x.name.indexOf(value)>-1
             || x.year === value
@@ -54,39 +43,20 @@ function TableList(props) {
             })
         }else{
             tmpList = newList;
+            setSinglePage(true);
         }
-        setcontentList(tmpList)
+        setDisplayList(tmpList)
         setTotalCount(newList.length);
-        setSearchTerm(value);
-    }
-
-    const onViewDetail=(item)=>{
+        setListPage(page)
         
-    }
-
-    const onMoveToPoint=(item)=>{
-        //좌표가 있을때만 실행
-        if(item.coordinate){
-            mapMove(item.coordinate)
-        }else{
-            message.warning("저장된 좌표가 없습니다.")
-        }
-        switch (type) {
-            case "invList":
-                invServiceDisplay(item.seq);
-                break;
-        
-            default:
-                break;
-        }
     }
     const onPageChange=(currentPage,pageSize)=>{
         SearchList(SearchTerm,currentPage)
         setListPage(currentPage);
     }
 
+
     return (
-        // <Table dataSource={contentList} columns={Columns}/>
         <React.Fragment>
             <div
                 style={{display:'flex',justifyContent:'flex-end', margin:'1rem auto',marginRight:20}}
@@ -101,15 +71,13 @@ function TableList(props) {
             </div>
             <hr/>
             <List 
-            // header={<Divider>조사사업</Divider>}
-            // footer={<div>푸터</div>}
-            dataSource={contentList}
+            dataSource={DisplayList}
             renderItem={item=>(
                 <List.Item style={{justifyContent:"center"}}>
                     <Card title={item.name} bordered={false} style={{width:"350px"}}
                     actions={[
-                        <SecurityScanFilled onClick={()=>onViewDetail(item)}/>,
-                        <EnvironmentFilled onClick={()=>onMoveToPoint(item)}/>
+                        <SecurityScanFilled onClick={()=>props.viewDetail(item)}/>,
+                        <EnvironmentFilled onClick={()=>props.moveToPoint(item)}/>
                     ]}
                     >
                         <Text>장소 : {item.place}</Text>
@@ -129,14 +97,14 @@ function TableList(props) {
                 current={ListPage} 
                 pageSize={CountPerPage} 
                 total={TotalCount} 
+                hideOnSinglePage={SinglePage}
                 onChange={onPageChange} 
                 simple 
                 style={{justifyContent:"center",display:'flex'}}
             />
             
         </React.Fragment>
-        
     )
 }
 
-export default TableList
+export default InvestigationListComponent

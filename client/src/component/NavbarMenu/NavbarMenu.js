@@ -8,7 +8,8 @@ import {
   UserOutlined
 } from '@ant-design/icons';
 
-  const { SubMenu } = Menu;
+const { SubMenu } = Menu;
+
 function NavbarMenu(props) {
     return (
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
@@ -21,6 +22,9 @@ function NavbarMenu(props) {
       </Menu.Item>
       <Menu.Item key="3" icon={<DesktopOutlined />} onClick={()=>props.menuSelect("invList")}>
         조사사업
+      </Menu.Item>
+      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={()=>props.menuSelect("marineZoneList")}>
+        오염현황(해구)
       </Menu.Item>
       {/* <SubMenu key="sub1" icon={<PieChartOutlined />} title="조사사업">
       <Menu.Item key="3">Tom</Menu.Item>

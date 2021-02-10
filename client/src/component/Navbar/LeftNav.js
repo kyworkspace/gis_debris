@@ -7,7 +7,6 @@ import logo_small from '../../Images/logo_small.png'
 import logo_large from '../../Images/logo_large.png'
 import NabbarMenu from '../NavbarMenu/NavbarMenu';
 import TableList from '../TableList/TableList';
-import { InvestigationColumns } from '../../main/Config';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -15,6 +14,7 @@ const { SubMenu } = Menu;
 function LeftNav() {
     const [Collapesd, setCollapesd] = useState(true);
     const [GridDisplay, setGridDisplay] = useState(false)
+    const [DetailDisplay, setDetailDisplay] = useState(false);
     const [Type, setType] = useState("");
     
     const onCollapse = (collapse) =>{//사이드바 접고 펼치는 함수
@@ -25,10 +25,11 @@ function LeftNav() {
         setType(type);
         //테이블 데이터 소스 바꿔줄것
     }
+    const onDetailMenu =()=>{
+        setGridDisplay(false);
+        setDetailDisplay(true)
+    }
 
-    const columns = InvestigationColumns;
-
-    
     return (
         <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={Collapesd} onCollapse={onCollapse}>
@@ -45,7 +46,10 @@ function LeftNav() {
         
         </Sider>
         {
-            GridDisplay && <div style={{minWidth:"400px", maxHeight:"100vh", overflowY:"auto"}}><TableList type={Type}/></div>
+            GridDisplay && <div style={{minWidth:"400px", maxHeight:"100vh", overflowY:"auto"}}><TableList type={Type} detailDisplay={onDetailMenu} listHide={setGridDisplay}/></div>
+        }
+        {
+            DetailDisplay && <div style={{minWidth:"400px", maxHeight:"100vh", overflowY:"auto"}}><TableList type={Type} detailDisplay={onDetailMenu}/></div>
         }
         <Layout className="site-layout">
             <Site/>

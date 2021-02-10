@@ -1,14 +1,16 @@
 import {getCenter} from 'ol/extent'
-import { MarineZone } from '../entities/MarineZone';
+import { getMarineZoneLayer } from '../entities/MarineZone';
+import GeoJSON from 'ol/format/GeoJSON';
 import {
     LOAD_MARINE_ZONE,
     LOAD_MAIN_MAP,
     LOAD_INV_LIST,
-    VIEW_INIT
+    VIEW_INIT,
+    LOAD_MARINE_ZONE_LIST,
 } from './types';
 
 export function LoadMarineZone(){
-    let marineZoneLayer = MarineZone();
+    let marineZoneLayer = getMarineZoneLayer();
     return {
         type: LOAD_MARINE_ZONE,
         payload: marineZoneLayer
@@ -20,7 +22,9 @@ export function MainMapInit(MainMap){
         payload : MainMap
     }
 }
-export function InvInit(invList){
+export function InvestigationListInit(response){
+    let parser = new GeoJSON();
+    let invList = parser.readFeatures(response);
     let invListConvert = invList.map((item,i)=>{
         let geomCheck = item.getGeometry() ? true : false;
         let property = item.getProperties();
@@ -45,6 +49,26 @@ export function InvInit(invList){
         payload : invListConvert
     }
 }
+export function MarineZoneListInit(response){
+    let parser = new GeoJSON();
+    let marineZoneList = parser.readFeatures(response);
+    let marineZoneListConvert = marineZoneList.map((item,i)=>{
+        let property = item.getProperties();
+        let convertResult = {
+            ...property,
+            seq : (i+1),
+            id : property.salareano+property.salareasub,
+            name : property.lreareano + "-" + property.salareasub,
+            coordinate : getCenter(item.getGeometry().getExtent())
+        }
+        return convertResult;
+    })
+    return {
+        type : LOAD_MARINE_ZONE_LIST,
+        payload : marineZoneListConvert
+    }
+}
+
 export function ViewInit(view){
     return {
         type : VIEW_INIT,
