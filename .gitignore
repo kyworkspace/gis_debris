@@ -1,2 +1,4 @@
 # 노드 모듈 빼기
 node_modules
+# DB 접속정보 빼기
+dev.js
