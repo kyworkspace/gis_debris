@@ -1,5 +1,7 @@
 import 'ol/ol.css';
-import {View} from 'ol';
+import {Map,View} from 'ol';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
 
 
 //지도에 들어가는 뷰
@@ -19,3 +21,15 @@ export const mapMove =(coordinate)=>{
         zoom : 12
     })
 }
+//지도레이어
+export const MainMap = new Map({
+    target: null,
+    layers: [
+      new TileLayer({
+        source: new OSM()  //기본 레이어, 오픈레이어스에서 제공하는 지형정보를 가져온다.
+      })
+    ],
+    view: view
+  });
+
+export const selectedMarineZone = undefined;

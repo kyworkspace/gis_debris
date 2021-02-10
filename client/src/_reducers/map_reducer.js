@@ -3,7 +3,8 @@ import {
     LOAD_MAIN_MAP,
     LOAD_INV_LIST,
     VIEW_INIT,
-    LOAD_MARINE_ZONE_LIST
+    LOAD_MARINE_ZONE_LIST,
+    SELECT_VECTOR_LAYER
 } from '../_actions/types';
  
 
@@ -19,6 +20,8 @@ export default function(state={},action){
             return {...state, marineZoneList : action.payload}
         case VIEW_INIT:
             return {...state, view: action.payload}
+        case SELECT_VECTOR_LAYER:
+            return {...state, selectedVectorLayer:action.payload}
         default:
             return state;
     }

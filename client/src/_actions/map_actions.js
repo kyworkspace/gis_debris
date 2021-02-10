@@ -7,6 +7,7 @@ import {
     LOAD_INV_LIST,
     VIEW_INIT,
     LOAD_MARINE_ZONE_LIST,
+    SELECT_VECTOR_LAYER,
 } from './types';
 
 export function LoadMarineZone(){
@@ -75,4 +76,11 @@ export function ViewInit(view){
         payload : view,
     }
 
+}
+
+export function setSelectVectorLayer(selectedVectorLayer){
+    return {
+        type : SELECT_VECTOR_LAYER,
+        payload : selectedVectorLayer
+    }
 }

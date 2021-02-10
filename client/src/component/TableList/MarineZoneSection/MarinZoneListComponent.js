@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Card, List, message, Typography,Input,Pagination } from 'antd';
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
+import { useDispatch,useSelector } from "react-redux";
+import {setSelectVectorLayer} from '../../../_actions/map_actions'
+import {MainMap as map,selectedMarineZone} from '../../../main/CommonMethods'
+import {Vector as VectorLayer} from 'ol/layer'
+import {Polygon} from 'ol/geom';
+import {Feature} from 'ol';
+import {Vector} from 'ol/source'
+import {Style,Stroke,Fill} from 'ol/style'
 
 const {Text} = Typography;
 const {Search} = Input;
@@ -8,14 +16,15 @@ const {Search} = Input;
 function MarinZoneListComponent(props) {
 
     const {contentList} = props;
-
+    const dispatch = useDispatch();
     const [DisplayList, setDisplayList] = useState([]);
     const [ListPage, setListPage] = useState(1) //첫시작 페이지
     const [SearchTerm, setSearchTerm] = useState(""); //검색어
     const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
     const [TotalCount, setTotalCount] = useState(0)
     const [SinglePage, setSinglePage] = useState(false);
-    
+
+    let selectedVectorLayer = useSelector(state => state.selectedVectorLayer)
     useEffect(() => {
         let tmpList = contentList.filter(x=>x.seq>=(((ListPage-1)*CountPerPage)+1) && x.seq<=(ListPage*CountPerPage));
         setTotalCount(contentList.length);
@@ -50,6 +59,47 @@ function MarinZoneListComponent(props) {
         SearchList(SearchTerm,currentPage)
         setListPage(currentPage);
     }
+    const onMoveToPointAndDisplayArea=(item)=>{
+        props.moveToPoint(item)//위치 이동
+        let coor = item.geometry.flatCoordinates;
+        var array = new Array;
+        for(var i=0; i<coor.length-2; i++){
+            var coor1= [coor[i], coor[i+1]];
+            array.push(coor1);
+            i++;
+        }
+        
+        console.log(map.getLayers().getArray());
+        
+        map.getLayers().getArray().forEach(item=>{
+            if(item.values_.name==="SelectedVectorLayer"){
+                map.removeLayer(item)        
+            }
+        })
+        var polygon = new Polygon([array]);
+        var feature = new Feature(polygon);
+        var vectorSource = new Vector();
+        vectorSource.addFeature(feature);
+        selectedVectorLayer = new VectorLayer({
+            name : "SelectedVectorLayer",
+            source: vectorSource
+        });
+        map.addLayer(selectedVectorLayer)
+        var selectedStyle = new Style({
+            stroke: new Stroke({
+                color: 'rgb(051, 255, 255)',
+                width: 3,
+            })
+        ,
+            fill: new Fill({
+                color: 'rgba(051, 255, 255, 0.05)',
+            })
+        });
+        selectedVectorLayer.setStyle(selectedStyle);
+        console.log(selectedVectorLayer)
+        dispatch(setSelectVectorLayer(selectedVectorLayer))
+    }
+
 
 
     return (
@@ -73,7 +123,7 @@ function MarinZoneListComponent(props) {
                     <Card title={item.name} bordered={false} style={{width:"350px"}}
                     actions={[
                         <SecurityScanFilled onClick={()=>props.viewDetail(item)}/>,
-                        <EnvironmentFilled onClick={()=>props.moveToPoint(item)}/>
+                        <EnvironmentFilled onClick={()=>onMoveToPointAndDisplayArea(item)}/>
                     ]}
                     >
                         <Text>장소 : {item.name}</Text>

@@ -44,3 +44,5 @@
 1. 기존 TableList type별로 분할
 2. 해구 목록 및 이동기능 추가
 3. 리스트별 제목 입력
+4. 해구 선택시 Vector 강조되도록 함
+![image](https://user-images.githubusercontent.com/45280952/107493133-a1fcc900-6bd0-11eb-9ad6-f68721f052d2.png)

@@ -1,16 +1,12 @@
 import React,{ useEffect, useState } from 'react'
 import 'ol/ol.css';
-import {Map,View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
 import TileWMS from 'ol/source/TileWMS'
-import GeoJSON from 'ol/format/GeoJSON';
-import $ from 'jquery';
 import { useDispatch } from "react-redux";
 import {message} from 'antd';
 import { MAP_SERVER } from '../../main/Access';
 import { InvestigationListInit,MarineZoneListInit } from '../../_actions/map_actions';
-import {view} from '../../main/CommonMethods';
+import {view,MainMap as map} from '../../main/CommonMethods';
 import {getInvestigationServiceList, getInvServiceLayer} from '../../entities/InvestigationZone'
 import { getMarineZoneList } from '../../entities/MarineZone';
 
@@ -20,19 +16,8 @@ function MainMap() {
     //const [Zoom, setZoom] = useState(1);
     const dispatch = useDispatch();
     
-
-    const MainMap = new Map({
-        target: null,
-        layers: [
-          new TileLayer({
-            source: new OSM()  //기본 레이어, 오픈레이어스에서 제공하는 지형정보를 가져온다.
-          })
-        ],
-        view: view
-      });
-
     useEffect(() => {
-      MainMap.setTarget("map");
+      map.setTarget("map");
       message.warn("해구정보를 불러옵니다.")
       let marineZoneLayer = new TileLayer({ //해구정보
         source:new TileWMS({
@@ -75,9 +60,9 @@ function MainMap() {
       })
 
 
-      MainMap.addLayer(marineZoneLayer);
-      MainMap.addLayer(cineralZoneLayer);
-      MainMap.addLayer(getInvServiceLayer());
+      map.addLayer(marineZoneLayer);
+      map.addLayer(cineralZoneLayer);
+      map.addLayer(getInvServiceLayer());
 
     }, [])
     return (
