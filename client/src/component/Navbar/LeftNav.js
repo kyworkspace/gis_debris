@@ -5,12 +5,11 @@ import FooterComponent from '../Footer/Footer';
 import Site from '../Site/Site';
 import logo_small from '../../Images/logo_small.png'
 import logo_large from '../../Images/logo_large.png'
-import NabbarMenu from '../NavbarMenu/NavbarMenu';
+import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import TableList from '../List/TableList';
 import TableDetail from '../Detail/TableDetail';
 
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
 function LeftNav() {
     const [Collapesd, setCollapesd] = useState(true);
@@ -47,7 +46,7 @@ function LeftNav() {
                     }}
                 />
             </div> */}
-        <NabbarMenu menuSelect={onSelectMenu}/>
+        <NavbarMenu menuSelect={onSelectMenu}/>
         
         </Sider>
         {

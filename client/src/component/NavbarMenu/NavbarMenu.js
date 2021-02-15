@@ -17,8 +17,8 @@ function NavbarMenu(props) {
       <Menu.Item key="1" icon={<PieChartOutlined />}>
         Option 1
       </Menu.Item>
-      <Menu.Item key="2" icon={<DesktopOutlined />}>
-        Option 2
+      <Menu.Item key="2" icon={<DesktopOutlined />} onClick={()=>props.menuSelect("trackList")}>
+        항적정보
       </Menu.Item>
       <Menu.Item key="3" icon={<DesktopOutlined />} onClick={()=>props.menuSelect("invList")}>
         조사사업

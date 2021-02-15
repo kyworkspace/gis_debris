@@ -33,3 +33,25 @@ export const MainMap = new Map({
   });
 
 export const selectedMarineZone = undefined;
+//날짜 변환 메서드
+export const stringToDate=(StringDate)=>{
+
+  let dateTime = new Date(StringDate);
+  const year = dateTime.getFullYear();
+  const month = dateTime.getMonth()+1>10? (dateTime.getMonth()+1):"0"+(dateTime.getMonth()+1);
+  const date = dateTime.getDate() > 10 ? dateTime.getDate() : "0"+dateTime.getDate();
+
+  return year+"-"+month+"-"+date;
+}
+
+export const stringToTime=(StringDate)=>{
+  
+  let dateTime = new Date(StringDate);
+  const hour = dateTime.getHours()>10 ? dateTime.getHours() : "0"+dateTime.getHours();
+  const min = dateTime.getMinutes()>10 ? dateTime.getMinutes() : "0"+dateTime.getMinutes();
+
+  const label = hour-12 > 0 ? "오후" : "오전"
+
+  return label+" "+hour+":"+min;
+
+}

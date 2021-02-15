@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { PageHeader } from 'antd';
-import InvestigationDetailComponent from '../List/InvestigationSection/InvestigationDetailComponent'
+import InvestigationDetailComponent from './InvestigationSection/InvestigationDetailComponent';
+
 
 function TableDetail(props) {
 

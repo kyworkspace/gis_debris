@@ -5,6 +5,7 @@ import { mapMove } from '../../main/CommonMethods';
 import { invServiceDisplay } from '../../entities/InvestigationZone';
 import MarinZoneListComponent from './MarineZoneSection/MarinZoneListComponent';
 import InvestigationListComponent from './InvestigationSection/InvestigationListComponent';
+import TrackListComponent from './TrackSection/TrackListComponent';
 
 function TableList(props) {
     const [contentList, setcontentList] = useState([]); //표출할 리스트
@@ -13,7 +14,6 @@ function TableList(props) {
     const type = props.type;
 
     useEffect(() => {
-        let tmpList=null;
         switch (type) {
             case "invList":      
                 if(ListinReducer.invList===undefined)
@@ -26,6 +26,8 @@ function TableList(props) {
                     return ;
                 setcontentList(ListinReducer.marineZoneList);
                 setTitle("해구목록")
+            case "trackList" :
+                setTitle("항적정보 목록")
             default:
                 break;
         }
@@ -62,6 +64,7 @@ function TableList(props) {
             />
             {type ==="marineZoneList" && <MarinZoneListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
             {type ==="invList" && <InvestigationListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} /> }
+            {type ==="trackList" && <TrackListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} /> }
         </React.Fragment>
     )
 }
