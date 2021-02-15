@@ -41,7 +41,8 @@ export function InvestigationListInit(response){
             area : property.inv_area,
             seq : property.seq_no,
             geomCheck : geomCheck,
-            coordinate : geomCheck ? getCenter(item.getGeometry().getExtent()):null
+            coordinate : geomCheck ? getCenter(item.getGeometry().getExtent()):null,
+            coordinateAll : property.inv_coor1
         }
         return convertResult;
     })

@@ -33,7 +33,7 @@ function TableList(props) {
     }, [ListinReducer])
     
     const onViewDetail=(item)=>{
-        
+        props.detailDisplay(item)
     }
 
     const onMoveToPoint=(item)=>{
