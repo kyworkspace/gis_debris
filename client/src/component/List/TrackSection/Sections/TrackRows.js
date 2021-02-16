@@ -49,6 +49,7 @@ function TrackRows(props) {
 
       axios.post("/gis/track/track",body)
       .then(response=>{
+        console.log(response.data)
         if(response.data.success){
           if(response.data.trackList.legnth==0){
             message.info("조회된 항적이 없습니다.")
@@ -57,7 +58,7 @@ function TrackRows(props) {
             parseShipHisRecords(response.data.trackList)
           }
         }else{
-          message.error("항적정보를 불러오는데 실패하였습니다.")
+          message.error(response.data.err.hint)
         }
       })
       

@@ -1,92 +1,74 @@
 import { Card } from 'antd'
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
 import React from 'react'
+import WindowSectionModal from '../../Modal/WindowSection/WindowSectionModal';
 
-const contents=[
-    {
-        id: 1,
-        title : "해구시설정보",
-        detailFunction:(item)=>{
-            console.log("해구시설정보 상세",item)
-        },
-        moveToFunction:(item)=>{
-            console.log("해구 시설정보 위치이동",item)
-        }
-    },
-    {
-        id: 2,
-        title : "해구 현존량예측",
-        detailFunction:(item)=>{
-            console.log("해구현존량예측 상세",item)
-        },
-        moveToFunction:(item)=>{
-            console.log("해구현존량예측 위치이동",item)
-        }
-    }
-    ,
-    {
-        id: 3,
-        title : "해구 잔존량예측",
-        detailFunction:(item)=>{
-            console.log("해구 잔존량예측 상세",item)
-        },
-        moveToFunction:(item)=>{
-            console.log("해구 잔존량예측 위치이동",item)
-        }
-    }
-    ,
-    {
-        id: 4,
-        title : "조사사업정보",
-        detailFunction:(item)=>{
-            console.log("조사사업정보 상세",item)
-        },
-        moveToFunction:(item)=>{
-            console.log("조사사업정보 위치이동",item)
-        }
-    }
-    ,
-    {
-        id: 5,
-        title : "수거사업정보",
-        detailFunction:(item)=>{
-            console.log("수거사업정보 상세",item)
-        },
-        moveToFunction:(item)=>{
-            console.log("수거사업정보 위치이동",item)
-        }
-    }
-    ,
-    {
-        id: 6,
-        title : "선박항적정보",
-        detailFunction:(item)=>{
-            console.log("선박항적정보 상세",item)
-        },
-        moveToFunction:(item)=>{
-            console.log("선박항적정보 위치이동",item)
-        }
-    }
-    ,
-    {
-        id: 7,
-        title : "조사/수거 통합정보",
-        detailFunction:(item)=>{
-            console.log("조사/수거 통합정보 상세",item)
-        },
-        moveToFunction:(item)=>{
-            console.log("조사/수거 통합정보 위치이동",item)
-        }
-    }
 
-]
+function MarineZoneDetailComponent(props) {
+    const {item} = props;
+        
+    const contents=[
+        {
+            id: 1,
+            title : "해구시설정보",
+            detailFunction:(item)=>{
+                console.log("해구시설정보 상세",item)
+            },
+            moveToFunction:(item)=>{
+                console.log("해구 시설정보 위치이동",item)
+            }
+        },
+        {
+            id: 2,
+            title : "해구 현존량예측",
+            detailFunction:(item)=>{
+                console.log("해구현존량예측 상세",item)
+            },
+            moveToFunction:(item)=>{
+                console.log("해구현존량예측 위치이동",item)
+            }
+        }
+        ,
+        {
+            id: 3,
+            title : "해구 잔존량예측",
+            detailFunction:(item)=>{
+                console.log("해구 잔존량예측 상세",item)
+            },
+            moveToFunction:(item)=>{
+                console.log("해구 잔존량예측 위치이동",item)
+            }
+        }
+        ,
+        {
+            id: 4,
+            title : "선박항적정보",
+            detailFunction:(item)=>{
+                console.log("선박항적정보 상세",item)
+            },
+            moveToFunction:(item)=>{
+                console.log("선박항적정보 위치이동",item)
+            }
+        }
+        ,
+        {
+            id: 5,
+            title : "조사/수거 통합정보",
+            detailFunction:(item)=>{
+                window.open("/windowModal","aa" ,"width=800,height=800,resizable=no")
+                console.log("조사/수거 통합정보 상세",item)
+            },
+            moveToFunction:(item)=>{
+                console.log("조사/수거 통합정보 위치이동",item)
+            }
+        }
 
-function MarineZoneDetailComponent() {
-    const renderCards=contents.map(item=>(
-        <Card title={item.title}
+    ]
+    const renderCards=contents.map(content=>(
+        <Card title={content.title}
         actions={[
-            <SecurityScanFilled onClick={()=>item.detailFunction(item)}/>,
-            <EnvironmentFilled onClick={()=>item.moveToFunction(item)}/>
+            <SecurityScanFilled onClick={()=>content.detailFunction(item)}/>,
+            <EnvironmentFilled onClick={()=>content.moveToFunction(item)}/>
         ]}
         ></Card>
     ))
