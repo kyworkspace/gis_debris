@@ -59,7 +59,8 @@ router.post("/track",(req,res)=>{
         queryRes.rows.forEach(item=>{
             trackList.push(item)
         })
-        res.status(200).json({success:true,trackList})
+        client.end();
+        return res.status(200).json({success:true,trackList})
     })
     
     
@@ -112,7 +113,7 @@ router.post("/list",(req,res)=>{
     .catch(err=>{
         return res.json({success:false,err})
     })
-    // .then(()=>client.end())
+    .then(()=>client.end())
     
 })
 

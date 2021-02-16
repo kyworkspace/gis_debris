@@ -8,6 +8,7 @@ import logo_large from '../../Images/logo_large.png'
 import NavbarMenu from '../NavbarMenu/NavbarMenu';
 import TableList from '../List/TableList';
 import TableDetail from '../Detail/TableDetail';
+import UtilBox from '../../component/Map/Section/UtilBox';
 
 
 
@@ -43,6 +44,7 @@ function LeftNav() {
  
 
     return (
+        <>
         <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={Collapesd} onCollapse={onCollapse}>
             {/* <div className="logo" >
@@ -66,9 +68,10 @@ function LeftNav() {
         <Layout className="site-layout">
             <Site/>
             {/* <FooterComponent/> */}
-            
+            <UtilBox/>
         </Layout>
       </Layout>
+      </>
     )
 }
 
