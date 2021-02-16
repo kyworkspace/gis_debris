@@ -26,8 +26,10 @@ function TableList(props) {
                     return ;
                 setcontentList(ListinReducer.marineZoneList);
                 setTitle("해구목록")
+                break;
             case "trackList" :
                 setTitle("항적정보 목록")
+                break;
             default:
                 break;
         }

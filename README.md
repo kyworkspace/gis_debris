@@ -20,6 +20,7 @@
 - component에 사용할 컴포넌트 생성예정
 - Navbar안에서 Site와 Footer를 컴포넌트로 가져와서 보여줌
 - MainMap에서 맵 세팅
+
 ![image](https://user-images.githubusercontent.com/45280952/107192865-84ddc400-6a31-11eb-8954-a474d95f35c9.png)
 - 자료 가져오기
 

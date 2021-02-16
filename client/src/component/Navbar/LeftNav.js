@@ -28,8 +28,11 @@ function LeftNav() {
         //테이블 데이터 소스 바꿔줄것
     }
     const onDetailMenu =(item)=>{
+        //리스트 표출 여부
         setGridDisplay(false);
+        //상세 창 표출 여부
         setDetailDisplay(true)
+        
         setDetailItem(item);
         console.log(item);
     }
