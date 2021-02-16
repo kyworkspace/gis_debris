@@ -40,9 +40,21 @@
 ```
     npm install pg --save
 ```
+2. client.end()를 하는 타이밍을 찾아보는 중임, 각 쿼리마다 end를 던지면 다음 쿼리 사용에서 자꾸 끊어져버리는데.. 공식 문서상에서 예제는 각 쿼리마다 end가 적용되어 있음
+    - 방법을 찾을 것이다. 늘 그래 왔듯이
 ### CLIENT
 1. 기존 TableList type별로 분할
 2. 해구 목록 및 이동기능 추가
 3. 리스트별 제목 입력
 4. 해구 선택시 Vector 강조되도록 함
 ![image](https://user-images.githubusercontent.com/45280952/107493133-a1fcc900-6bd0-11eb-9ad6-f68721f052d2.png)
+#### 항적조회
+- Material UI , Ant Design 혼합 사용
+- 로딩바 사용
+- 검색 & 상세보기 적용
+![image](https://user-images.githubusercontent.com/45280952/108010560-7fdbce80-7048-11eb-955b-b7fa51bd5153.png)
+- 상세보기
+![image](https://user-images.githubusercontent.com/45280952/108010753-f11b8180-7048-11eb-8223-fb65ee12f022.png)
+- 항적조회
+- 기간 설정 후 나오도록 함
+![image](https://user-images.githubusercontent.com/45280952/108010784-07294200-7049-11eb-84c7-540e2c115238.png)
