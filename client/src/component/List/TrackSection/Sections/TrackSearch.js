@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
 const today = new Date();
 //페이지 열릴때 기본 날짜 현재달 -1
 const year = today.getFullYear();
-const month = today.getMonth()+1>10?today.getMonth():"0"+(today.getMonth()+1);
+const month = today.getMonth()+1>=10?today.getMonth():"0"+(today.getMonth()+1);
 const date = today.getDate();
-const hour = today.getHours()>10 ? today.getHours() : "0"+today.getHours();
-const min = today.getMinutes()>10 ? today.getMinutes() : "0"+today.getMinutes();
+const hour = today.getHours()>=10 ? today.getHours() : "0"+today.getHours();
+const min = today.getMinutes()>=10 ? today.getMinutes() : "0"+today.getMinutes();
 const startDate = year+"-"+(month-1>10?month-1:"0"+(month-1))+"-"+date+"T"+hour+":"+min;
 const endDate = year+"-"+month+"-"+date+"T"+hour+":"+min;
   

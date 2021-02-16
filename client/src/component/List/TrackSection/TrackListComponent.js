@@ -89,7 +89,6 @@ function TrackListComponent() {
         .then(response=>{
             if(response.data.success){
                 if(response.data.obj){
-                    console.log(response.data.obj)
                     setTrackList(response.data.obj);
                     setLoading(false)
                 }else{
@@ -112,16 +111,13 @@ function TrackListComponent() {
       setPage(0);
     };
 
-    const onSearchHandler=(variable)=>{
-        selectTrackList(variable)
-    }
     const onTrackDeployHandler=(mmsi)=>{
         console.log(mmsi)
     }
 
     return (
         <div style={{maxWidth:"500px"}}>
-            <TrackSearch searchHandler={onSearchHandler}/>
+            <TrackSearch searchHandler={selectTrackList}/>
             {Loading && 
                 <div className={classes.root}>
                     <LinearProgress />

@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import {message} from 'antd';
 import { MAP_SERVER } from '../../main/Access';
 import { InvestigationListInit,MarineZoneListInit } from '../../_actions/map_actions';
-import {view,MainMap as map} from '../../main/CommonMethods';
+import {view,MainMap as map} from '../../entities/CommonMethods';
 import {getInvestigationServiceList, getInvServiceLayer} from '../../entities/InvestigationZone'
 import { getMarineZoneList } from '../../entities/MarineZone';
 

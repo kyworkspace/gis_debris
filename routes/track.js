@@ -1,9 +1,34 @@
 const express = require('express');
 const router = express.Router();
 
-const {Client} = require("pg");
+const {Client,Pool} = require("pg");
 const config = require("../config/key");
 const client = new Client(config.DBAccess)
+
+
+// const pool = new Pool()
+
+// // the pool with emit an error on behalf of any idle clients
+// // it contains if a backend error or network partition happens
+// pool.on('error', (err, client) => {
+//   console.error('Unexpected error on idle client', err) // your callback here
+//   process.exit(-1)
+// })
+
+// // promise - checkout a client
+// pool.connect()
+//   .then(client => {
+//     return client.query('SELECT * FROM users WHERE id = $1', [1]) // your query string here
+//       .then(res => {
+//         client.release()
+//         console.log(res.rows[0]) // your callback here
+//       })
+//       .catch(e => {
+//         client.release()
+//         console.log(err.stack) // your callback here
+//       })
+//   })
+
 client.connect().then(response=>{console.log("DB Connected!!")})
 
 
@@ -26,8 +51,8 @@ router.post("/track",(req,res)=>{
                     from
                         \"AIS\".track_92_5 t
                     where
-                        t.record_time between '${startDate}' and '${endDate}' and mmsi = ${mmsi}`
-    console.log(queryString)
+                        t.record_time between to_timestamp('${startDate}','yyyy-mm-dd hh:mi:ss')  
+                        and to_timestamp('${endDate}','yyyy-mm-dd hh:mi:ss') and mmsi = ${mmsi}`
     client.query(queryString,(err,queryRes)=>{
         if(err) return res.json({success:false,err})
         let trackList= [];
@@ -36,7 +61,8 @@ router.post("/track",(req,res)=>{
         })
         res.status(200).json({success:true,trackList})
     })
-    client.end()
+    
+    
 })
 
 router.post("/list",(req,res)=>{
@@ -73,14 +99,21 @@ router.post("/list",(req,res)=>{
                         order by ms.ship_ko_nm
                         `
     client.query(queryString,(err,queryRes)=>{
-        if(err) return res.json({success:false,err})
+        
+    })
+    client.query(queryString)
+    .then(response=>{ 
         let obj= [];
-        queryRes.rows.forEach(item=>{
+        response.rows.forEach(item=>{
             obj.push(item)
         })
-        res.status(200).json({success:true,obj})
+        return res.status(200).json({success:true,obj})
     })
-    client.end()
+    .catch(err=>{
+        return res.json({success:false,err})
+    })
+    // .then(()=>client.end())
+    
 })
 
 module.exports = router;

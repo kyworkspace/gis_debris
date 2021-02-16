@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { message,PageHeader } from 'antd';
 import { useSelector } from 'react-redux';
-import { mapMove } from '../../main/CommonMethods';
+import { mapMove } from '../../entities/CommonMethods';
 import { invServiceDisplay } from '../../entities/InvestigationZone';
 import MarinZoneListComponent from './MarineZoneSection/MarinZoneListComponent';
 import InvestigationListComponent from './InvestigationSection/InvestigationListComponent';

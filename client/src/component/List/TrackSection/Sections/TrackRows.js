@@ -2,11 +2,12 @@ import { IconButton,TableCell,TableRow,Collapse,Box,makeStyles } from '@material
 import { SearchOutlined } from '@ant-design/icons';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import {stringToDate,stringToTime} from '../../../../main/CommonMethods';
+import {stringToDate,stringToTime} from '../../../../entities/CommonMethods';
 import { Button, DatePicker, Divider, message, Tooltip, Typography  } from 'antd';
 import { Descriptions } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react'
+import {parseShipHisRecords} from '../../../../entities/TrackHistory'
 
 const useRowStyles = makeStyles({
     root: {
@@ -53,6 +54,7 @@ function TrackRows(props) {
             message.info("조회된 항적이 없습니다.")
           }else{
             console.log(response.data.trackList)
+            parseShipHisRecords(response.data.trackList)
           }
         }else{
           message.error("항적정보를 불러오는데 실패하였습니다.")
@@ -105,7 +107,7 @@ function TrackRows(props) {
                     {row.ship_ko_nm} 항적조회
                 </Typography>
                 <hr/>
-                <RangePicker showTime style={{width:350}} onChange={onRangePickerHandler}/>
+                <RangePicker showTime style={{width:350}} onChange={onRangePickerHandler} defaultValue={null}/>
                 <Button type="primary" icon={<SearchOutlined />} onClick={()=>onTrackDiplayHandler(row.mmsi_id)}>
                     Search
                 </Button>
