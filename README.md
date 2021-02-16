@@ -53,8 +53,9 @@
 - 로딩바 사용
 - 검색 & 상세보기 적용
 ![image](https://user-images.githubusercontent.com/45280952/108010560-7fdbce80-7048-11eb-955b-b7fa51bd5153.png)
+
 - 상세보기
-![image](https://user-images.githubusercontent.com/45280952/108010753-f11b8180-7048-11eb-8223-fb65ee12f022.png)
+![그림1](https://user-images.githubusercontent.com/45280952/108010840-2e800f00-7049-11eb-8ad6-05fb8991d989.png)
 - 항적조회
 - 기간 설정 후 나오도록 함
 ![image](https://user-images.githubusercontent.com/45280952/108010784-07294200-7049-11eb-84c7-540e2c115238.png)
