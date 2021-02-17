@@ -10,17 +10,17 @@ import {
 
 function App() {
 
-  
+
   return (
     <Router>
-        <div>
-          <Switch >
-            <Route exact path="/" component={LeftNav}/>
-            {/* <Route exact path="/windowModal" component={WindowSectionModal}/> */}
-          </Switch>
-        </div>
+      <div>
+        <Switch >
+          <Route exact path="/" component={LeftNav} />
+          {/* <Route exact path="/windowModal" component={WindowSectionModal}/> */}
+        </Switch>
+      </div>
     </Router>
-      
+
   );
 }
 

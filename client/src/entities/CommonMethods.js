@@ -30,13 +30,13 @@ export const mousePositionControl = new MousePosition({
   projection: 'EPSG:4326',
   // comment the following two lines to have the mouse position
   // be placed within the map.
-  target: document.getElementById('lonlati'),
+  //target: document.getElementById('lonlati'),
   undefinedHTML: '&nbsp;',
 });
 
 //지도레이어
 export const MainMap = new Map({
-  controls: defaultControls().extend([mousePositionControl]),
+  // controls: defaultControls().extend([mousePositionControl]),
   target: null,
   layers: [
     new TileLayer({
@@ -69,3 +69,97 @@ export const stringToTime = (StringDate) => {
   return label + " " + hour + ":" + min;
 
 }
+
+
+export const formatLat = (latitude, flag) => {
+  var val;
+  var lat = funcDegressToDMS(latitude);
+  if (Number(latitude) > 90 || Number(latitude) < -90) {
+    val = 'N/A';
+  } else {
+    if (Number(latitude) > 0) {
+      if (flag == 0) {
+        val = "N " + lat.d + "º " + lat.m + "' " + convertZero(Number(lat.s)) + '"';
+      } else {
+        val = "N " + Number(latitude).toPrecision(8) + "º";
+      }
+      //            val = "N " + lat.d + "º " + lat.m + "' " + Number(lat.s).toFixed(2) + '"';
+    } else {
+      if (flag == 0) {
+        val = "S " + Math.abs(Number(lat.d)) + "º " + lat.m + "' " + convertZero(Number(lat.s)) + '"';
+      } else {
+        val = "S " + Math.abs(Number(latitude)).toPrecision(8) + "º";
+      }
+      //            val = "S " + Math.abs(Number(lat.d)) + "º " + lat.m + "' " + Number(lat.s).toFixed(2) + '"';
+    }
+  }
+  return val;
+}
+
+
+export const formatLon = (longitude, flag) => {
+  var val;
+  var lon = funcDegressToDMS(longitude);
+  if (Number(longitude) > 180 || Number(longitude) < -180) {
+    val = 'N/A';
+  } else {
+    if (Number(longitude) > 0) {
+
+      if (flag == 0) {
+        val = "E " + lon.d + "º " + lon.m + "' " + convertZero(Number(lon.s)) + '"';
+      } else {
+        val = "E " + Number(longitude).toPrecision(9) + "º";
+      }
+      //          val = "E "+lon.d+"º "+lon.m+"' "+Number(lon.s).toFixed(2)+'"';
+    } else {
+      if (flag == 0) {
+        val = "W " + Math.abs(Number(lon.d)) + "º " + lon.m + "' " + convertZero(Number(lon.s)) + '"';
+      } else {
+        val = "W " + Math.abs(Number(longitude)).toPrecision(9) + "º";
+      }
+      //            val = "W "+Math.abs(Number(lon.d))+"º "+lon.m+"' "+Number(lon.s).toFixed(2)+'"';
+    }
+  }
+
+  return val;
+}
+
+
+
+export const convertZero = (value) => {
+  let result;
+  if (value === undefined) {
+    result = '-'
+  } else {
+    var fix = Number(value).toFixed(2);
+    for (var i = fix.length - 1; i < 0; i++) {
+      if (fix[i] == "0") {
+        fix.substring(0, fix.length - 1);
+      } else if (fix[i] == ".") {
+        fix.substring(0, fix.length - 1);
+        break;
+      } else {
+        break;
+      }
+    }
+    result = Number(fix);
+  }
+
+  return result;
+}
+
+
+export const funcDegressToDMS = (ldDegress) => {
+  ldDegress = parseFloat(ldDegress);
+  var lrDMS = { d: 0, m: 0, s: 0 };
+  var tmp;
+  lrDMS.d = Math.floor(ldDegress);
+
+  tmp = ((ldDegress * 100000000000000 - lrDMS.d * 100000000000000) / 100000000000000 * 60).toFixed(10);
+
+  lrDMS.m = Math.floor(tmp);
+  lrDMS.s = (tmp * 100000000000000 - lrDMS.m * 100000000000000) / 100000000000000 * 60;
+
+  return lrDMS;
+}
+

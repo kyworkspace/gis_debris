@@ -15,8 +15,8 @@
     position: relative;
     display:  inline-block;
     border-right: 1px solid #ddd;
+    padding: 10px;
     height: 100%;
-    padding: 0 20px;
 }
 
 .util_box p {
@@ -24,8 +24,7 @@
     color: #191d1e;
     font-size: 16px;
     font-family: 'notokr-b';
-    height: 50px;
-    line-height: 55px;
+    font-weight: bold;
 }
 
 .util_box p.util_tit {
@@ -37,3 +36,11 @@
     padding: 0 8px;
     font-size: 14px;
 }
+
+.util_box p.util_cnt{
+    	margin-left:10px;
+    }
+
+    .util_box p.util_cnt span{
+        color:#333366;
+    }

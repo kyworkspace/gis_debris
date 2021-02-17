@@ -66,13 +66,7 @@ function MainMap() {
 
   }, [])
 
-  let coord = [];
-  map.on('pointermove', function (evt) {
-    coord = evt.coordinate;
-  })
-  document.addEventListener('pointermove', function () {
-    console.log(coord);
-  });
+
 
   return (
     <div id="map" style={{ width: "100%", height: "100vh" }}></div>
