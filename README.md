@@ -64,4 +64,10 @@
 - 항적조회 일부 수정
 - 해구 상세정보 Window.open으로 하려다가
 - Modal로 표출 할 예정. 
-- Modal로 표출 할 예정. 
+
+### 2021-02-17
+- 조사 수거 통합정보는 별로의 Window를 펼쳐서 좌우 구분해서 사용
+```
+npm install --save react-chartjs-2 chart.js
+```
+- chartjs 설치

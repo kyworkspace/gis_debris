@@ -6,6 +6,7 @@ import { CircularProgress } from '@material-ui/core';
 import Text from 'antd/lib/typography/Text';
 import axios from 'axios';
 import Title from 'antd/lib/typography/Title';
+import ChartComponent from '../../Chart/ChartComponent';
 
 function WindowSectionModal(props) {
     
@@ -13,6 +14,7 @@ function WindowSectionModal(props) {
     const marineZoneId = props.match.params.marineZoneId;
     const [Loading, setLoading] = useState(true);
     const [MarineZoneInfo, setMarineZoneInfo] = useState({});
+    const [ChartDatas, setChartDatas] = useState([]);
     const [Year, setYear] = useState(todayDate.getFullYear());
 
     useEffect(() => {
@@ -32,9 +34,10 @@ function WindowSectionModal(props) {
                 }
                 axios.post("/gis/eng/getInvAndColDataInMarinezone",body)
                 .then(response=>{
-                    console.log(response)
+                    console.log(response.data.objList)
+                    setChartDatas(response.data.objList)
                 })
-                //
+                //항적 정보 가져옴
 
 
 
@@ -59,6 +62,7 @@ function WindowSectionModal(props) {
             :
             <Row gutter={[16,16]}>
                 <Col lg={12} xs={24}>
+                    <ChartComponent data={ChartDatas}/>
                     <Descriptions
                         title="Responsive Descriptions"
                         bordered

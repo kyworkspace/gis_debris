@@ -54,7 +54,6 @@ function MarineZoneDetailComponent(props) {
             title : "조사/수거 통합정보",
             detailFunction:(item)=>{
                 window.open(`/MarineZoneDetail/${item.salareano}`,"aa" ,"width=800,height=800,resizable=no")
-                console.log("조사/수거 통합정보 상세",item)
             },
             moveToFunction:(item)=>{
                 console.log("조사/수거 통합정보 위치이동",item)
