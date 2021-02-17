@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu} from 'antd';
+import { Menu } from 'antd';
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -11,19 +11,22 @@ import {
 const { SubMenu } = Menu;
 
 function NavbarMenu(props) {
-    return (
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-      <Menu.Item key="2" icon={<DesktopOutlined />} onClick={()=>props.menuSelect("trackList")}>
+  return (
+    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+      <Menu.Item key="2" icon={<DesktopOutlined />} onClick={() => props.menuSelect("trackList")}>
         항적정보
       </Menu.Item>
-      <Menu.Item key="3" icon={<DesktopOutlined />} onClick={()=>props.menuSelect("invList")}>
+      <Menu.Item key="3" icon={<DesktopOutlined />} onClick={() => props.menuSelect("invList")}>
         조사사업
       </Menu.Item>
-      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={()=>props.menuSelect("marineZoneList")}>
+      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={() => props.menuSelect("marineZoneList")}>
         오염현황(해구)
       </Menu.Item>
-      <Menu.Item key="1" icon={<PieChartOutlined />}>
+      <Menu.Item key="5" icon={<PieChartOutlined />}>
         통계정보
+      </Menu.Item>
+      <Menu.Item key="6" icon={<PieChartOutlined />} onClick={() => props.menuSelect("LayerList")}>
+        레이어정보
       </Menu.Item>
       {/* <SubMenu key="sub1" icon={<PieChartOutlined />} title="조사사업">
       <Menu.Item key="3">Tom</Menu.Item>
@@ -39,7 +42,7 @@ function NavbarMenu(props) {
         Files
       </Menu.Item>
     </Menu>
-    )
+  )
 }
 
 export default NavbarMenu
