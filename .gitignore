@@ -2,3 +2,4 @@
 node_modules
 # DB 접속정보 빼기
 dev.js
+README.md

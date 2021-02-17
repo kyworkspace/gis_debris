@@ -1,36 +1,49 @@
-import { none } from 'ol/centerconstraint'
-import { MousePosition } from 'ol/control'
-import { createStringXY } from 'ol/coordinate'
 import React, { useState, useEffect } from 'react'
-import { lonlat, MainMap } from '../../../entities/CommonMethods'
+import { formatLat, formatLon, MainMap } from '../../../entities/CommonMethods'
 import "./UtilBox.css"
-
+import $ from 'jquery';
+import Clock from './Clock';
 
 
 function UtilBox() {
-    const [NowTime, setNowTime] = useState('')
+
+    const [Flag, setFlag] = useState(false)
     const [OverLati, setOverLati] = useState('111')
     const [OverLong, setOverLong] = useState('')
 
-    setInterval(() => {
-        let today = new Date();
-        let dateString = today.toLocaleDateString('ko-Kr');
-        let dayName = today.toLocaleDateString('ko-KR', { weekday: 'long' });
-        let timeString = today.toLocaleTimeString('it-IT')
-        setNowTime(dateString + dayName + timeString)
-    }, 1 * 1000)
+    useEffect(() => {
+        let coord = [];
+        let lon = '';
+        let lat = '';
+        MainMap.on('pointermove', function (evt) {
+            coord = evt.coordinate;
+            if (coord.length > 0) {
+                lon = coord[0]
+                lat = coord[1]
+            }
+        })
+        document.addEventListener('pointermove', function () {
+            $("#main_la_view").text(formatLat(Number(lat), 0));
+            $("#main_lo_view").text(formatLon(Number(lon), 0));
+        });
+
+    }, [])
+
+
 
 
 
     return (
         <div className="util_mn_top">
             <div className="util_box">
-                <p>{NowTime}</p>
+                <Clock />
             </div>
 
             <div className="util_box">
                 <p className="util_tit">위도</p>
+                <p style={{ width: '140px' }} className="util_cnt"><font name="global_La" id="main_la_view"><span style={{ color: 'white' }}>..</span></font></p>
                 <p className="util_tit">경도</p>
+                <p style={{ width: '140px' }} className="util_cnt"><font name="global_La" id="main_lo_view"><span style={{ color: 'white' }}>..</span></font></p>
             </div>
         </div>
     )
