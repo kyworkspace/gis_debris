@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk'
-
 //스토어 생성
 const createStoredWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 

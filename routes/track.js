@@ -51,15 +51,16 @@ router.post("/track",(req,res)=>{
                     from
                         \"AIS\".track_92_5 t
                     where
-                        t.record_time between to_timestamp('${startDate}','yyyy-mm-dd hh:mi:ss')  
-                        and to_timestamp('${endDate}','yyyy-mm-dd hh:mi:ss') and mmsi = ${mmsi}`
+                        t.record_time between to_timestamp('${startDate}','yyyy-mm-dd hh24:mi:ss')  
+                        and to_timestamp('${endDate}','yyyy-mm-dd hh24:mi:ss') and mmsi = ${mmsi}`
     client.query(queryString,(err,queryRes)=>{
         if(err) return res.json({success:false,err})
         let trackList= [];
         queryRes.rows.forEach(item=>{
             trackList.push(item)
         })
-        res.status(200).json({success:true,trackList})
+        client.end();
+        return res.status(200).json({success:true,trackList})
     })
     
     
@@ -112,7 +113,7 @@ router.post("/list",(req,res)=>{
     .catch(err=>{
         return res.json({success:false,err})
     })
-    // .then(()=>client.end())
+    .then(()=>client.end())
     
 })
 

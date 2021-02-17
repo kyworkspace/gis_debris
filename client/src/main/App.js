@@ -1,13 +1,26 @@
 import React from 'react';
-import UtilBox from '../component/Map/Section/UtilBox';
 import LeftNav from '../component/Navbar/LeftNav';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
+
 
 function App() {
+
+  
   return (
-    <div>
-      <LeftNav />
-      <UtilBox />
-    </div>
+    <Router>
+        <div>
+          <Switch >
+            <Route exact path="/" component={LeftNav}/>
+            {/* <Route exact path="/windowModal" component={WindowSectionModal}/> */}
+          </Switch>
+        </div>
+    </Router>
+      
   );
 }
 
