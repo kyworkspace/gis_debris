@@ -1,7 +1,6 @@
 const express = require("express")
 // const {Client} = require("pg");
 const cors = require('cors')
-
 const bodyParser = require('body-parser');
 // const config = require("./config/key");
 
@@ -18,6 +17,7 @@ app.use(bodyParser.json());
 
 app.get("/",(req,res)=>res.send("HELLO WORLD"));
 app.use('/gis/track',require('./routes/track'));
+app.use('/gis/eng',require('./routes/eng'));
 
 
 app.listen(port,()=>console.log("Port Access Completed!!!!"))
