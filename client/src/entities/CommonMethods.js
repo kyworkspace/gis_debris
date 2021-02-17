@@ -2,7 +2,6 @@ import 'ol/ol.css';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
-import { defaults as defaultControls } from 'ol/control';
 import MousePosition from 'ol/control/MousePosition'
 import { createStringXY } from 'ol/coordinate';
 
