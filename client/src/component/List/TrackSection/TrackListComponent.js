@@ -96,6 +96,7 @@ function TrackListComponent() {
                 }
                 
             }else{
+                console.log(response.data.err)
                 message.error("항적을 불러오는데 실패하였습니다.")
             }
         })

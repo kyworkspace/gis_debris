@@ -108,12 +108,12 @@ router.post("/list",(req,res)=>{
         response.rows.forEach(item=>{
             obj.push(item)
         })
-        return res.status(200).json({success:true,obj})
+        res.status(200).json({success:true,obj})
     })
     .catch(err=>{
         return res.json({success:false,err})
     })
-    .then(()=>client.end())
+    //.then(()=>client.end())
     
 })
 

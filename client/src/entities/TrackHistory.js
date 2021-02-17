@@ -1,10 +1,8 @@
 import 'ol/ol.css';
-import {Map,View,Feature} from 'ol';
+import {Feature} from 'ol';
 import {Style,Fill,Stroke,Circle,Icon} from 'ol/style'
 import {Vector as VectorLayer} from 'ol/layer'
 import {Vector as VectorSource} from 'ol/source'
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
 import {MainMap,mapMove} from './CommonMethods'
 import {Point,LineString} from 'ol/geom'
 import $ from 'jquery'
@@ -204,8 +202,8 @@ const isCoord = function( str ) {
     //  2-3.4-16 가 맞지만 일단 루즈하게 허용 해 준다.
     let result = str.match(/(\d{1,3})(\.)(\d{1,16})/g);
     
-    if( result == null ) result =  false;
-    if( result.length % 2 == 0 ) {
+    if( result === null ) result =  false;
+    if( result.length % 2 === 0 ) {
         result = ( isValidPiece( 'la', result[0]) && isValidPiece( 'lo', result[1]) );
     }
     return result;
