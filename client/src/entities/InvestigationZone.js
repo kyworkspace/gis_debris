@@ -2,6 +2,7 @@ import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS'
 import { MAP_SERVER } from '../main/Access';
 import $ from 'jquery';
+import axios from 'axios';
 
 /*********************************
  * 조사사업 관련한 정보를 처리하는 곳

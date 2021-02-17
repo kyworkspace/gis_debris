@@ -6,6 +6,7 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import WindowSectionModal from '../component/Modal/WindowSection/WindowSectionModal';
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         <div>
           <Switch >
             <Route exact path="/" component={LeftNav}/>
-            {/* <Route exact path="/windowModal" component={WindowSectionModal}/> */}
+            <Route exact path="/MarineZoneDetail/:marineZoneId" component={WindowSectionModal}/>
           </Switch>
         </div>
     </Router>

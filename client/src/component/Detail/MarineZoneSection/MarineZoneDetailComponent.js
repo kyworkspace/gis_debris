@@ -1,8 +1,6 @@
 import { Card } from 'antd'
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
-import React from 'react'
-import WindowSectionModal from '../../Modal/WindowSection/WindowSectionModal';
-
+import React, { useState } from 'react'
 
 function MarineZoneDetailComponent(props) {
     const {item} = props;
@@ -55,7 +53,7 @@ function MarineZoneDetailComponent(props) {
             id: 5,
             title : "조사/수거 통합정보",
             detailFunction:(item)=>{
-                window.open("/windowModal","aa" ,"width=800,height=800,resizable=no")
+                window.open(`/MarineZoneDetail/${item.salareano}`,"aa" ,"width=800,height=800,resizable=no")
                 console.log("조사/수거 통합정보 상세",item)
             },
             moveToFunction:(item)=>{

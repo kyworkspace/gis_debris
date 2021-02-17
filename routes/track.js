@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {Client,Pool} = require("pg");
+const {Client} = require("pg");
 const config = require("../config/key");
 const client = new Client(config.DBAccess)
 
@@ -108,12 +108,12 @@ router.post("/list",(req,res)=>{
         response.rows.forEach(item=>{
             obj.push(item)
         })
-        res.status(200).json({success:true,obj})
+        return res.status(200).json({success:true,obj})
     })
     .catch(err=>{
         return res.json({success:false,err})
     })
-    //.then(()=>client.end())
+    // .then(()=>client.end())
     
 })
 

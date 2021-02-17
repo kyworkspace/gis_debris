@@ -40,3 +40,24 @@ export function getMarineZoneList(){
   })
     
 }
+
+export function getMarineZone(id){
+  return new Promise((resolve,reject)=>{
+      $.ajax({
+        url: MAP_SERVER,
+        dataType: 'json',
+        data : {
+          "service" : "WFS",
+          "request" : "GetFeature",
+          "version" : "1.3.0",
+          "typeName" : "REQM:small_trench_mapPolygon",
+          "outputFormat" : "application/json",
+          "CQL_FILTER" : `salareano = ${id}`
+        },
+        jsonpCallback: 'parseResponse'
+      }).then(response=>{
+        resolve(response)
+      })
+  })
+    
+}
