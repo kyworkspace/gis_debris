@@ -30,6 +30,7 @@ function UtilBox() {
 
             <div className="util_box">
                 <p className="util_tit">위도</p>
+                <p>wwww</p>
                 <p className="util_tit">경도</p>
             </div>
         </div>
