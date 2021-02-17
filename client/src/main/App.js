@@ -11,7 +11,7 @@ import WindowSectionModal from '../component/Modal/WindowSection/WindowSectionMo
 
 function App() {
 
-  
+
   return (
     <Router>
         <div>
@@ -21,7 +21,7 @@ function App() {
           </Switch>
         </div>
     </Router>
-      
+
   );
 }
 
