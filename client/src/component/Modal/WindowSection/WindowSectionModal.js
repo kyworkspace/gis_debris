@@ -7,6 +7,7 @@ import Text from 'antd/lib/typography/Text';
 import axios from 'axios';
 import Title from 'antd/lib/typography/Title';
 import ChartComponent from '../../Chart/ChartComponent';
+import ChartTableComponent from '../../Chart/ChartTableComponent';
 
 function WindowSectionModal(props) {
     
@@ -39,8 +40,6 @@ function WindowSectionModal(props) {
                 })
                 //항적 정보 가져옴
 
-
-
                 setLoading(false)
             }
         })
@@ -63,34 +62,9 @@ function WindowSectionModal(props) {
             <Row gutter={[16,16]}>
                 <Col lg={12} xs={24}>
                     <ChartComponent data={ChartDatas}/>
-                    <Descriptions
-                        title="Responsive Descriptions"
-                        bordered
-                        column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
-                        >
-                        <Descriptions.Item label="Product">Cloud Database</Descriptions.Item>
-                        <Descriptions.Item label="Billing">Prepaid</Descriptions.Item>
-                        <Descriptions.Item label="time">18:00:00</Descriptions.Item>
-                        <Descriptions.Item label="Amount">$80.00</Descriptions.Item>
-                        <Descriptions.Item label="Discount">$20.00</Descriptions.Item>
-                        <Descriptions.Item label="Official">$60.00</Descriptions.Item>
-                        <Descriptions.Item label="Config Info">
-                            Data disk type: MongoDB
-                            <br />
-                            Database version: 3.4
-                            <br />
-                            Package: dds.mongo.mid
-                            <br />
-                            Storage space: 10 GB
-                            <br />
-                            Replication factor: 3
-                            <br />
-                            Region: East China 1
-                        </Descriptions.Item>
-                    </Descriptions>
                 </Col>
                 <Col  lg={12} xs={24}>
-                데이터 부분
+                <ChartTableComponent data={ChartDatas}/>
                 </Col>
             </Row>
             
