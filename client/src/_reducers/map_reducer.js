@@ -4,7 +4,10 @@ import {
     LOAD_INV_LIST,
     VIEW_INIT,
     LOAD_MARINE_ZONE_LIST,
-    SELECT_VECTOR_LAYER
+    SELECT_VECTOR_LAYER,
+    ADD_MARINEZONE_LAYER,
+    ADD_AQUAFARM_LAYER,
+    ADD_TRACK_LAYER,
 } from '../_actions/types';
  
 

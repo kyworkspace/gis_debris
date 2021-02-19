@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { formatLat, formatLon, MainMap } from '../../../entities/CommonMethods'
+import { formatLat, formatLon } from '../../../entities/CommonMethods'
+import { MainMap } from '../../../entities/MapLayer'
 import "./UtilBox.css"
 import $ from 'jquery';
 import Clock from './Clock';

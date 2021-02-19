@@ -2,24 +2,22 @@ import React, { useEffect, useState } from 'react'
 import 'ol/ol.css';
 import { useDispatch } from "react-redux";
 import { InvestigationListInit, MarineZoneListInit } from '../../_actions/map_actions';
-import { MainMap as map } from '../../entities/CommonMethods';
+import { MainMap as map } from '../../entities/MapLayer';
 import { getInvestigationServiceList, getInvServiceLayer } from '../../entities/InvestigationZone'
 import { getMarineZoneList } from '../../entities/MarineZone';
-import { LoadLayer } from '../../entities/MapLayer';
+import { MainMap as Map } from '../../entities/MapLayer';
+import {LoadAquaFarmLayer,LoadMarineZoneLayer,LoadTrackLayer} from '../../entities/FeatureLayer'
+import LayerSelector from '../Navbar/Sections/LayerSelector';
 
 function MainMap() {
 
-  const [Center, setCenter] = useState(['126.929804', '37.526908']);
-  //const [Zoom, setZoom] = useState(1);
   const dispatch = useDispatch();
+  const [MapTargetSet, setMapTargetSet] = useState(false)
 
   useEffect(() => {
     map.setTarget("map");
-
     //레이어로드-양식장, 해구 return = map에 add된 레이어 리스트
-    const LayerList = LoadLayer();
-    console.log(LayerList)
-
+    
     //조사사업 정보 목록 호출
     getInvestigationServiceList().then(result => {
       dispatch(InvestigationListInit(result));
@@ -29,16 +27,15 @@ function MainMap() {
       dispatch(MarineZoneListInit(result));
     })
 
-
-
     map.addLayer(getInvServiceLayer());
-
+    setMapTargetSet(true);
   }, [])
 
-
-
   return (
+    <>
     <div id="map" style={{ width: "100%", height: "100vh" }}></div>
+      {MapTargetSet && <LayerSelector/>}
+    </>
   )
 }
 

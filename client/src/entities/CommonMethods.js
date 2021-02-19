@@ -1,26 +1,7 @@
 import 'ol/ol.css';
-import { Map, View } from 'ol';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
 import MousePosition from 'ol/control/MousePosition'
 import { createStringXY } from 'ol/coordinate';
-import XYZ from 'ol/source/XYZ';
-
-//지도에 들어가는 뷰
-export const view = new View({
-  projection: "EPSG:4326",
-  center: ['126.929804', '37.526908'], //최초 좌표
-  maxZoom: 19,
-  minZoom: 7,
-  zoom: 11
-})
-//VworldMap Base
-var VwolrdMap = new TileLayer({
-    source: new XYZ({
-    url: 'http://xdworld.vworld.kr:8080/2d/Base/202002/{z}/{x}/{y}.png'
-  })
-});
-
+import {view} from './MapLayer'
 
 //좌표 이동 함수
 export const mapMove = (coordinate) => {
@@ -35,25 +16,10 @@ export const mapMove = (coordinate) => {
 export const mousePositionControl = new MousePosition({
   coordinateFormat: createStringXY(4),
   projection: 'EPSG:4326',
-  // comment the following two lines to have the mouse position
-  // be placed within the map.
-  //target: document.getElementById('lonlati'),
   undefinedHTML: '&nbsp;',
 });
 
-//지도레이어
-export const MainMap = new Map({
-  // controls: defaultControls().extend([mousePositionControl]),
-  target: null,
-  layers: [
-    // new TileLayer({
-    //   source: new OSM()  //기본 레이어, 오픈레이어스에서 제공하는 지형정보를 가져온다.
-    // })
-    VwolrdMap
-  ],
-  
-  view: view
-});
+
 
 export const selectedMarineZone = undefined;
 //날짜 변환 메서드

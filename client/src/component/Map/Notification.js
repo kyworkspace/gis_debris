@@ -5,23 +5,32 @@ import { useState } from 'react';
 function Notification(props) {
     
   const [Layers, setLayers] = useState([]);
-  const {title,description,duration} = props;
+  const {title,description,duration,callButton,notificationKey} = props;
+  const [NotificationOpened, setNotificationOpened] = useState(false)
 
   const openNotification = () => {
     const args = {
       message: title ? title :'Notification Title',
       description:
         description ? description : 'Description Space',
-      duration: duration ? duration : 3,
+      duration: duration ? duration : 0,
       bottom : 30,
-      placement:"bottomRight"
+      placement:"bottomRight",
+      key : notificationKey ? notificationKey : 0
     };
-    notification.open(args);
+
+    if(NotificationOpened){
+      notification.close(notificationKey)
+      setNotificationOpened(false)
+    }else{
+      notification.open(args);
+      setNotificationOpened(true)
+    }
   };
     return (
-            <Affix style={{zIndex:1, position:'absolute', top:"90vh", right:'100px'}}>
+            <Affix style={{zIndex:1, position:'absolute', top:"10vh", right:'50px'}}>
                 <Button type="primary" onClick={() => openNotification()} shape="round">
-                알림창 만들고 싶을때
+                {callButton}
                 </Button>
             </Affix>
     )

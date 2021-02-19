@@ -71,6 +71,25 @@
 npm install --save react-chartjs-2 chart.js
 ```
 - chartjs 설치
-
+### 2021-02-18
 - VWorldMap 적용
 ![image](https://user-images.githubusercontent.com/45280952/108332420-1eb42680-7213-11eb-9468-6fa35478d21f.png)
+
+
+### 2021-02-19
+- 항적정보는 보여줄때 오른쪽에 notification으로 표출여부 컨트롤할 예정
+- 레이어 정보도 오른쪽 버튼으로 컨트롤할 예정
+
+- 레이어 정보를 notification에서 컨트롤 할수 있도록 수정
+- 레이어 정보를 redux에서 컨트롤 할려고 했는데, 굳이 그럴필요가 없어서 메뉴 실행시 정보를 가지고 오는 것으로 전환
+- 폴더 분류
+    1. Tile Map 관련 해서는 MapLayer.js에서 컨트롤
+    2. Feature 정보가 직접적으로 표현되는 레이어는 FeatureLayer에서 컨트롤
+
+- MainMap에 AddTarget 되기전에도 AddLayer가 가능하기 때문에 FeatureLayer 부분을 만들어서 레이어를 별도 추가해줌
+- AntDesign 쓰려고 했는데, 제대로 안되서 삽질을 얼마나 했는지 모르겠다...
+
+- 맵 타일 레이어 부분
+![image](https://user-images.githubusercontent.com/45280952/108494060-71acdd00-72ea-11eb-8198-2aedf3f90edb.png)
+- 객체레이어 부분
+![image](https://user-images.githubusercontent.com/45280952/108494115-82f5e980-72ea-11eb-9053-a24f472ab54d.png)

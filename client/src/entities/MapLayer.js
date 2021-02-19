@@ -1,58 +1,56 @@
 import 'ol/ol.css';
+import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
-import TileWMS from 'ol/source/TileWMS'
-import { message } from 'antd';
-
-import { MainMap } from './CommonMethods';
-import { MAP_SERVER } from '../main/Access';
-
-export function LoadLayer() {
-
-    //해구 레이어
-    message.warn("해구정보를 불러옵니다.")
-    let marineZoneLayer = new TileLayer({ //해구정보
-        source: new TileWMS({
-            url: MAP_SERVER,
-            params: {
-                'VERSION': '1.3.0',
-                'LAYERS': 'REQM:small_trench_mapPolygon',
-            },
-            crossOrigin: 'anonymous',
-        }),
-        visible: true,
-    })
-    message.success("해구정보를 성공적으로 불러왔습니다.")
+import XYZ from 'ol/source/XYZ';
+import { OSM } from 'ol/source';
+import {Select} from 'ol/interaction'
 
 
-    //양식장레이어
-    let todayDate = new Date();
-    let year = todayDate.getFullYear();
-    let month = todayDate.getMonth() + 1 < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1);
-    let day = todayDate.getDate() < 10 ? "0" + todayDate.getDate() : todayDate.getDate();
-    message.warn("양식장정보를 불러옵니다.")
-    let cineralZoneLayer = new TileLayer({ //양식장정보
-        source: new TileWMS({
-            url: MAP_SERVER,
-            params: {
-                'VERSION': '1.3.0',
-                'LAYERS': 'REQM:GOV_AQUQFARM',
-                'CQL_FILTER': "LICE_EDATE > '" + year + month + day + "'"
-            },
-            crossOrigin: 'anonymous',
-        }),
-        visible: true,
-    })
-    message.success("양식장정보를 성공적으로 불러왔습니다.")
+//지도에 들어가는 뷰
+export const view = new View({
+    projection: "EPSG:4326",
+    center: ['126.929804', '37.526908'], //최초 좌표
+    maxZoom: 19,
+    minZoom: 7,
+    zoom: 11
+  })
+  
 
-    //기상정보
+//VworldMap Base
+export const VWolrdBaseMap = new TileLayer({
+    source: new XYZ({
+    url: 'http://xdworld.vworld.kr:8080/2d/Base/202002/{z}/{x}/{y}.png'
+  }),
+  visible:true,
+  name : "VWorldBaseMap",
+  type : "TileLayer"
 
-    //풍량정보
+});
+export const VWolrdGrayMap = new TileLayer({
+    source: new XYZ({
+    url: 'http://xdworld.vworld.kr:8080/2d/gray/202002/{z}/{x}/{y}.png'
+}),
+    visible:false,
+    name : "VWorldGrayMap",
+    type : "TileLayer"
+});
+// OpenStreetMap
+export const OSMLayer = new TileLayer({
+    source: new OSM(),
+    visible:false,
+    name : "OSMLayer",
+    type : "TileLayer"
+});
 
-    //등등 넣을예정
+//지도레이어
+export const MainMap = new Map({
+    // controls: defaultControls().extend([mousePositionControl]),
+    target: null,
+    layers: [
+        VWolrdBaseMap,
+        VWolrdGrayMap,
+        OSMLayer
+    ],
+    view: view
+  });
 
-    MainMap.addLayer(marineZoneLayer);
-    MainMap.addLayer(cineralZoneLayer);
-    const LayerList = { marineZoneLayer, cineralZoneLayer }
-
-    return LayerList
-}

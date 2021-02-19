@@ -1,54 +1,27 @@
 import 'ol/ol.css';
 import {Feature} from 'ol';
-import {Style,Fill,Stroke,Circle,Icon} from 'ol/style'
-import {Vector as VectorLayer} from 'ol/layer'
-import {Vector as VectorSource} from 'ol/source'
-import {MainMap,mapMove} from './CommonMethods'
+import {Style,Stroke,Icon} from 'ol/style'
+import {MainMap} from './MapLayer'
+import {mapMove} from './CommonMethods'
 import {Point,LineString} from 'ol/geom'
 import $ from 'jquery'
 import trackImage from '../Images/track/trackingRecordedShip.png'
+import {trackSource} from './FeatureLayer'
 
-// 소스, 레이어
-let trackSource, trackLayer;
 // 포인트색
 const trackSearchDefaultPointColor = '#FA2020';
 // 라인색
 const trackSearchDefaultLineColor = '#2020FA';
 
-trackSource = new VectorSource({
-    crossOrigin: 'anonymous'
-  });
 
-  trackLayer = new VectorLayer({
-    source: trackSource,
-    crossOrigin: 'anonymous',
-    style : new Style({
-      fill : new Fill({
-        color: 'rgba( 255, 72, 101, 0.9 )',
-      }),
-      stroke: new Stroke({
-        color: 'rgba( 255, 72, 101, 0.9 )',
-        width: 2
-      }),
-      image: new Circle({
-        radius: 2,
-        fill: new Fill({
-          color: 'rgba( 255, 72, 101, 0.9 )'
-        })
-      })
-    }),
-  });
-
-  MainMap.addLayer(trackLayer);
 // 항적 삭제
-
-const trackingRecordOff = function () {
-    MainMap.removeLayer(trackLayer);
+// const trackingRecordOff = function () {
+//     MainMap.removeLayer(trackLayer);
   
-    trackSource.clear();
-    trackLayer = null;
-    trackSource = null;
-  };
+//     trackSource.clear();
+//     trackLayer = null;
+//     trackSource = null;
+//   };
 
 //화살표 포인트
 const record2ArrowPoint = function( coord, heading, color ) {

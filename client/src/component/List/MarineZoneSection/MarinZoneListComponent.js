@@ -3,7 +3,8 @@ import { Card, List, message, Typography, Input, Pagination } from 'antd';
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectVectorLayer } from '../../../_actions/map_actions'
-import { MainMap as map, selectedMarineZone } from '../../../entities/CommonMethods'
+import { selectedMarineZone } from '../../../entities/CommonMethods'
+import { MainMap as map } from '../../../entities/MapLayer'
 import { Vector as VectorLayer } from 'ol/layer'
 import { Polygon } from 'ol/geom';
 import { Feature } from 'ol';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, List, Typography, Input, Pagination, Checkbox } from 'antd';
 import { EnvironmentFilled } from '@ant-design/icons';
 import { useDispatch } from "react-redux";
-import { MainMap } from '../../../entities/CommonMethods';
+import { MainMap } from '../../../entities/MapLayer';
 const { Text } = Typography;
 const { Search } = Input;
 
