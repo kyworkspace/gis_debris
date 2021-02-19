@@ -71,6 +71,8 @@
 npm install --save react-chartjs-2 chart.js
 ```
 - chartjs 설치
+![image](https://user-images.githubusercontent.com/45280952/108494996-935a9400-72eb-11eb-8b8a-e046c6326d8f.png)
+
 ### 2021-02-18
 - VWorldMap 적용
 ![image](https://user-images.githubusercontent.com/45280952/108332420-1eb42680-7213-11eb-9468-6fa35478d21f.png)
