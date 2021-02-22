@@ -63,32 +63,53 @@ export const LoadAquaFarmLayer=()=>{
 export const trackSource = new VectorSource({
     crossOrigin: 'anonymous'
 });
-export const LoadTrackLayer = ()=>{
-    return new Promise((resolve,reject)=>{
-        const trackLayer = new VectorLayer({
-            source: trackSource,
-            crossOrigin: 'anonymous',
-            style : new Style({
-              fill : new Fill({
-                color: 'rgba( 255, 72, 101, 0.9 )',
-              }),
-              stroke: new Stroke({
-                color: 'rgba( 255, 72, 101, 0.9 )',
-                width: 2
-              }),
-              image: new Circle({
-                radius: 2,
-                fill: new Fill({
-                  color: 'rgba( 255, 72, 101, 0.9 )'
-                })
-              })
-            }),
-            type : "FeatureLayer",
-            name : "TrackLayer"
-          });
-        resolve(trackLayer);
-    })
-}
+export const trackLayer = new VectorLayer({
+    source: trackSource,
+    crossOrigin: 'anonymous',
+    style : new Style({
+      fill : new Fill({
+        color: 'rgba( 255, 72, 101, 0.9 )',
+      }),
+      stroke: new Stroke({
+        color: 'rgba( 255, 72, 101, 0.9 )',
+        width: 2
+      }),
+      image: new Circle({
+        radius: 2,
+        fill: new Fill({
+          color: 'rgba( 255, 72, 101, 0.9 )'
+        })
+      })
+    }),
+    type : "FeatureLayer",
+    name : "TrackLayer"
+  });
+// export const LoadTrackLayer = ()=>{
+//     return new Promise((resolve,reject)=>{
+//         const trackLayer = new VectorLayer({
+//             source: trackSource,
+//             crossOrigin: 'anonymous',
+//             style : new Style({
+//               fill : new Fill({
+//                 color: 'rgba( 255, 72, 101, 0.9 )',
+//               }),
+//               stroke: new Stroke({
+//                 color: 'rgba( 255, 72, 101, 0.9 )',
+//                 width: 2
+//               }),
+//               image: new Circle({
+//                 radius: 2,
+//                 fill: new Fill({
+//                   color: 'rgba( 255, 72, 101, 0.9 )'
+//                 })
+//               })
+//             }),
+//             type : "FeatureLayer",
+//             name : "TrackLayer"
+//           });
+//         resolve(trackLayer);
+//     })
+// }
 
 LoadMarineZoneLayer().then(response=>{
     Map.addLayer(response);
@@ -96,6 +117,7 @@ LoadMarineZoneLayer().then(response=>{
 LoadAquaFarmLayer().then(response=>{
     Map.addLayer(response);
 })
-LoadTrackLayer().then(response=>{
-    Map.addLayer(response);
-})
+// LoadTrackLayer().then(response=>{
+//     Map.addLayer(response);
+// })
+Map.addLayer(trackLayer)

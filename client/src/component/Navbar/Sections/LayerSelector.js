@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Notification from '../../Map/Notification'
+import Notification from '../../Notification/Notification'
 import { List, Tabs } from 'antd';
 import {MainMap} from '../../../entities/MapLayer'
 import OSMLayer from '../../../Images/mapLayer/OSMLayer.jpg'
@@ -10,8 +10,13 @@ import FeatureLayerList from './FeatureLayerList';
 
 const { TabPane } = Tabs;
 
-function LayerSelector(props) {
-
+function LayerSelector() {
+    // notification Style
+    const notificationStyle ={
+        top : "10vh",
+        right:'50px'
+    }
+    
     const LayerList = {
         VWorldBaseMap :{
             src : VWorldBaseMap,
@@ -26,13 +31,11 @@ function LayerSelector(props) {
             title : "OpenStreetMap 맵"
         },
     }
+    // 사용중입 맵 타일 레이어 정보 가져옴
     const DeployedMapTileLayers = MainMap.getLayers().getArray().filter(x=>x.getProperties().type ==="TileLayer")
-    
-    
+    // notification으로 넘겨줄 Description    
     const [Description, setDescription] = useState("");
     useEffect(() => {
-        
-
         const description =  (<Tabs defaultActiveKey="1">
                             <TabPane tab="지도 레이어" key="1">
                                 <List>
@@ -44,7 +47,6 @@ function LayerSelector(props) {
                             </TabPane>
                         </Tabs>)
         setDescription(description);
-        
     }, [])
 
     //레이어 바꾸는 함수
@@ -73,7 +75,7 @@ function LayerSelector(props) {
     const title = "레이어 선택"
     
     return (
-        <Notification title={title} description={Description} callButton="레이어 선택" notificationKey="LayerChoice"/>
+        <Notification title={title} description={Description} callButton="레이어 선택" notificationKey="LayerChoice" notificationStyle={notificationStyle}/>
     )
 }
 

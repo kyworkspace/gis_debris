@@ -3,11 +3,14 @@ import { SearchOutlined } from '@ant-design/icons';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {stringToDate,stringToTime} from '../../../../entities/CommonMethods';
-import { Button, DatePicker, Divider, message, Tooltip, Typography  } from 'antd';
+import { Button, DatePicker, Divider, message, Typography  } from 'antd';
 import { Descriptions } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react'
 import {parseShipHisRecords} from '../../../../entities/TrackHistory'
+import {useDispatch} from 'react-redux';
+import {AddTrackTargetToStore} from '../../../../_actions/map_actions'
+import { rerenderNotification } from '../../../Notification/Notification';
 
 const useRowStyles = makeStyles({
     root: {
@@ -19,7 +22,8 @@ const useRowStyles = makeStyles({
 const { RangePicker } = DatePicker;
 
 function TrackRows(props) {
-    
+    const dispatch = useDispatch();
+
     const { row } = props;
     const [startDate, setStartDate] = useState("");
     const [endDate, setendDate] = useState("")
@@ -31,31 +35,33 @@ function TrackRows(props) {
         setendDate(str[1]);
     }
     const onTrackDiplayHandler=(mmsi)=>{
-      if(startDate == ""){
+      if(startDate === ""){
         alert("항적조회 시작날짜를 선택해주십시오")
         return ;
       }
-      if(endDate == ""){
+      if(endDate === ""){
         alert("항적조회 종료날짜를 선택해주십시오")
         return ;
       }
 
-      console.log(mmsi)
       let body={
         mmsi : mmsi,
+        name : row.ship_ko_nm,
         startDate : startDate,
-        endDate : endDate
+        endDate : endDate,
+        visible : true
       }
 
       axios.post("/gis/track/track",body)
       .then(response=>{
-        console.log(response.data)
         if(response.data.success){
-          if(response.data.trackList.legnth==0){
+          if(response.data.trackList.length===0){
             message.info("조회된 항적이 없습니다.")
           }else{
-            console.log(response.data.trackList)
-            parseShipHisRecords(response.data.trackList)
+            parseShipHisRecords(response.data.trackList,mmsi)
+            //리덕스에 추가함
+            dispatch(AddTrackTargetToStore(body));
+            rerenderNotification("TrackChoice");
           }
         }else{
           message.error(response.data.err.hint)

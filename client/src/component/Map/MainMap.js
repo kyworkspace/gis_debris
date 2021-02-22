@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import 'ol/ol.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { InvestigationListInit, MarineZoneListInit } from '../../_actions/map_actions';
 import { MainMap as map } from '../../entities/MapLayer';
 import { getInvestigationServiceList, getInvServiceLayer } from '../../entities/InvestigationZone'
 import { getMarineZoneList } from '../../entities/MarineZone';
-import { MainMap as Map } from '../../entities/MapLayer';
-import {LoadAquaFarmLayer,LoadMarineZoneLayer,LoadTrackLayer} from '../../entities/FeatureLayer'
 import LayerSelector from '../Navbar/Sections/LayerSelector';
+import TrackSelector from '../Navbar/Sections/TrackSelector';
 
 function MainMap() {
 
   const dispatch = useDispatch();
   const [MapTargetSet, setMapTargetSet] = useState(false)
+
+  const mapReducer = useSelector(state => state.mapReducer);
+  const {selectedTrackTarget} = mapReducer;
+
 
   useEffect(() => {
     map.setTarget("map");
@@ -29,12 +32,15 @@ function MainMap() {
 
     map.addLayer(getInvServiceLayer());
     setMapTargetSet(true);
+
   }, [])
+
 
   return (
     <>
     <div id="map" style={{ width: "100%", height: "100vh" }}></div>
       {MapTargetSet && <LayerSelector/>}
+      {selectedTrackTarget && selectedTrackTarget.length>0 && <TrackSelector/>}
     </>
   )
 }

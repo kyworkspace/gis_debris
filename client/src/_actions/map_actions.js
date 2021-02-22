@@ -3,11 +3,11 @@ import { getMarineZoneLayer } from '../entities/MarineZone';
 import GeoJSON from 'ol/format/GeoJSON';
 import {
     LOAD_MARINE_ZONE,
-    LOAD_MAIN_MAP,
     LOAD_INV_LIST,
-    VIEW_INIT,
     LOAD_MARINE_ZONE_LIST,
     SELECT_VECTOR_LAYER,
+    ADD_TRACK_TARGET_TO_STORE,
+    SET_TRACK_VISIBILITY
 } from './types';
 
 export function LoadMarineZone(){
@@ -15,12 +15,6 @@ export function LoadMarineZone(){
     return {
         type: LOAD_MARINE_ZONE,
         payload: marineZoneLayer
-    }
-}
-export function MainMapInit(MainMap){
-    return {
-        type : LOAD_MAIN_MAP,
-        payload : MainMap
     }
 }
 export function InvestigationListInit(response){
@@ -71,17 +65,23 @@ export function MarineZoneListInit(response){
     }
 }
 
-export function ViewInit(view){
-    return {
-        type : VIEW_INIT,
-        payload : view,
-    }
-
-}
-
 export function setSelectVectorLayer(selectedVectorLayer){
     return {
         type : SELECT_VECTOR_LAYER,
         payload : selectedVectorLayer
+    }
+}
+
+export function AddTrackTargetToStore(Feature){
+    return {
+        type : ADD_TRACK_TARGET_TO_STORE,
+        payload : Feature
+    }
+}
+
+export function setTrackHistoryVisibility(mmsi){
+    return {
+        type : SET_TRACK_VISIBILITY,
+        payload : mmsi
     }
 }

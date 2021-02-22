@@ -2,9 +2,15 @@ import React from 'react'
 import { Affix, Button, notification } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+
+
+export const rerenderNotification=(key)=>{
+  notification.close(key);
+}
+
+
 function Notification(props) {
     
-  const [Layers, setLayers] = useState([]);
   const {title,description,duration,callButton,notificationKey} = props;
   const [NotificationOpened, setNotificationOpened] = useState(false)
 
@@ -28,7 +34,7 @@ function Notification(props) {
     }
   };
     return (
-            <Affix style={{zIndex:1, position:'absolute', top:"10vh", right:'50px'}}>
+            <Affix style={{zIndex:1, position:'absolute', top:props.notificationStyle.top, right:props.notificationStyle.right}}>
                 <Button type="primary" onClick={() => openNotification()} shape="round">
                 {callButton}
                 </Button>

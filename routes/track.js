@@ -59,7 +59,7 @@ router.post("/track",(req,res)=>{
         queryRes.rows.forEach(item=>{
             trackList.push(item)
         })
-        client.end();
+        // client.end();
         return res.status(200).json({success:true,trackList})
     })
     

@@ -95,3 +95,14 @@ npm install --save react-chartjs-2 chart.js
 ![image](https://user-images.githubusercontent.com/45280952/108494060-71acdd00-72ea-11eb-8198-2aedf3f90edb.png)
 - 객체레이어 부분
 ![image](https://user-images.githubusercontent.com/45280952/108494115-82f5e980-72ea-11eb-9053-a24f472ab54d.png)
+
+### 2021-02-22
+- 항적정보 표출 리스트를 notification으로 컨트롤 할수 있도록 해봄
+- 항적 정보 표시를 Notification & useSelector로 해보았다.
+    1. useSelector로 가져온 정보를 State에 담아서 쓰는거는 좀더 연습이 필요하다.
+    2. 타이밍상 렌더링이 되고 useEffect가 실행이 되어 리렌더링이 되는데 , dispatch는 콜백함수내에서 쓰지말라고 오류가 발생한다.
+    3. 라이브러리를 통해 쓰고 있는 notification은 DOM 아닌것 같아서 변경된 값을 가져와서 즉각적으로 적용하는게 힘들다. 나중에 시간이 되면 그냥 직접 만들던지, 새로운 걸 찾아봐야겠다.
+    ![image](https://user-images.githubusercontent.com/45280952/108696415-d95e6480-7544-11eb-84d0-f9c7a606af07.png)
+
+    ![image](https://user-images.githubusercontent.com/45280952/108696385-ce0b3900-7544-11eb-8fb6-631f1468b0da.png)
+
