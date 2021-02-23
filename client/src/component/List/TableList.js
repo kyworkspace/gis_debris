@@ -7,6 +7,7 @@ import MarinZoneListComponent from './MarineZoneSection/MarinZoneListComponent';
 import InvestigationListComponent from './InvestigationSection/InvestigationListComponent';
 import TrackListComponent from './TrackSection/TrackListComponent';
 import LayerListComponent from './LayerSection/LayerListComponent';
+import VideoListComponent from './CCTVSection/VideoListComponent';
 
 function TableList(props) {
     const [contentList, setcontentList] = useState([]); //표출할 리스트
@@ -28,8 +29,8 @@ function TableList(props) {
                 setcontentList(ListinReducer.marineZoneList);
                 setTitle("해구목록")
                 break;
-            case "trackList":
-                setTitle("항적정보 목록")
+            case "videoList":
+                setTitle("CCTV 목록")
                 break;
             case "LayerList":
                 setTitle("레이어 목록")
@@ -71,6 +72,7 @@ function TableList(props) {
             {type === "marineZoneList" && <MarinZoneListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
             {type === "invList" && <InvestigationListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
             {type === "trackList" && <TrackListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
+            {type === "videoList" && <VideoListComponent moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
             {type === "LayerList" && <LayerListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
         </React.Fragment>
     )

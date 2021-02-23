@@ -10,6 +10,7 @@ import { Polygon } from 'ol/geom';
 import { Feature } from 'ol';
 import { Vector } from 'ol/source'
 import { Style, Stroke, Fill } from 'ol/style'
+import ListSearchBar from '../SearchSection/ListSearchBar';
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -32,9 +33,9 @@ function MarinZoneListComponent(props) {
         setDisplayList(tmpList);
     }, [contentList])
 
-    const onSearchHandler = (e) => {
-        SearchList(e.currentTarget.value, 1)
-        setSearchTerm(e.currentTarget.value);
+    const onSearchHandler = (value) => {
+        SearchList(value, 1)
+        setSearchTerm(value);
     }
     const SearchList = (value, page) => {
         let newList = contentList.filter(x =>
@@ -105,17 +106,7 @@ function MarinZoneListComponent(props) {
 
     return (
         <React.Fragment>
-            <div
-                style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto', marginRight: 20 }}
-            >
-                <Search
-                    placeholder="년도, 사업명, 지역명..."
-                    style={{ width: 300 }}
-                    enterButton
-                    value={SearchTerm}
-                    onChange={onSearchHandler}
-                />
-            </div>
+            <ListSearchBar onInputChange={onSearchHandler}/>
             <hr />
             <List
                 dataSource={DisplayList}

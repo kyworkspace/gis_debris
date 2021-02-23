@@ -7,6 +7,9 @@ import {Style,Fill,Stroke,Circle,Icon} from 'ol/style'
 import {Vector as VectorLayer} from 'ol/layer'
 import {Vector as VectorSource} from 'ol/source'
 import { MainMap as Map } from './MapLayer';
+import {Feature} from 'ol';
+import {Point,LineString} from 'ol/geom'
+import videoPoint from '../Images/CCTV/CCTV_point.png'
 /*****************************
  * 객체가 표출되는 레이어를 처리하는 곳
  ****************************/
@@ -62,7 +65,7 @@ export const LoadAquaFarmLayer=()=>{
     })
 }
 
-// 소스, 레이어
+// 항적소스, 레이어
 export const trackSource = new VectorSource({
     crossOrigin: 'anonymous'
 });
@@ -87,32 +90,41 @@ export const trackLayer = new VectorLayer({
     type : "FeatureLayer",
     name : "TrackLayer"
   });
-// export const LoadTrackLayer = ()=>{
-//     return new Promise((resolve,reject)=>{
-//         const trackLayer = new VectorLayer({
-//             source: trackSource,
-//             crossOrigin: 'anonymous',
-//             style : new Style({
-//               fill : new Fill({
-//                 color: 'rgba( 255, 72, 101, 0.9 )',
-//               }),
-//               stroke: new Stroke({
-//                 color: 'rgba( 255, 72, 101, 0.9 )',
-//                 width: 2
-//               }),
-//               image: new Circle({
-//                 radius: 2,
-//                 fill: new Fill({
-//                   color: 'rgba( 255, 72, 101, 0.9 )'
-//                 })
-//               })
-//             }),
-//             type : "FeatureLayer",
-//             name : "TrackLayer"
-//           });
-//         resolve(trackLayer);
-//     })
-// }
+
+
+/**
+ * 비디오 feature
+ * 한개의 포인트로 돌려쓸 것이기 때문에
+ * 포인트가 이동할때 마다 AddFeature가 아닌 setCoordi 형태로 한다.
+ * **/
+export const videoFeature = new Feature({
+})
+var iconStyle  = new Style({
+    image: new Icon({
+        scale:0.1,
+        anchor: [0.5, 46],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        src: videoPoint,
+    }),
+  });
+videoFeature.setStyle(iconStyle)
+/****
+ * 비디오 벡터 소스
+ * ****/
+export const videoSource = new VectorSource({
+    crossOrigin: 'anonymous'
+});
+videoSource.addFeatures([videoFeature])
+/****
+ * 비디오 벡터 레이터
+ * ****/
+export const videoLayer = new VectorLayer({
+    source: videoSource,
+    crossOrigin: 'anonymous',
+    type : "FeatureLayer",
+    name : "VideoLayer"
+  });
 
 LoadMarineZoneLayer().then(response=>{
     Map.addLayer(response);
@@ -123,4 +135,5 @@ LoadAquaFarmLayer().then(response=>{
 // LoadTrackLayer().then(response=>{
 //     Map.addLayer(response);
 // })
-Map.addLayer(trackLayer)
+Map.addLayer(trackLayer);
+Map.addLayer(videoLayer);

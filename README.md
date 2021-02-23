@@ -119,3 +119,8 @@ npm install --save react-chartjs-2 chart.js
 - 검색 항적목록은 Redux에 저장
 - server쪽 Client connect 방식 변경
 - Axios로 불러오는 메서드는 CallbackMethod에서 일괄 처리 (=> 재활용성이 높은 메서드들)
+
+- VideoList 생성
+![image](https://user-images.githubusercontent.com/45280952/108811974-927a7880-75f1-11eb-8bf1-96901396b2e7.png)
+- material UI Card import 
+- 동영상 재생이 되는 기능 추가
