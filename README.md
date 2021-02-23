@@ -124,3 +124,5 @@ npm install --save react-chartjs-2 chart.js
 ![image](https://user-images.githubusercontent.com/45280952/108811974-927a7880-75f1-11eb-8bf1-96901396b2e7.png)
 - material UI Card import 
 - 동영상 재생이 되는 기능 추가
+![image](https://user-images.githubusercontent.com/45280952/108813376-3f55f500-75f4-11eb-8783-9c0bcca660ee.png)
+- 데이터를 어떻게 받아야 할지 정해지지 않음. VideoListComponent에서 임의의 데이터 생성
