@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const {Client} = require("pg");
+
 const config = require("../config/key");
-const client = new Client(config.DBAccess)
+// const {Client} = require("pg");
+// const client = new Client(config.DBAccess)
 
 
 // const pool = new Pool()
@@ -29,7 +30,7 @@ const client = new Client(config.DBAccess)
 //       })
 //   })
 
-client.connect().then(response=>{console.log("DB Connected!!")})
+// client.connect().then(response=>{console.log("DB Connected!!")})
 
 
 router.post("/ship",(req,res)=>{
@@ -45,6 +46,11 @@ router.post("/ship",(req,res)=>{
     })
 })
 router.post("/track",(req,res)=>{
+
+    const {Client} = require("pg");
+    const client = new Client(config.DBAccess)
+    client.connect();
+
     let {mmsi,startDate,endDate} = req.body
     let queryString=`select
                         *
@@ -59,7 +65,7 @@ router.post("/track",(req,res)=>{
         queryRes.rows.forEach(item=>{
             trackList.push(item)
         })
-        // client.end();
+        client.end();
         return res.status(200).json({success:true,trackList})
     })
     
@@ -67,6 +73,9 @@ router.post("/track",(req,res)=>{
 })
 
 router.post("/list",(req,res)=>{
+    const {Client} = require("pg");
+    const client = new Client(config.DBAccess)
+    client.connect()
 
     let {shipType,shipName,startDate,endDate} = req.body
     let queryString = `select
@@ -100,21 +109,25 @@ router.post("/list",(req,res)=>{
                         order by ms.ship_ko_nm
                         `
     client.query(queryString,(err,queryRes)=>{
-        
-    })
-    client.query(queryString)
-    .then(response=>{ 
         let obj= [];
-        response.rows.forEach(item=>{
+        queryRes.rows.forEach(item=>{
             obj.push(item)
         })
+        client.end()
         return res.status(200).json({success:true,obj})
     })
-    .catch(err=>{
-        return res.json({success:false,err})
-    })
+    // client.query(queryString)
+    // .then(response=>{ 
+    //     let obj= [];
+    //     response.rows.forEach(item=>{
+    //         obj.push(item)
+    //     })
+    //     return res.status(200).json({success:true,obj})
+    // })
+    // .catch(err=>{
+    //     return res.json({success:false,err})
+    // })
     // .then(()=>client.end())
-    
 })
 
 module.exports = router;

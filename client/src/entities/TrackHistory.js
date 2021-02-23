@@ -7,6 +7,9 @@ import {Point,LineString} from 'ol/geom'
 import $ from 'jquery'
 import trackImage from '../Images/track/trackingRecordedShip.png'
 import {trackLayer, trackSource} from './FeatureLayer'
+/***********************
+ * 항적정보를 처리하는 곳
+ ***********************/
 
 // 포인트색
 const trackSearchDefaultPointColor = '#FA2020';

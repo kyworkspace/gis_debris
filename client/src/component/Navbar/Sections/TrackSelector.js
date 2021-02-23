@@ -1,9 +1,11 @@
-import { Button, Checkbox, List } from 'antd'
+import { Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import Notification from '../../Notification/Notification'
-import TrackFeatureList from './TrackFeatureList'
 import { useDispatch, useSelector } from 'react-redux';
 import {setTrackHistoryVisibility} from '../../../_actions/map_actions'
+import TrackDisplayButton from './TrackDisplayButton';
+import { parseShipHisRecords, removeTrackHisRecord } from '../../../entities/TrackHistory';
+import { getTrackList } from '../../../entities/CallbackMethod';
 
 function TrackSelector(props) {
     const title ="항적선택"
@@ -11,39 +13,72 @@ function TrackSelector(props) {
         top : "15vh",
         right:'50px'
     }
-    // const {targetList} = props;
+    
+    const columns=[
+        {
+            title : "표출",
+            dataIndex : "input"
+        },
+        {
+            title : "MMSI",
+            dataIndex : "mmsi"
+        },
+        {
+            title : "선박명",
+            dataIndex : "name"
+        },
+        {
+            title : "시작 날짜",
+            dataIndex : "startDate"
+        },
+        {
+            title : "종료 날짜",
+            dataIndex : "endDate"
+        }
+    ]
+
+
     const dispatch = useDispatch();
     const mapReducer = useSelector(state => state.mapReducer);
     const {selectedTrackTarget} = mapReducer;
 
-    const deleteTrackSourceInStore=(mmsi)=>{
-        dispatch(setTrackHistoryVisibility(mmsi));
+    const setTrackVisibilityInStore=(params)=>{
+        dispatch(setTrackHistoryVisibility(params));
     }
-
-    const renderData = selectedTrackTarget.map((item,idx)=>(
-        <TrackFeatureList item={item} deleteTrack={deleteTrackSourceInStore} key={idx}/>
-    ))
-
-    const [Description, setDescription] = useState(<List> {renderData} </List>)
-    const [TrackList, setTrackList] = useState(selectedTrackTarget)
+    const [Description, setDescription] = useState("")
+    const [TrackList, setTrackList] = useState([])
     
+    const onTrackDisplay=(searchParam)=>{
+        if(searchParam.visible){
+            getTrackList(searchParam)
+            .then(response=>{
+                parseShipHisRecords(response.data.trackList,searchParam.mmsi)
+                setTrackVisibilityInStore(searchParam)
+            })
+        }else{
+            setTrackVisibilityInStore(searchParam)
+            removeTrackHisRecord(searchParam.mmsi)
+        }
+    }
+    //TrackList 조절하는 Effect
     useEffect(() => {
-        console.log("유즈이펙트")
-        setDescription(<List> {renderData} </List>)
+        let tmpList = selectedTrackTarget.map(item =>{
+            let obj = {
+                ...item,
+                input :<TrackDisplayButton info={item} onTrackDisplay={onTrackDisplay}/>
+            }
+            return obj;
+        })
+        setTrackList(tmpList)
     }, [selectedTrackTarget])
     
+    //TrackList가 바뀔때 Description을 바꿔줌
+    useEffect(() => {
+        setDescription(<Table columns={columns} dataSource={TrackList} scroll={{ y: 240 }}/>)
+    }, [TrackList])
 
     return (
-        // <Notification title={title} description={
-        //     <List>
-        //         {renderData}
-        //     </List>
-
-        // } callButton="항적 선택" notificationKey="TrackChoice" notificationStyle={notificationStyle}/>
-
-        <Notification title={title} description={
-            Description
-        } callButton="항적 선택" notificationKey="TrackChoice" notificationStyle={notificationStyle}/>
+        <Notification title={title} description={ Description } callButton="항적 선택" notificationKey="TrackChoice" notificationStyle={notificationStyle}/>
     )
 }
 

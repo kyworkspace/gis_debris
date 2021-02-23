@@ -28,6 +28,11 @@
 - MapMove : 맵 이동
 - get~Layer : 레이어 가져오기
 - ~Display : 해당 위치로 이동 및 레이어 표출
+
+### CallbackMethod.js
+- select~List : 목록 가져오기
+- get~Detail : 단일 상세정보 가져오기
+- get~Count : 갯수 가져오기
 ### Investigation List
 ![image](https://user-images.githubusercontent.com/45280952/107192938-9a52ee00-6a31-11eb-83f6-a2901b3a97f3.png)
 
@@ -106,4 +111,11 @@ npm install --save react-chartjs-2 chart.js
 
     ![2](https://user-images.githubusercontent.com/45280952/108696596-1cb8d300-7545-11eb-9299-86cd79bf02ab.png)
 
+### 2021-02-23
+- 항적정보 notification 디자인 적용
+- Switch 버튼으로 검색 한 항적 on/Off 기능 적용
+![1](https://user-images.githubusercontent.com/45280952/108799564-f4c48080-75d3-11eb-8d7b-1a61075c1a53.png)
 
+- 검색 항적목록은 Redux에 저장
+- server쪽 Client connect 방식 변경
+- Axios로 불러오는 메서드는 CallbackMethod에서 일괄 처리 (=> 재활용성이 높은 메서드들)

@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const {Client} = require("pg");
+
 const config = require("../config/key");
-const client = new Client(config.DBAccess)
-client.connect().then(response=>{console.log("DB ENG Connected!!")})
+
 
 router.post("/getInvAndColDataInMarinezone",(req,res)=>{
+    const {Client} = require("pg");
+    const client = new Client(config.DBAccess);
+    client.connect();
+
+
     let {marinezoneId}=req.body;
     let queryString=`
     select
@@ -38,7 +42,7 @@ router.post("/getInvAndColDataInMarinezone",(req,res)=>{
         queryRes.rows.forEach(item=>{
             objList.push(item)
         })
-        // client.end();
+        client.end();
         return res.status(200).json({success:true,objList})
     })
     

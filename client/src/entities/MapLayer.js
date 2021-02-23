@@ -5,7 +5,9 @@ import XYZ from 'ol/source/XYZ';
 import { OSM } from 'ol/source';
 import {Select} from 'ol/interaction'
 
-
+/*****************************
+ * 맵 및 맵 타일 레이어를 처리하는 곳
+ ****************************/
 //지도에 들어가는 뷰
 export const view = new View({
     projection: "EPSG:4326",

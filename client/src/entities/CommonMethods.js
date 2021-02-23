@@ -3,6 +3,11 @@ import MousePosition from 'ol/control/MousePosition'
 import { createStringXY } from 'ol/coordinate';
 import {view} from './MapLayer'
 
+/************************************
+ * 공통적으로 쓰이는 함수를 처리하는 곳
+ * **********************************/
+
+
 //좌표 이동 함수
 export const mapMove = (coordinate) => {
   view.animate({

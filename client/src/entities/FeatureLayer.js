@@ -7,6 +7,9 @@ import {Style,Fill,Stroke,Circle,Icon} from 'ol/style'
 import {Vector as VectorLayer} from 'ol/layer'
 import {Vector as VectorSource} from 'ol/source'
 import { MainMap as Map } from './MapLayer';
+/*****************************
+ * 객체가 표출되는 레이어를 처리하는 곳
+ ****************************/
 
 export const LoadMarineZoneLayer=()=>{
     message.warn("해구정보를 불러옵니다.")

@@ -73,15 +73,16 @@ export function setSelectVectorLayer(selectedVectorLayer){
 }
 
 export function AddTrackTargetToStore(Feature){
+    Feature.key = Feature.mmsi;
     return {
         type : ADD_TRACK_TARGET_TO_STORE,
         payload : Feature
     }
 }
 
-export function setTrackHistoryVisibility(mmsi){
+export function setTrackHistoryVisibility(params){
     return {
         type : SET_TRACK_VISIBILITY,
-        payload : mmsi
+        payload : params
     }
 }

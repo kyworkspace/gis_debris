@@ -5,12 +5,12 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {stringToDate,stringToTime} from '../../../../entities/CommonMethods';
 import { Button, DatePicker, Divider, message, Typography  } from 'antd';
 import { Descriptions } from 'antd';
-import axios from 'axios';
 import React, { useState } from 'react'
 import {parseShipHisRecords} from '../../../../entities/TrackHistory'
 import {useDispatch} from 'react-redux';
 import {AddTrackTargetToStore} from '../../../../_actions/map_actions'
 import { rerenderNotification } from '../../../Notification/Notification';
+import { getTrackList } from '../../../../entities/CallbackMethod';
 
 const useRowStyles = makeStyles({
     root: {
@@ -51,9 +51,7 @@ function TrackRows(props) {
         endDate : endDate,
         visible : true
       }
-
-      axios.post("/gis/track/track",body)
-      .then(response=>{
+      getTrackList(body).then(response=>{
         if(response.data.success){
           if(response.data.trackList.length===0){
             message.info("조회된 항적이 없습니다.")
@@ -67,7 +65,6 @@ function TrackRows(props) {
           message.error(response.data.err.hint)
         }
       })
-      
   }
 
     

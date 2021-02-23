@@ -48,17 +48,12 @@ export default function(state={},action){
             let VisibleList=[];
             //기존에 저장된거 있으면 그거 스프레드로 이어붙일거임
             if(state.selectedTrackTarget){
-                //같은거 검색했는지 찾고 있으면 삭제
-                let removeIdx = -1;
+                //같은거 검색했는지 찾고 있으면 visible false
                 state.selectedTrackTarget.map((item,idx)=>{
-                    if(item.mmsi === action.payload){
-                        removeIdx = idx;
+                    if(item.mmsi === action.payload.mmsi){
+                        item.visible = action.payload.visible
                     }
                 })
-                //삭제
-                if(removeIdx >-1){
-                    state.selectedTrackTarget.splice(removeIdx,1);
-                }
                 VisibleList = [
                     ...state.selectedTrackTarget
                 ]
