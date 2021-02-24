@@ -6,6 +6,7 @@ import axios from "axios";
  * 명명 법
  * 
  * select~List : 목록 가져오기
+ * get~ : 단일 정보 가져오기
  * get~Detail : 단일 상세정보 가져오기
  * get~List : 단일 상세 정보 목록 가져오기
  * get~Count : 갯수 가져오기
@@ -48,6 +49,26 @@ export const getTrackList=(body)=>{
 export const selectTrackList=(body)=>{
     return new Promise((resolve,reject)=>{
         axios.post("/gis/track/list",body)        
+        .then(response=>{
+            resolve(response)
+        })
+    })
+}
+
+export const getCollectionService=(seq_no)=>{
+
+}
+
+/**
+ * 수거사업 목록 가져오기
+ * @param OBJECT
+ * @param year
+ * @param city
+ * @param region
+ * **/
+export const selectCollectionServiceList=(body)=>{
+    return new Promise((resolve,reject)=>{
+        axios.post("/gis/eng/colList",body)
         .then(response=>{
             resolve(response)
         })

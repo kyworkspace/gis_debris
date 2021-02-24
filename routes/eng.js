@@ -10,7 +10,6 @@ router.post("/getInvAndColDataInMarinezone",(req,res)=>{
     const client = new Client(config.DBAccess);
     client.connect();
 
-
     let {marinezoneId}=req.body;
     let queryString=`
     select
@@ -47,6 +46,40 @@ router.post("/getInvAndColDataInMarinezone",(req,res)=>{
     })
     
     
+})
+
+router.post("/colList",(req,res)=>{
+    const {Client} = require("pg");
+    const client = new Client(config.DBAccess);
+    client.connect();
+    
+    let {city,region,year}=req.body;
+    let queryString=`
+        select 
+        (row_number () over()) as row ,
+        *
+         from tb_odm_col_ser2
+        where 1=1
+    `
+    if(year){
+        queryString += `col_year = ${year}`
+    }
+    if(region){
+        queryString += `col_region = ${region}`
+    }
+    if(city){
+        queryString += `col_city = ${city}`
+    }
+
+    client.query(queryString,(err,queryRes)=>{
+        if(err) return res.json({success:false,err})
+        let objList= [];
+        queryRes.rows.forEach(item=>{
+            objList.push(item)
+        })
+        client.end();
+        return res.status(200).json({success:true,objList})
+    })
 })
 
 

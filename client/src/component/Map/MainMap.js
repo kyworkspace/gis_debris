@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import 'ol/ol.css';
 import { useDispatch, useSelector } from "react-redux";
-import { InvestigationListInit, MarineZoneListInit } from '../../_actions/map_actions';
+import { InvestigationListInit, MarineZoneListInit,CollectionListInit } from '../../_actions/map_actions';
 import { MainMap as map } from '../../entities/MapLayer';
 import { InvService} from '../../entities/InvestigationZone'
 import { getMarineZoneList } from '../../entities/MarineZone';
 import LayerSelector from '../Navbar/Sections/LayerSelector';
 import TrackSelector from '../Navbar/Sections/TrackSelector';
+import {selectCollectionServiceList} from '../../entities/CallbackMethod'
+import { message } from 'antd';
 
 function MainMap() {
 
@@ -28,6 +30,14 @@ function MainMap() {
     //해구정보 목록 호출
     getMarineZoneList().then(result => {
       dispatch(MarineZoneListInit(result));
+    })
+    selectCollectionServiceList().then(response=>{
+      if(response.data.success){
+        dispatch(CollectionListInit(response.data.objList))
+      }else{
+        message.error(response.data.err.hint)
+      }
+      
     })
     map.addLayer(InvService.getInvServiceLayer())
     setMapTargetSet(true);

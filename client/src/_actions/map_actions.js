@@ -4,6 +4,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import {
     LOAD_MARINE_ZONE,
     LOAD_INV_LIST,
+    LOAD_COL_LIST,
     LOAD_MARINE_ZONE_LIST,
     SELECT_VECTOR_LAYER,
     ADD_TRACK_TARGET_TO_STORE,
@@ -45,6 +46,19 @@ export function InvestigationListInit(response){
         payload : invListConvert
     }
 }
+export function CollectionListInit(response){
+    let colListConvert = response.map(item=>{
+        let obj = {
+            ...item,
+            seq : parseInt(item.row)
+        }
+        return obj;
+    })
+    return {
+        type : LOAD_COL_LIST,
+        payload : colListConvert
+    }
+}
 export function MarineZoneListInit(response){
     let parser = new GeoJSON();
     let marineZoneList = parser.readFeatures(response);
@@ -64,6 +78,7 @@ export function MarineZoneListInit(response){
         payload : marineZoneListConvert
     }
 }
+
 
 export function setSelectVectorLayer(selectedVectorLayer){
     return {

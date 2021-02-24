@@ -10,22 +10,34 @@ import LayerListComponent from './LayerSection/LayerListComponent';
 import VideoListComponent from './CCTVSection/VideoListComponent';
 import { DeleteOutlined } from '@ant-design/icons';
 import { trackSource, videoSource } from '../../entities/FeatureLayer';
+import CollectionListComponent from './CollectionSection/CollectionListComponent';
+import { selectCollectionServiceList } from '../../entities/CallbackMethod';
 
 function TableList(props) {
     const [contentList, setcontentList] = useState([]); //표출할 리스트
     const [Title, setTitle] = useState("");
     const ListinReducer = useSelector(state => state.mapReducer); //리듀서에서 가져온 항목
     const [Loading, setLoading] = useState(true);
-    const type = props.type;
 
-    useEffect(() => { //타입이 바뀌면 contentList에 값을 바꿔 넣음
-        setLoading(true) //로딩을 시작함, 로딩이 없으면 render을 useEffect 전에 해버려서 오류가 남
+    const type = props.type;
+    useEffect(() => {
+        //타입이 바뀌면 로딩시작
+        console.log('TYPE 바뀜')
+        setLoading(true)
+    }, [type])
+    useEffect(() => { 
         switch (type) {
             case "invList":
                 if (ListinReducer.invList === undefined)
                     return;
                 setcontentList(ListinReducer.invList);
                 setTitle("조사사업 목록")
+                break;
+            case "colList":
+                if (ListinReducer.colList === undefined)
+                    return;
+                setcontentList(ListinReducer.colList);
+                setTitle("수거사업 목록")
                 break;
             case "marineZoneList":
                 if (ListinReducer.marineZoneList === undefined)
@@ -48,10 +60,10 @@ function TableList(props) {
             default:
                 break;
         }
-        
-    }, [ListinReducer,type])
+    }, [Loading])
 
     useEffect(() => {
+        console.log("로딩그만")
         //위의 useEffect가 작업이 끝나면 contentList가 바뀌는데, 이를 감지해서 Loading을 false로 바꿔줌
         setLoading(false)
     }, [contentList])
@@ -95,6 +107,8 @@ function TableList(props) {
         }
     }
     const renderList = ()=>{
+        if(!contentList) return;
+        console.log(contentList)
         switch (type) {
             case 'trackList':
                 return "trackList" && <TrackListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
@@ -102,6 +116,8 @@ function TableList(props) {
                 return <MarinZoneListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
             case 'invList':
                 return <InvestigationListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+            case 'colList':
+                return <CollectionListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
             case 'videoList':
                 return "videoList" && <VideoListComponent moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
             case 'LayerList' :

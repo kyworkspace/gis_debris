@@ -3,35 +3,6 @@ const router = express.Router();
 
 
 const config = require("../config/key");
-// const {Client} = require("pg");
-// const client = new Client(config.DBAccess)
-
-
-// const pool = new Pool()
-
-// // the pool with emit an error on behalf of any idle clients
-// // it contains if a backend error or network partition happens
-// pool.on('error', (err, client) => {
-//   console.error('Unexpected error on idle client', err) // your callback here
-//   process.exit(-1)
-// })
-
-// // promise - checkout a client
-// pool.connect()
-//   .then(client => {
-//     return client.query('SELECT * FROM users WHERE id = $1', [1]) // your query string here
-//       .then(res => {
-//         client.release()
-//         console.log(res.rows[0]) // your callback here
-//       })
-//       .catch(e => {
-//         client.release()
-//         console.log(err.stack) // your callback here
-//       })
-//   })
-
-// client.connect().then(response=>{console.log("DB Connected!!")})
-
 
 router.post("/ship",(req,res)=>{
     client.query("select now()",(err,queryRes)=>{

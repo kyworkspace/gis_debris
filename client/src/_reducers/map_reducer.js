@@ -1,6 +1,7 @@
 import {
     LOAD_MARINE_ZONE,
     LOAD_INV_LIST,
+    LOAD_COL_LIST,
     LOAD_MARINE_ZONE_LIST,
     SELECT_VECTOR_LAYER,
     ADD_TRACK_TARGET_TO_STORE,
@@ -14,6 +15,8 @@ export default function(state={},action){
             return {...state, marineZoneLayer: action.payload }
         case LOAD_INV_LIST:
             return {...state, invList: action.payload}
+        case LOAD_COL_LIST : 
+            return {...state, colList : action.payload}
         case LOAD_MARINE_ZONE_LIST:
             return {...state, marineZoneList : action.payload}
         case SELECT_VECTOR_LAYER:
