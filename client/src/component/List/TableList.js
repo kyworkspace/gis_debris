@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { message, PageHeader } from 'antd';
+import { Button, message, PageHeader } from 'antd';
 import { useSelector } from 'react-redux';
 import { mapMove } from '../../entities/CommonMethods';
-import { invServiceDisplay } from '../../entities/InvestigationZone';
-import MarinZoneListComponent from './MarineZoneSection/MarinZoneListComponent';
+import { InvService } from '../../entities/InvestigationZone';
+import MarinZoneListComponent, { SelectedMarineZoneSource } from './MarineZoneSection/MarinZoneListComponent';
 import InvestigationListComponent from './InvestigationSection/InvestigationListComponent';
 import TrackListComponent from './TrackSection/TrackListComponent';
 import LayerListComponent from './LayerSection/LayerListComponent';
 import VideoListComponent from './CCTVSection/VideoListComponent';
+import { DeleteOutlined } from '@ant-design/icons';
+import { trackSource, videoSource } from '../../entities/FeatureLayer';
 
 function TableList(props) {
     const [contentList, setcontentList] = useState([]); //표출할 리스트
     const [Title, setTitle] = useState("");
     const ListinReducer = useSelector(state => state.mapReducer); //리듀서에서 가져온 항목
+    const [Loading, setLoading] = useState(true);
     const type = props.type;
 
-    useEffect(() => {
+    useEffect(() => { //타입이 바뀌면 contentList에 값을 바꿔 넣음
+        setLoading(true) //로딩을 시작함, 로딩이 없으면 render을 useEffect 전에 해버려서 오류가 남
         switch (type) {
             case "invList":
                 if (ListinReducer.invList === undefined)
@@ -29,17 +33,28 @@ function TableList(props) {
                 setcontentList(ListinReducer.marineZoneList);
                 setTitle("해구목록")
                 break;
+            case "trackList":
+                setcontentList([]);
+                setTitle("항적 조회")
+                break;
             case "videoList":
+                setcontentList([]);
                 setTitle("CCTV 목록")
                 break;
             case "LayerList":
+                setcontentList([]);
                 setTitle("레이어 목록")
                 break;
             default:
                 break;
         }
+        
+    }, [ListinReducer,type])
 
-    }, [ListinReducer])
+    useEffect(() => {
+        //위의 useEffect가 작업이 끝나면 contentList가 바뀌는데, 이를 감지해서 Loading을 false로 바꿔줌
+        setLoading(false)
+    }, [contentList])
 
     const onViewDetail = (item) => {
         props.detailDisplay(item)
@@ -54,9 +69,43 @@ function TableList(props) {
         }
         switch (type) {
             case "invList":
-                invServiceDisplay(item.seq);
+                InvService.invServiceDisplay(item.seq)
                 break;
 
+            default:
+                break;
+        }
+    }
+    const onClearLayer=(type)=>{
+        switch (type) {
+            case 'trackList':
+                trackSource.clear()
+                break;
+            case 'marineZoneList':
+                SelectedMarineZoneSource.clear()
+                break;
+            case 'invList':
+                InvService.invServiceDisplay('none');
+                break;
+            case 'videoList':
+                videoSource.clear()
+                break;
+            default:
+                break;
+        }
+    }
+    const renderList = ()=>{
+        switch (type) {
+            case 'trackList':
+                return "trackList" && <TrackListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+            case 'marineZoneList':
+                return <MarinZoneListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+            case 'invList':
+                return <InvestigationListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+            case 'videoList':
+                return "videoList" && <VideoListComponent moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+            case 'LayerList' :
+                return <LayerListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
             default:
                 break;
         }
@@ -67,13 +116,20 @@ function TableList(props) {
             <PageHeader
                 className="site-page-header"
                 onBack={() => props.listHide()}
-                title={Title}
+                title={[Title,<Button type="primary" shape="round" onClick={()=>onClearLayer(type)}><DeleteOutlined /></Button>]}
             />
-            {type === "marineZoneList" && <MarinZoneListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
+            {!Loading
+                ?
+                renderList()
+                :
+                <div>로딩중</div>
+                
+            }
+            {/* {type === "marineZoneList" && <MarinZoneListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
             {type === "invList" && <InvestigationListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
             {type === "trackList" && <TrackListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
             {type === "videoList" && <VideoListComponent moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
-            {type === "LayerList" && <LayerListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />}
+            {type === "LayerList" && <LayerListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />} */}
         </React.Fragment>
     )
 }

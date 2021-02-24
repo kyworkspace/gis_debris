@@ -109,10 +109,6 @@ function TrackListComponent() {
       setPage(0);
     };
 
-    const onTrackDeployHandler=(mmsi)=>{
-        console.log(mmsi)
-    }
-
     return (
         <div style={{maxWidth:"500px"}}>
             <TrackSearch searchHandler={searchTrackList}/>

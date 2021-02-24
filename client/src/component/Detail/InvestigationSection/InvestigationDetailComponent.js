@@ -19,6 +19,7 @@ function InvestigationDetailComponent(props) {
 
     const classes = useStyles();
     const coordinateAllDisplay = (coordinate) =>{
+        if(!coordinate) return false;
         let coordinateArr = coordinate.split(",")
         let component = coordinateArr.map(item=>(
                          <div>{item}</div>

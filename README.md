@@ -126,3 +126,8 @@ npm install --save react-chartjs-2 chart.js
 - 동영상 재생이 되는 기능 추가
 ![image](https://user-images.githubusercontent.com/45280952/108813376-3f55f500-75f4-11eb-8783-9c0bcca660ee.png)
 - 데이터를 어떻게 받아야 할지 정해지지 않음. VideoListComponent에서 임의의 데이터 생성
+
+### 2021-02-24
+- 사이드 메뉴 뒤로가기, 메뉴간 이동시 메뉴 폴딩 처리
+- 각 객체 레이어에서 보이는 피쳐를 삭제하는 기능 추가(각 메뉴 리스트 타이틀 옆의 휴지통)
+- 조사사업 메서드 클래스화

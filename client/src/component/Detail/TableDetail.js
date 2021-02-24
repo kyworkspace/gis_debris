@@ -27,7 +27,7 @@ function TableDetail(props) {
         <div>
             <PageHeader
                 className="site-page-header"
-                onBack={() => props.listHide(false)}
+                onBack={() => props.listHide()}
                 title={Title}
             />
             <hr/>

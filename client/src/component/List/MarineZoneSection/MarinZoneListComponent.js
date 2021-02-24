@@ -15,6 +15,8 @@ import ListSearchBar from '../SearchSection/ListSearchBar';
 const { Text } = Typography;
 const { Search } = Input;
 
+export const SelectedMarineZoneSource = new Vector();
+
 function MarinZoneListComponent(props) {
 
     const { contentList } = props;
@@ -80,11 +82,11 @@ function MarinZoneListComponent(props) {
         })
         var polygon = new Polygon([array]);
         var feature = new Feature(polygon);
-        var vectorSource = new Vector();
-        vectorSource.addFeature(feature);
+        // var vectorSource = new Vector();
+        SelectedMarineZoneSource.addFeature(feature);
         selectedVectorLayer = new VectorLayer({
             name: "SelectedVectorLayer",
-            source: vectorSource
+            source: SelectedMarineZoneSource
         });
         map.addLayer(selectedVectorLayer)
         var selectedStyle = new Style({
@@ -98,8 +100,7 @@ function MarinZoneListComponent(props) {
             })
         });
         selectedVectorLayer.setStyle(selectedStyle);
-        console.log(selectedVectorLayer)
-        dispatch(setSelectVectorLayer(selectedVectorLayer))
+        //dispatch(setSelectVectorLayer(selectedVectorLayer))
     }
 
 
