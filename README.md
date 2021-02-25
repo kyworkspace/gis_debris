@@ -167,3 +167,5 @@ app.use('/uploads', express.static('uploads'));
   display: none;
 }
 ```
+
+- useMemo를 사용하여 TableList 코드 수정
