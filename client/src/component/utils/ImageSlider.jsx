@@ -6,7 +6,6 @@ function ImageSlider(props) {
     const [Images, setImages] = useState([])
     const [Loading, setLoading] = useState(true);
     useEffect(() => {
-        console.log(props.detail);
         if(props.detail && props.detail.length > 0){ //등록된 이미지가 있는 경우
             let images=[];
             props.detail.map(item=>{

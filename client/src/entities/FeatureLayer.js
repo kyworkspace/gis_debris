@@ -1,7 +1,6 @@
 import 'ol/ol.css';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS'
-import { message } from 'antd';
 import { MAP_SERVER } from '../main/Access';
 import {Style,Fill,Stroke,Circle,Icon} from 'ol/style'
 import {Vector as VectorLayer} from 'ol/layer'
@@ -15,7 +14,6 @@ import videoPoint from '../Images/CCTV/CCTV_point.png'
  ****************************/
 
 export const LoadMarineZoneLayer=()=>{
-    message.warn("해구정보를 불러옵니다.")
     return new Promise((resolve,reject)=>{
         //해구 레이어
         let marineZoneLayer = new TileLayer({ //해구정보
@@ -31,8 +29,6 @@ export const LoadMarineZoneLayer=()=>{
             type : "FeatureLayer",
             name : "MarineZoneLayer"
         })
-        message.success("해구정보를 성공적으로 불러왔습니다.")
-
         resolve(marineZoneLayer);
     })
 }
@@ -44,7 +40,6 @@ export const LoadAquaFarmLayer=()=>{
     let month = todayDate.getMonth() + 1 < 10 ? "0" + (todayDate.getMonth() + 1) : (todayDate.getMonth() + 1);
     let day = todayDate.getDate() < 10 ? "0" + todayDate.getDate() : todayDate.getDate();
 
-    message.warn("양식장정보를 불러옵니다.")
     return new Promise((resolve,reject)=>{
         let cineralZoneLayer = new TileLayer({ //양식장정보
             source: new TileWMS({
@@ -60,7 +55,6 @@ export const LoadAquaFarmLayer=()=>{
             type : "FeatureLayer",
             name : "AquaFarmLayer"
         })
-        message.success("양식장정보를 성공적으로 불러왔습니다.")
         resolve(cineralZoneLayer);
     })
 }
