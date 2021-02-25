@@ -61,10 +61,10 @@ function LeftNav() {
         
         </Sider>
         {
-            GridDisplay && <div style={{minWidth:"400px", maxHeight:"100vh", overflowY:"auto"}}><TableList type={Type} detailDisplay={onDetailMenu} listHide={setGridDisplay}/></div>
+            GridDisplay && <div style={{minWidth:"420px", maxHeight:"100vh", overflowY:"auto"}}><TableList type={Type} detailDisplay={onDetailMenu} listHide={setGridDisplay}/></div>
         }
         {
-            DetailDisplay && <div style={{minWidth:"400px", maxHeight:"100vh", overflowY:"auto"}}><TableDetail type={Type} detailItem={DetailItem} listHide={onDetailSectionHide}/></div>
+            DetailDisplay && <div className="TableDetailPage" style={{minWidth:"420px",maxWidth:"400px", maxHeight:"100vh", overflowY:'auto'}}><TableDetail type={Type} detailItem={DetailItem} listHide={onDetailSectionHide}/></div>
         }
         <Layout className="site-layout">
             <Site/>

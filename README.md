@@ -7,14 +7,21 @@
     - DB : Postgres
     - MapServer : geoserver
 2. 설치한 외부 라이브러리
+    - package.json에서 확인 후 npm install 할 것
+    - server 부분, client 부분으로 나뉘어져 있음
 ```
     npm install ol --save
     npm install antd --save
     npm install --save @ant-design/icons
-    npm install jquery
+    npm install jquery --save
+    npm install multer --save
+    npm install react-dropzone --save
+    npm install react-image-gallery --save
+    npm install react-dom --save
+    npm install react-redux --save
+    ...
     or
     yarn add ...
-
 ```
 ## FIRST INIT
 - component에 사용할 컴포넌트 생성예정
@@ -31,6 +38,8 @@
 
 ### CallbackMethod.js
 - select~List : 목록 가져오기
+- edit~ : 수정
+- delete : 삭제
 - get~Detail : 단일 상세정보 가져오기
 - get~Count : 갯수 가져오기
 ### Investigation List
@@ -132,3 +141,29 @@ npm install --save react-chartjs-2 chart.js
 - 각 객체 레이어에서 보이는 피쳐를 삭제하는 기능 추가(각 메뉴 리스트 타이틀 옆의 휴지통)
 - 조사사업 메서드 클래스화
 - 수거사업 목록 표시 ( 데이터 제대로 들어오면 그때 다시 가공)
+
+### 2021-02-25
+- server index.js 수정
+- multer 설치
+- react-dropzone 설치
+- react-image-gallery 설치
+- 사진 업로드 component 는 utils 폴더에 저장
+    - 업로드 화면
+    ![image](https://user-images.githubusercontent.com/45280952/109114295-c59f4200-7780-11eb-9c8e-797a077678d5.png){: width="300" height="300"}
+    - 업로드 된 화면
+    ![image](https://user-images.githubusercontent.com/45280952/109114416-f2ebf000-7780-11eb-9d17-60322c3fadb1.png){: width="100" height="300"}
+
+```
+app.use('/uploads', express.static('uploads'));
+```
+- URL 경로를 통해 uploads 폴더에 접근할수 있도록 함
+- 사진 같은경우 한번에 올라가고 수정이 되기 때문에 수정하게 되는 경우 기존 연결된 파일 ROW 데이터를 삭제하고 새로 추가하는 방식으로 변경
+- useRef를 사용해서 이미지에 대해 수정 버튼이 누르기 전에는 Rendering 되지 않고 누르고 난 뒤에 state를 바꿔 주도록 변경
+
+- DetailPage 스크롤바 기능은 되도록 하되, 표시만 지우도록 함. 아래 코드는 크롬,사파리,오페라에서 동작하는 코드
+```
+#CSS 
+.TableDetailPage::-webkit-scrollbar{
+  display: none;
+}
+```

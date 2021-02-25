@@ -2,6 +2,7 @@ import 'ol/ol.css';
 import MousePosition from 'ol/control/MousePosition'
 import { createStringXY } from 'ol/coordinate';
 import {view} from './MapLayer'
+import Axios from 'axios';
 
 /************************************
  * 공통적으로 쓰이는 함수를 처리하는 곳
@@ -143,3 +144,22 @@ export const funcDegressToDMS = (ldDegress) => {
   return lrDMS;
 }
 
+
+/**
+ * 사진을 드랍존에 떨어뜨릴 경우.
+ * 루트 파일에 업로드함
+ * 경로는 uploads/pictures
+ * **/
+export const pictureInsert = (file)=>{
+  const formData = new FormData();
+      const config ={
+          header : {'content-type':'multipart/form-data'}
+      }
+      formData.append("file",file)
+  return new Promise((resolve,reject)=>{
+      Axios.post("/gis/file/upload/picture",formData,config)
+      .then(response=>{
+          resolve(response);
+      })
+  })
+}

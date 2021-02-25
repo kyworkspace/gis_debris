@@ -22,7 +22,6 @@ function TableList(props) {
     const type = props.type;
     useEffect(() => {
         //타입이 바뀌면 로딩시작
-        console.log('TYPE 바뀜')
         setLoading(true)
     }, [type])
     useEffect(() => { 
@@ -63,7 +62,6 @@ function TableList(props) {
     }, [Loading])
 
     useEffect(() => {
-        console.log("로딩그만")
         //위의 useEffect가 작업이 끝나면 contentList가 바뀌는데, 이를 감지해서 Loading을 false로 바꿔줌
         setLoading(false)
     }, [contentList])
@@ -108,7 +106,6 @@ function TableList(props) {
     }
     const renderList = ()=>{
         if(!contentList) return;
-        console.log(contentList)
         switch (type) {
             case 'trackList':
                 return "trackList" && <TrackListComponent contentList={contentList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
