@@ -149,9 +149,9 @@ npm install --save react-chartjs-2 chart.js
 - react-image-gallery 설치
 - 사진 업로드 component 는 utils 폴더에 저장
     - 업로드 화면
-    <img src="https://user-images.githubusercontent.com/45280952/109114295-c59f4200-7780-11eb-9c8e-797a077678d5.png" width="300" height="300">
+    <img src="https://user-images.githubusercontent.com/45280952/109114295-c59f4200-7780-11eb-9c8e-797a077678d5.png" width="500" height="500">
     - 업로드 된 화면
-    ![image](https://user-images.githubusercontent.com/45280952/109114416-f2ebf000-7780-11eb-9d17-60322c3fadb1.png){: width="100" height="300"}
+    <img src="https://user-images.githubusercontent.com/45280952/109114416-f2ebf000-7780-11eb-9d17-60322c3fadb1.png" width="200" height="600">
 
 ```
 app.use('/uploads', express.static('uploads'));
