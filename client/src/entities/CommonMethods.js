@@ -163,3 +163,18 @@ export const pictureInsert = (file)=>{
       })
   })
 }
+
+/**
+ * 무한 스크롤할때 페이지 순차 처리할 큐
+ * **/
+export class Queue {
+  constructor() {
+      this._arr = [];
+    }
+    enqueue(item) {
+      this._arr.push(item);
+    }
+    dequeue() {
+      return this._arr.shift();
+    }
+}

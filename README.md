@@ -148,10 +148,10 @@ npm install --save react-chartjs-2 chart.js
 - react-dropzone 설치
 - react-image-gallery 설치
 - 사진 업로드 component 는 utils 폴더에 저장
-- 업로드 화면
+- 업로드 화면<br/>
     <img src="https://user-images.githubusercontent.com/45280952/109114295-c59f4200-7780-11eb-9c8e-797a077678d5.png" width="500" height="500">
-- 업로드 된 화면
-    <img src="https://user-images.githubusercontent.com/45280952/109114416-f2ebf000-7780-11eb-9d17-60322c3fadb1.png" width="200" height="600">
+- 업로드 된 화면<br/>
+    <img src="https://user-images.githubusercontent.com/45280952/109114416-f2ebf000-7780-11eb-9d17-60322c3fadb1.png" width="250" height="600">
 
 ```
 app.use('/uploads', express.static('uploads'));
@@ -169,3 +169,8 @@ app.use('/uploads', express.static('uploads'));
 ```
 
 - useMemo를 사용하여 TableList 코드 수정
+- TableList, TableDetail 부분(LeftNav.js)  position 고정. 메뉴 활성화 될때 지도 밀리는 현상 수정
+
+### 2021-02-26
+- 수거실적 자료 리스트 무한 스크롤 기능으로 전환.
+- 검색기능 가능하도록 수정중

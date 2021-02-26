@@ -65,6 +65,10 @@ export const getCollectionService=(seq_no)=>{
  * @param year
  * @param city
  * @param region
+ * @param countPerPage
+ * @param startRowNumber
+ * @param endRowNumber
+ * @param page
  * **/
 export const selectCollectionServiceList=(body)=>{
     return new Promise((resolve,reject)=>{

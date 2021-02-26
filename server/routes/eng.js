@@ -53,24 +53,24 @@ router.post("/colList",(req,res)=>{
     const client = new Client(config.DBAccess);
     client.connect();
     
-    let {city,region,year}=req.body;
+    let {searchTerm,startRowNumber,endRowNumber}=req.body;
     let queryString=`
-        select 
-        (row_number () over()) as row ,
-        *
-         from tb_odm_col_ser2
-        where 1=1
+        select * from 
+        (
+            select (row_number () over()) as rowNumber
+            , A.* 
+            from (
+                select 
+                    *
+                from tb_odm_col_ser2
+                where 1=1
+                ${searchTerm ? `and col_year = ${searchTerm}` : ""}
+                ${searchTerm ? `and col_region like '${searchTerm}'` : ""}
+                ${searchTerm ? `and col_city like '${searchTerm}'` : ""}
+            )as A
+        ) as B
+        where rowNumber between ${startRowNumber} and ${endRowNumber}
     `
-    if(year){
-        queryString += `col_year = ${year}`
-    }
-    if(region){
-        queryString += `col_region = ${region}`
-    }
-    if(city){
-        queryString += `col_city = ${city}`
-    }
-
     client.query(queryString,(err,queryRes)=>{
         if(err) return res.json({success:false,err})
         let objList= [];

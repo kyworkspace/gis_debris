@@ -48,7 +48,8 @@ function TableList(props) {
                 return {
                     title : "수거사업 목록",
                     clearLayer : ()=>console.log("수거사업 레이어 초기화"),
-                    component : <CollectionListComponent contentList={ListinReducer.colList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+                    // component : <CollectionListComponent contentList={ListinReducer.colList} moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+                    component : <CollectionListComponent moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
                 }
             case "marineZoneList":
                 return {

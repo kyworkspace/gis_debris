@@ -1,95 +1,57 @@
-import React, { useEffect, useState } from 'react'
-import { Card, List, Typography, Input, Pagination, Checkbox } from 'antd';
-import { EnvironmentFilled } from '@ant-design/icons';
-import { useDispatch } from "react-redux";
-import { MainMap } from '../../../entities/MapLayer';
-const { Text } = Typography;
-const { Search } = Input;
-
-
+import { Card, Checkbox, List } from 'antd';
+import Text from 'antd/lib/typography/Text';
+import React, { useLayoutEffect, useRef, useState } from 'react'
+import InfiniteScrollComponent from '../../utils/InfiniteScrollComponent';
+import ListSearchBar from '../SearchSection/ListSearchBar';
 
 function LayerListComponent() {
+    const [CountPerPage, setCountPerPage] = useState(10)
+    const [ContentList, setContentList] = useState([])
+    const wholeList = useRef(
+        Array(100).fill('').map((item,idx)=>{
+            let obj = new Object();
+            obj.layer_name = idx+"";
+            obj.seq_no = idx;
+            obj.geoserver_name = "지오서버네임"+idx;
+            obj.test="글자글자";
+            return obj;
+        })
+    )
 
-    // const { contentList } = props;
-    const dispatch = useDispatch();
-    const [DisplayList, setDisplayList] = useState([]);
-    const [ListPage, setListPage] = useState(1) //첫시작 페이지
-    const [SearchTerm, setSearchTerm] = useState(""); //검색어
-    const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
-    const [TotalCount, setTotalCount] = useState(0)
-    const [SinglePage, setSinglePage] = useState(false);
+    const onSearchHandler = (value)=>{
+        const filteredList = wholeList.current.filter(item=>{return item.layer_name.indexOf(value)>-1})
+        console.log(filteredList);
+        setContentList(filteredList);
+    }
+    const ListContent=(DisplayList)=>{
+        return <List
+                    dataSource={DisplayList}
+                    renderItem={item => (
+                        <List.Item style={{ justifyContent: "center" }}>
+                            <Card title={item.layer_name} bordered={false} style={{ width: "350px" }}
+                                actions={[
+                                    <Checkbox >표출여부</Checkbox>,
+                                ]}
+                            >
+                                <Text>인피니트 : {item.test}</Text>
+                                
+                            </Card>
+                        </List.Item>
+                    )}
+                />
+    }
 
-    const contentList = [{
-        seq_no: 1,
-        layer_name: '양식장',
-        geoserver_name: 'REQM:GOV_AQUQFARM'
-    }, {
-        seq_no: 2,
-        layer_name: '오염사고',
-        geoserver_name: 'REQM:small_trench_mapPolygon'
-    }]
-
-
-
-    useEffect(() => {
-        console.log(MainMap.getLayers().getArray()[3]);
-        console.log(contentList)
-        let tmpList = contentList.filter(x => x.seq >= (((ListPage - 1) * CountPerPage) + 1) && x.seq <= (ListPage * CountPerPage));
-        console.log(tmpList);
-        setTotalCount(contentList.length);
-        setDisplayList(contentList);
-    }, [])
-
-
+    useLayoutEffect(() => {
+        const filteredList = wholeList.current
+        setContentList(filteredList);
+    }, [ContentList])
 
     return (
-        <React.Fragment>
-            <div
-                style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto', marginRight: 20 }}
-            >
-                <Search
-                    placeholder="레이어명.."
-                    style={{ width: 300 }}
-                    enterButton
-                    value={SearchTerm}
-                // onChange={onSearchHandler}
-                />
-            </div>
-            <hr />
-            <List
-                dataSource={DisplayList}
-                renderItem={item => (
-                    <List.Item style={{ justifyContent: "center" }}>
-                        <Card title={item.layer_name} bordered={false} style={{ width: "350px" }}
-                            actions={[
-                                <Checkbox >표출여부</Checkbox>,
-                                <EnvironmentFilled />
-                            ]}
-                        >
-                            {/* <Text>장소 : {item.place}</Text>
-                            <br />
-                            <Text>지역 : {item.city} {item.region}</Text>
-                            <br />
-                            <Text>년도 : {item.year}</Text>
-                            <br />
-                            <Text>좌표여부 : {item.geomCheck ? '좌표 있음' : '좌표 없음'}</Text>
-                            <br />
-                            <Text>중심위치 : {item.geomCheck && item.coordinate[0] + " , " + item.coordinate[1]}</Text> */}
-                        </Card>
-                    </List.Item>
-                )}
-            />
-            <Pagination
-                current={ListPage}
-                pageSize={CountPerPage}
-                total={TotalCount}
-                hideOnSinglePage={SinglePage}
-                // onChange={onPageChange}
-                simple
-                style={{ justifyContent: "center", display: 'flex' }}
-            />
-
-        </React.Fragment>
+        <>
+        <ListSearchBar onInputChange={onSearchHandler}/>
+            <hr/>
+        <InfiniteScrollComponent ContentList={ContentList} CountPerPage={CountPerPage} IndexColumn="seq_no" ListContent={ListContent}/>
+        </>
     )
 }
 
