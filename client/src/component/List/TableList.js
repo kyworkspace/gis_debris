@@ -33,6 +33,7 @@ function TableList(props) {
                 break;
             case "LayerList":
                 setTitle("레이어 목록")
+                setcontentList(ListinReducer.setLayerList);
                 break;
             default:
                 break;

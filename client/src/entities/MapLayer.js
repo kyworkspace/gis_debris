@@ -52,7 +52,21 @@ export function LoadLayer() {
 
     MainMap.addLayer(marineZoneLayer);
     MainMap.addLayer(cineralZoneLayer);
-    const LayerList = { marineZoneLayer, cineralZoneLayer }
+
+    const marineZone_Layer = cineralZoneLayer;
+    marineZone_Layer.setVisible(false);
+    const LayerList = [{
+        LayerName: '해구',
+        Layer: marineZoneLayer,
+        Visible: true,
+    }
+        , {
+        LayerName: '양식장',
+        Layer: cineralZoneLayer,
+        Visible: true,
+    }
+
+    ]
 
     return LayerList
 }

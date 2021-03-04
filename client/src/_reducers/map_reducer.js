@@ -4,24 +4,27 @@ import {
     LOAD_INV_LIST,
     VIEW_INIT,
     LOAD_MARINE_ZONE_LIST,
-    SELECT_VECTOR_LAYER
+    SELECT_VECTOR_LAYER,
+    SET_LAYER_LIST
 } from '../_actions/types';
- 
 
-export default function(state={},action){
-    switch(action.type){
+
+export default function (state = {}, action) {
+    switch (action.type) {
         case LOAD_MARINE_ZONE:
-            return {...state, marineZoneLayer: action.payload }
+            return { ...state, marineZoneLayer: action.payload }
         case LOAD_MAIN_MAP:
-            return {...state, mainMap: action.payload }
+            return { ...state, mainMap: action.payload }
         case LOAD_INV_LIST:
-            return {...state, invList: action.payload}
+            return { ...state, invList: action.payload }
         case LOAD_MARINE_ZONE_LIST:
-            return {...state, marineZoneList : action.payload}
+            return { ...state, marineZoneList: action.payload }
         case VIEW_INIT:
-            return {...state, view: action.payload}
+            return { ...state, view: action.payload }
         case SELECT_VECTOR_LAYER:
-            return {...state, selectedVectorLayer:action.payload}
+            return { ...state, selectedVectorLayer: action.payload }
+        case SET_LAYER_LIST:
+            return { ...state, setLayerList: action.payload }
         default:
             return state;
     }

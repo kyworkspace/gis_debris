@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import 'ol/ol.css';
 import { useDispatch } from "react-redux";
-import { InvestigationListInit, MarineZoneListInit } from '../../_actions/map_actions';
+import { InvestigationListInit, MarineZoneListInit, setLayerList } from '../../_actions/map_actions';
 import { MainMap as map } from '../../entities/CommonMethods';
 import { getInvestigationServiceList, getInvServiceLayer } from '../../entities/InvestigationZone'
 import { getMarineZoneList } from '../../entities/MarineZone';
@@ -18,7 +18,6 @@ function MainMap() {
 
     //레이어로드-양식장, 해구 return = map에 add된 레이어 리스트
     const LayerList = LoadLayer();
-    console.log(LayerList)
 
     //조사사업 정보 목록 호출
     getInvestigationServiceList().then(result => {
@@ -28,6 +27,8 @@ function MainMap() {
     getMarineZoneList().then(result => {
       dispatch(MarineZoneListInit(result));
     })
+
+    dispatch(setLayerList(LayerList))
 
 
 

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Card, List, Typography, Input, Pagination, Checkbox } from 'antd';
 import { EnvironmentFilled } from '@ant-design/icons';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MainMap } from '../../../entities/CommonMethods';
+import { setLayerList } from '../../../_actions/map_actions';
 const { Text } = Typography;
 const { Search } = Input;
 
 
 
-function LayerListComponent() {
+function LayerListComponent(props) {
 
     // const { contentList } = props;
     const dispatch = useDispatch();
+
     const [DisplayList, setDisplayList] = useState([]);
     const [ListPage, setListPage] = useState(1) //첫시작 페이지
     const [SearchTerm, setSearchTerm] = useState(""); //검색어
@@ -19,25 +21,15 @@ function LayerListComponent() {
     const [TotalCount, setTotalCount] = useState(0)
     const [SinglePage, setSinglePage] = useState(false);
 
-    const contentList = [{
-        seq_no: 1,
-        layer_name: '양식장',
-        geoserver_name: 'REQM:GOV_AQUQFARM'
-    }, {
-        seq_no: 2,
-        layer_name: '오염사고',
-        geoserver_name: 'REQM:small_trench_mapPolygon'
-    }]
-
-
-
+    console.log(DisplayList)
     useEffect(() => {
-        console.log(MainMap.getLayers().getArray()[3]);
-        console.log(contentList)
-        let tmpList = contentList.filter(x => x.seq >= (((ListPage - 1) * CountPerPage) + 1) && x.seq <= (ListPage * CountPerPage));
-        console.log(tmpList);
-        setTotalCount(contentList.length);
-        setDisplayList(contentList);
+        setDisplayList(props.contentList)
+        // const marineZoneLayer = DisplayList[0].Layer
+        // console.log(marineZoneLayer)
+        // marineZoneLayer.setVisible(false);
+        // let tmpList = props.contentList.filter(x => x.seq >= (((ListPage - 1) * CountPerPage) + 1) && x.seq <= (ListPage * CountPerPage));
+        // console.log(tmpList);
+
     }, [])
 
 
@@ -60,10 +52,9 @@ function LayerListComponent() {
                 dataSource={DisplayList}
                 renderItem={item => (
                     <List.Item style={{ justifyContent: "center" }}>
-                        <Card title={item.layer_name} bordered={false} style={{ width: "350px" }}
+                        <Card title={item.LayerName} bordered={false} style={{ width: "350px" }}
                             actions={[
-                                <Checkbox >표출여부</Checkbox>,
-                                <EnvironmentFilled />
+                                <Checkbox >표출여부</Checkbox>
                             ]}
                         >
                             {/* <Text>장소 : {item.place}</Text>
