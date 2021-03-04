@@ -32,3 +32,6 @@ code {
   width: 100%;
   text-align: center;
 }
+.infiniteScrollDiv::-webkit-scrollbar{
+  display: none;
+}
