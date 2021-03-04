@@ -7,11 +7,10 @@ import ListSearchBar from '../SearchSection/ListSearchBar'
 import InfiniteScroll from 'react-infinite-scroller'
 
 function CollectionListComponent(props) {
-    //const [SearchTerm, setSearchTerm] = useState(""); //검색어
     const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
-    const [DisplayList, setDisplayList] = useState([]);
-    const [HasMoreItems, setHasMoreItems] = useState(true);
-    const [SearchLoading, setSearchLoading] = useState(false);
+    const [DisplayList, setDisplayList] = useState([]); //표출 리스트
+    const [HasMoreItems, setHasMoreItems] = useState(true); //더이상 있는지 없는지
+    const [SearchLoading, setSearchLoading] = useState(false); //검색할때 컴포넌트 리로딩해서 초기화 시킬 용도
 
     const loader = <div className="demo-loading-container"> <Spin /> </div>; //다음 페이지 로딩 될때의 로딩바
 
@@ -21,7 +20,7 @@ function CollectionListComponent(props) {
         SearchTermRef.current = value;
     }
     
-    const onLoadItems =(page)=>{
+    const onLoadItems =(page)=>{ // 스크롤 로더
         let body={
             countPerPage : CountPerPage,
             startRowNumber : (((page - 1) * CountPerPage)+1),
@@ -39,7 +38,6 @@ function CollectionListComponent(props) {
             }else{
                 if(response.objList){
                     setDisplayList([...DisplayList,...response.objList]) 
-                    console.log([...DisplayList,...response.objList]);
                     if([...DisplayList,...response.objList].length<CountPerPage*page){
                         setHasMoreItems(false)
                     }
@@ -49,7 +47,6 @@ function CollectionListComponent(props) {
         })
     }
     const enterSearchButton =()=>{
-        console.log("엔터버튼")
         onLoadItems(1)
         setHasMoreItems(true);
         setSearchLoading(true); //검색할때 인피니트 스크롤 초기화
