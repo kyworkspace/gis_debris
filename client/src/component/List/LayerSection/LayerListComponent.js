@@ -1,86 +1,83 @@
-import React, { useEffect, useState } from 'react'
-import { Card, List, Typography, Input, Pagination, Checkbox } from 'antd';
-import { EnvironmentFilled } from '@ant-design/icons';
-import { useDispatch, useSelector } from "react-redux";
-import { MainMap } from '../../../entities/CommonMethods';
-import { setLayerList } from '../../../_actions/map_actions';
-const { Text } = Typography;
-const { Search } = Input;
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
+function LayerListComponent() {
+    const wholeList = useRef(
+        Array(100).fill('').map((item,idx)=>{
+            let obj = new Object();
+            obj.layer_name = idx+"";
+            obj.seq_no = idx;
+            obj.geoserver_name = "지오서버네임"+idx;
+            obj.test="글자글자";
+            return obj;
+        })
+    )
+    const [CountPerPage, setCountPerPage] = useState(8)
+    // const [DisPlayList, setDisPlayList] = useState([])
+    const [pageInterval, setpageInterval] = useState(8)
+    const [CurrentPage, setCurrentPage] = useState(1)
+    
+    const divRef = useRef();
+    const currentPageRef = useRef(1);
+    const DisplayListRef = useRef([]);
 
-
-function LayerListComponent(props) {
-
-    // const { contentList } = props;
-    const dispatch = useDispatch();
-
-    const [DisplayList, setDisplayList] = useState([]);
-    const [ListPage, setListPage] = useState(1) //첫시작 페이지
-    const [SearchTerm, setSearchTerm] = useState(""); //검색어
-    const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
-    const [TotalCount, setTotalCount] = useState(0)
-    const [SinglePage, setSinglePage] = useState(false);
-
-    console.log(DisplayList)
-    useEffect(() => {
-        setDisplayList(props.contentList)
-        // const marineZoneLayer = DisplayList[0].Layer
-        // console.log(marineZoneLayer)
-        // marineZoneLayer.setVisible(false);
-        // let tmpList = props.contentList.filter(x => x.seq >= (((ListPage - 1) * CountPerPage) + 1) && x.seq <= (ListPage * CountPerPage));
-        // console.log(tmpList);
-
+    useLayoutEffect(() => {
+        console.log()
+        let addList = wholeList.current.filter((item,idx)=>{
+            if(item.seq_no>=0 && item.seq_no<=CountPerPage){
+                return item;
+            }
+        })
+        // setDisPlayList(addList)
+        DisplayListRef.current = addList;
     }, [])
 
+    
 
+    const displayListLoad=(page)=>{
+        console.log("새로고침")
+        let addList = wholeList.current.filter((item,idx)=>{
+            if(item.seq_no>=((page-1)*pageInterval)+1 && item.seq_no<=(pageInterval*page)){
+                return item;
+            }
+        })
+        console.log(...DisplayListRef.current,...addList)
+        
+        DisplayListRef.current = [...DisplayListRef.current,...addList]
 
+        return DisplayListRef.current;
+    }
+    const memoList = useMemo(() => displayListLoad(CurrentPage), [CurrentPage])
+
+    const infiniteScroll = () => {
+        const { documentElement, body } = document;
+        if(divRef.current){
+            const st = divRef.current.scrollTop;
+            const ch = divRef.current.clientHeight;
+            const sh = divRef.current.scrollHeight;
+
+            if(st+ch >=sh){
+                console.log("페이지 바뀜")
+                currentPageRef.current = currentPageRef.current+1;
+                console.log(currentPageRef.current);
+                setCurrentPage(currentPageRef.current)
+            }
+        }
+
+      };
+    useEffect(() => {
+        window.addEventListener("scroll", infiniteScroll, true);
+        return () => {
+            window.removeEventListener("scroll", infiniteScroll);
+        }
+    }, [])
+    const renderDiv = memoList.map((item,idx)=>{
+        return <div style={{border:'solid', height:'300px'}} key={idx}>{item.layer_name}</div>
+    })
+    
     return (
-        <React.Fragment>
-            <div
-                style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto', marginRight: 20 }}
-            >
-                <Search
-                    placeholder="레이어명.."
-                    style={{ width: 300 }}
-                    enterButton
-                    value={SearchTerm}
-                // onChange={onSearchHandler}
-                />
-            </div>
-            <hr />
-            <List
-                dataSource={DisplayList}
-                renderItem={item => (
-                    <List.Item style={{ justifyContent: "center" }}>
-                        <Card title={item.LayerName} bordered={false} style={{ width: "350px" }}
-                            actions={[
-                                <Checkbox >표출여부</Checkbox>
-                            ]}
-                        >
-                            {/* <Text>장소 : {item.place}</Text>
-                            <br />
-                            <Text>지역 : {item.city} {item.region}</Text>
-                            <br />
-                            <Text>년도 : {item.year}</Text>
-                            <br />
-                            <Text>좌표여부 : {item.geomCheck ? '좌표 있음' : '좌표 없음'}</Text>
-                            <br />
-                            <Text>중심위치 : {item.geomCheck && item.coordinate[0] + " , " + item.coordinate[1]}</Text> */}
-                        </Card>
-                    </List.Item>
-                )}
-            />
-            <Pagination
-                current={ListPage}
-                pageSize={CountPerPage}
-                total={TotalCount}
-                hideOnSinglePage={SinglePage}
-                // onChange={onPageChange}
-                simple
-                style={{ justifyContent: "center", display: 'flex' }}
-            />
-
-        </React.Fragment>
+        <div ref={divRef} style={{height:'800px', backgroundColor:'violet',overflow:'auto'}}>
+            {renderDiv}
+        </div>
     )
 }
 

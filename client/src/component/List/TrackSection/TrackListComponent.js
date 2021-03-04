@@ -9,10 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import axios from 'axios';
-
 import {message} from 'antd';
 import TrackRows from './Sections/TrackRows';
+import { selectTrackList } from '../../../entities/CallbackMethod';
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -69,10 +68,10 @@ function TrackListComponent() {
     const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
-       selectTrackList();
+        searchTrackList();
     }, [])
 
-    const selectTrackList=(parameter)=>{
+    const searchTrackList=(parameter)=>{
         setLoading(true)
         //shipName
         //shipType
@@ -85,7 +84,7 @@ function TrackListComponent() {
         if(parameter){
             body = parameter
         }
-        axios.post("/gis/track/list",body)
+        selectTrackList(body)
         .then(response=>{
             if(response.data.success){
                 if(response.data.obj){
@@ -94,13 +93,11 @@ function TrackListComponent() {
                 }else{
                     setLoading(true)
                 }
-                
             }else{
                 console.log(response.data.err)
                 message.error("항적을 불러오는데 실패하였습니다.")
             }
         })
-
     }
   
     const handleChangePage = (event, newPage) => {
@@ -112,13 +109,9 @@ function TrackListComponent() {
       setPage(0);
     };
 
-    const onTrackDeployHandler=(mmsi)=>{
-        console.log(mmsi)
-    }
-
     return (
         <div style={{maxWidth:"500px"}}>
-            <TrackSearch searchHandler={selectTrackList}/>
+            <TrackSearch searchHandler={searchTrackList}/>
             {Loading && 
                 <div className={classes.root}>
                     <LinearProgress />

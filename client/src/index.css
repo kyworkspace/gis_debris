@@ -1,3 +1,4 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,5 +13,22 @@ code {
     monospace;
 }
 
-.ol-mouse-position{
+
+.image-gallery {
+  width: 380px;
+}
+.LeftSideListMenu::-webkit-scrollbar{
+  display: none;
+}
+.LeftSideListMenu{
+  z-index: 1;
+  position: absolute;
+  background-color: #f0f0f0;
+  height: 100%;
+}
+
+.demo-loading-container {
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
 }

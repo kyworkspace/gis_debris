@@ -24,10 +24,10 @@ function TableDetail(props) {
     }, [])
 
     return (
-        <div>
+        <div >
             <PageHeader
                 className="site-page-header"
-                onBack={() => props.listHide(false)}
+                onBack={() => props.listHide()}
                 title={Title}
             />
             <hr/>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'antd/dist/antd.css';
 import { Layout} from 'antd';
 import FooterComponent from '../Footer/Footer';
@@ -19,15 +19,15 @@ function LeftNav() {
     const [GridDisplay, setGridDisplay] = useState(false)
     const [DetailDisplay, setDetailDisplay] = useState(false);
     const [DetailItem, setDetailItem] = useState({});
+    const [ListPosition, setListPosition] = useState('80px')
     const [Type, setType] = useState("");
 
-    
-    
     const onCollapse = (collapse) =>{//사이드바 접고 펼치는 함수
+        collapse ? setListPosition('80px'):setListPosition('200px')
         setCollapesd(collapse)
     }
     const onSelectMenu =(type)=>{
-        setGridDisplay(!GridDisplay)
+        setGridDisplay(true)
         setDetailDisplay(false);
         setType(type);
         //테이블 데이터 소스 바꿔줄것
@@ -39,7 +39,10 @@ function LeftNav() {
         setDetailDisplay(true)
 
         setDetailItem(item);
-        console.log(item);
+    }
+    const onDetailSectionHide=()=>{
+        setDetailDisplay(false);
+        setGridDisplay(true);
     }
  
 
@@ -60,10 +63,10 @@ function LeftNav() {
         
         </Sider>
         {
-            GridDisplay && <div style={{minWidth:"400px", maxHeight:"100vh", overflowY:"auto"}}><TableList type={Type} detailDisplay={onDetailMenu} listHide={setGridDisplay}/></div>
+            GridDisplay && <div className="LeftSideListMenu" style={{left:ListPosition,minWidth:"420px", maxHeight:"100vh", overflowY:"auto"}}><TableList type={Type} detailDisplay={onDetailMenu} listHide={setGridDisplay}/></div>
         }
         {
-            DetailDisplay && <div style={{minWidth:"400px", maxHeight:"100vh", overflowY:"auto"}}><TableDetail type={Type} detailItem={DetailItem} listHide={setDetailDisplay}/></div>
+            DetailDisplay && <div className="LeftSideListMenu" style={{left:ListPosition,minWidth:"420px",maxWidth:"420px", maxHeight:"100vh", overflowY:'auto'}}><TableDetail type={Type} detailItem={DetailItem} listHide={onDetailSectionHide}/></div>
         }
         <Layout className="site-layout">
             <Site/>
@@ -71,6 +74,7 @@ function LeftNav() {
             <UtilBox/>
         </Layout>
       </Layout>
+      
       </>
     )
 }

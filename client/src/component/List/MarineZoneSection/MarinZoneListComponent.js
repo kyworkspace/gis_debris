@@ -3,15 +3,19 @@ import { Card, List, message, Typography, Input, Pagination } from 'antd';
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectVectorLayer } from '../../../_actions/map_actions'
-import { MainMap as map, selectedMarineZone } from '../../../entities/CommonMethods'
+import { selectedMarineZone } from '../../../entities/CommonMethods'
+import { MainMap as map } from '../../../entities/MapLayer'
 import { Vector as VectorLayer } from 'ol/layer'
 import { Polygon } from 'ol/geom';
 import { Feature } from 'ol';
 import { Vector } from 'ol/source'
 import { Style, Stroke, Fill } from 'ol/style'
+import ListSearchBar from '../SearchSection/ListSearchBar';
 
 const { Text } = Typography;
 const { Search } = Input;
+
+export const SelectedMarineZoneSource = new Vector();
 
 function MarinZoneListComponent(props) {
 
@@ -31,9 +35,9 @@ function MarinZoneListComponent(props) {
         setDisplayList(tmpList);
     }, [contentList])
 
-    const onSearchHandler = (e) => {
-        SearchList(e.currentTarget.value, 1)
-        setSearchTerm(e.currentTarget.value);
+    const onSearchHandler = (value) => {
+        SearchList(value, 1)
+        setSearchTerm(value);
     }
     const SearchList = (value, page) => {
         let newList = contentList.filter(x =>
@@ -78,11 +82,11 @@ function MarinZoneListComponent(props) {
         })
         var polygon = new Polygon([array]);
         var feature = new Feature(polygon);
-        var vectorSource = new Vector();
-        vectorSource.addFeature(feature);
+        // var vectorSource = new Vector();
+        SelectedMarineZoneSource.addFeature(feature);
         selectedVectorLayer = new VectorLayer({
             name: "SelectedVectorLayer",
-            source: vectorSource
+            source: SelectedMarineZoneSource
         });
         map.addLayer(selectedVectorLayer)
         var selectedStyle = new Style({
@@ -96,25 +100,14 @@ function MarinZoneListComponent(props) {
             })
         });
         selectedVectorLayer.setStyle(selectedStyle);
-        console.log(selectedVectorLayer)
-        dispatch(setSelectVectorLayer(selectedVectorLayer))
+        //dispatch(setSelectVectorLayer(selectedVectorLayer))
     }
 
 
 
     return (
         <React.Fragment>
-            <div
-                style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto', marginRight: 20 }}
-            >
-                <Search
-                    placeholder="년도, 사업명, 지역명..."
-                    style={{ width: 300 }}
-                    enterButton
-                    value={SearchTerm}
-                    onChange={onSearchHandler}
-                />
-            </div>
+            <ListSearchBar onInputChange={onSearchHandler}/>
             <hr />
             <List
                 dataSource={DisplayList}

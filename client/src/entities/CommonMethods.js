@@ -1,18 +1,13 @@
 import 'ol/ol.css';
-import { Map, View } from 'ol';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
 import MousePosition from 'ol/control/MousePosition'
 import { createStringXY } from 'ol/coordinate';
+import {view} from './MapLayer'
+import Axios from 'axios';
 
-//지도에 들어가는 뷰
-export const view = new View({
-  projection: "EPSG:4326",
-  center: ['126.929804', '37.526908'], //최초 좌표
-  maxZoom: 23,
-  minZoom: 1,
-  zoom: 7
-})
+/************************************
+ * 공통적으로 쓰이는 함수를 처리하는 곳
+ * **********************************/
+
 
 //좌표 이동 함수
 export const mapMove = (coordinate) => {
@@ -27,23 +22,10 @@ export const mapMove = (coordinate) => {
 export const mousePositionControl = new MousePosition({
   coordinateFormat: createStringXY(4),
   projection: 'EPSG:4326',
-  // comment the following two lines to have the mouse position
-  // be placed within the map.
-  //target: document.getElementById('lonlati'),
   undefinedHTML: '&nbsp;',
 });
 
-//지도레이어
-export const MainMap = new Map({
-  // controls: defaultControls().extend([mousePositionControl]),
-  target: null,
-  layers: [
-    new TileLayer({
-      source: new OSM()  //기본 레이어, 오픈레이어스에서 제공하는 지형정보를 가져온다.
-    })
-  ],
-  view: view
-});
+
 
 export const selectedMarineZone = undefined;
 //날짜 변환 메서드
@@ -162,3 +144,37 @@ export const funcDegressToDMS = (ldDegress) => {
   return lrDMS;
 }
 
+
+/**
+ * 사진을 드랍존에 떨어뜨릴 경우.
+ * 루트 파일에 업로드함
+ * 경로는 uploads/pictures
+ * **/
+export const pictureInsert = (file)=>{
+  const formData = new FormData();
+      const config ={
+          header : {'content-type':'multipart/form-data'}
+      }
+      formData.append("file",file)
+  return new Promise((resolve,reject)=>{
+      Axios.post("/gis/file/upload/picture",formData,config)
+      .then(response=>{
+          resolve(response);
+      })
+  })
+}
+
+/**
+ * 무한 스크롤할때 페이지 순차 처리할 큐
+ * **/
+export class Queue {
+  constructor() {
+      this._arr = [];
+    }
+    enqueue(item) {
+      this._arr.push(item);
+    }
+    dequeue() {
+      return this._arr.shift();
+    }
+}

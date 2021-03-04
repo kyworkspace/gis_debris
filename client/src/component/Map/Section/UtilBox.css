@@ -44,3 +44,9 @@
     .util_box p.util_cnt span{
         color:#333366;
     }
+
+@media screen and (max-width: 800px) {
+    .util_mn_top {
+        display: none;
+    }
+}

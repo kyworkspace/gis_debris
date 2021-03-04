@@ -8,7 +8,7 @@ const { Content } = Layout;
 function Site() {
   return (
     <div>
-      <Content style={{ margin: '0 16px' }}>
+      <Content >
         <div className="site-layout-background" style={{ minHeight: 360 }}>
           <MainMap />
         </div>

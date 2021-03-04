@@ -5,7 +5,8 @@ import {
   PieChartOutlined,
   FileOutlined,
   TeamOutlined,
-  UserOutlined
+  UserOutlined,
+  VideoCameraOutlined
 } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
@@ -19,13 +20,16 @@ function NavbarMenu(props) {
       <Menu.Item key="3" icon={<DesktopOutlined />} onClick={() => props.menuSelect("invList")}>
         조사사업
       </Menu.Item>
-      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={() => props.menuSelect("marineZoneList")}>
+      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={() => props.menuSelect("colList")}>
+        수거사업
+      </Menu.Item>
+      <Menu.Item key="5" icon={<DesktopOutlined />} onClick={() => props.menuSelect("marineZoneList")}>
         오염현황(해구)
       </Menu.Item>
-      <Menu.Item key="5" icon={<PieChartOutlined />}>
-        통계정보
+      <Menu.Item key="6" icon={<VideoCameraOutlined />} onClick={() => props.menuSelect("videoList")}>
+        CCTV 정보
       </Menu.Item>
-      <Menu.Item key="6" icon={<PieChartOutlined />} onClick={() => props.menuSelect("LayerList")}>
+      <Menu.Item key="7" icon={<PieChartOutlined />} onClick={() => props.menuSelect("LayerList")}>
         레이어정보
       </Menu.Item>
       {/* <SubMenu key="sub1" icon={<PieChartOutlined />} title="조사사업">

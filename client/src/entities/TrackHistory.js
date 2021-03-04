@@ -1,64 +1,39 @@
 import 'ol/ol.css';
 import {Feature} from 'ol';
-import {Style,Fill,Stroke,Circle,Icon} from 'ol/style'
-import {Vector as VectorLayer} from 'ol/layer'
-import {Vector as VectorSource} from 'ol/source'
-import {MainMap,mapMove} from './CommonMethods'
+import {Style,Stroke,Icon} from 'ol/style'
+import {MainMap} from './MapLayer'
+import {mapMove} from './CommonMethods'
 import {Point,LineString} from 'ol/geom'
 import $ from 'jquery'
 import trackImage from '../Images/track/trackingRecordedShip.png'
+import {trackLayer, trackSource} from './FeatureLayer'
+/***********************
+ * 항적정보를 처리하는 곳
+ ***********************/
 
-// 소스, 레이어
-let trackSource, trackLayer;
 // 포인트색
 const trackSearchDefaultPointColor = '#FA2020';
 // 라인색
 const trackSearchDefaultLineColor = '#2020FA';
 
-trackSource = new VectorSource({
-    crossOrigin: 'anonymous'
-  });
 
-  trackLayer = new VectorLayer({
-    source: trackSource,
-    crossOrigin: 'anonymous',
-    style : new Style({
-      fill : new Fill({
-        color: 'rgba( 255, 72, 101, 0.9 )',
-      }),
-      stroke: new Stroke({
-        color: 'rgba( 255, 72, 101, 0.9 )',
-        width: 2
-      }),
-      image: new Circle({
-        radius: 2,
-        fill: new Fill({
-          color: 'rgba( 255, 72, 101, 0.9 )'
-        })
-      })
-    }),
-  });
-
-  MainMap.addLayer(trackLayer);
 // 항적 삭제
-
-const trackingRecordOff = function () {
-    MainMap.removeLayer(trackLayer);
+// const trackingRecordOff = function () {
+//     MainMap.removeLayer(trackLayer);
   
-    trackSource.clear();
-    trackLayer = null;
-    trackSource = null;
-  };
+//     trackSource.clear();
+//     trackLayer = null;
+//     trackSource = null;
+//   };
 
 //화살표 포인트
-const record2ArrowPoint = function( coord, heading, color ) {
+const record2ArrowPoint = function( coord, heading, color,mmsi ) {
 
     let point = new Feature({
       geometry: new Point(
         coord
       )
     });
-
     
     //  항적 포인트를 표현하는 이미지가 있을 경우.
     point.setStyle(new Style({
@@ -135,8 +110,7 @@ export const parseShipHisRecords = function( records ,mmsi) {
                   record.heading = record.cog;
               let heading = record.heading * Math.PI / 180
               
-              let recordPoint = record2ArrowPoint( coord, heading, params.pointColor );
-              
+              let recordPoint = record2ArrowPoint( coord, heading, params.pointColor, mmsi );
               recordPoint.setProperties({
                 record: record,
                 visible: true,
@@ -163,7 +137,6 @@ export const parseShipHisRecords = function( records ,mmsi) {
               } catch ( e ) { console.error ( e.message ); return true; }
             }
           });
-    
           
           if( coords4line.length >= 2 ) {
             let line = records2line( coords4line, params );
@@ -226,3 +199,15 @@ const isValidPiece = function( piece, val ) {
     }
     return true;
   };
+
+//트랙 소스에서 삭제
+export const removeTrackHisRecord = function( target_id ) {
+        target_id = String(target_id);
+        $.each(trackSource.getFeatures(), function(idx, feature){
+            let ship_id = String(feature.getProperties().ship_id);
+            if( ship_id === target_id ) {
+              trackSource.removeFeature(feature);
+            }
+        });
+  };
+  
