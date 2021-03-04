@@ -68,7 +68,7 @@ router.post("/getColListCount",(req,res)=>{
     `
     client.query(queryString,(err,queryRes)=>{
         if(err) return res.json({success:false,err})
-        let listCount= queryRes.rows[0];
+        let listCount= queryRes.rows[0].count;
         client.end();
         return res.status(200).json({success:true,listCount})
     })

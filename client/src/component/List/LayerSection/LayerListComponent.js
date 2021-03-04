@@ -2,7 +2,7 @@ import { EnvironmentFilled, SecurityScanFilled } from '@ant-design/icons';
 import { Card, message } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { selectCollectionServiceList } from '../../../entities/CallbackMethod';
+import { getCollectionServiceListCount, selectCollectionServiceList } from '../../../entities/CallbackMethod';
 import InfiniteScrollComponent from '../../utils/InfiniteScrollComponent';
 import ListSearchBar from '../SearchSection/ListSearchBar';
 
@@ -23,26 +23,41 @@ function LayerListComponent(props) {
     const [HasMoreItems, setHasMoreItems] = useState(true);
     const [CurrentPage, setCurrentPage] = useState(0);
     const [Loading, setLoading] = useState(false);
+    const [ListCount, setListCount] = useState(0); //리스트 갯수
+
     const onSearchHandler = (value) => {
         setSearchTerm(value)
         displayListLoad(1,value)
         setHasMoreItems(true)
     }
 
+    useEffect(() => {
+        let body = {
+            searchTerm : SearchTerm
+        }
+        getCollectionServiceListCount(body).then(response=>{
+            if(response.success){
+                if(response.listCount>0){
+                    setListCount(response.listCount)
+                }
+            }else{
+                alert("에러")
+            }
+        })
+    }, [])
+
 
     const displayListLoad=(page,searchValue)=>{
-        if(HasMoreItems && !Loading){
-            setLoading(true)
+        if(HasMoreItems){
             let body={
                 countPerPage : CountPerPage,
                 startRowNumber : (((page - 1) * CountPerPage)+1),
                 endRowNumber : (page * CountPerPage),
-                page : page,
                 searchTerm : (searchValue||SearchTerm)
             }
+            
             selectCollectionServiceList(body)
             .then(response=>{
-                setCurrentPage(page);
                 if(page === 1){
                     setDisplayList(response.objList)
                 }else{
@@ -51,16 +66,7 @@ function LayerListComponent(props) {
                         console.log([...DisplayList,...response.objList]);
                     }
                 }
-                
-                if([...DisplayList,...response.objList].length < CountPerPage*page){
-                    console.log(`[...DisplayList,...response.objList].length : ${[...DisplayList,...response.objList].length} CountPerPage*page :${CountPerPage*page}`)
-                    
-                    console.log("더없음")
-                    setHasMoreItems(false)
-                }
-                
             })
-            setLoading(false);
         }
         
     }
@@ -93,7 +99,9 @@ function LayerListComponent(props) {
     return (
         <>
             <ListSearchBar onInputChange={onSearchHandler}/>
-            <InfiniteScrollComponent pageLoad={displayListLoad} renderFunc={renderDiv} HasMoreItems={HasMoreItems} page={CurrentPage}/>
+            <InfiniteScrollComponent pageLoad={displayListLoad} renderFunc={renderDiv} HasMoreItems={HasMoreItems} >
+              {renderDiv}
+            </InfiniteScrollComponent>
         </>
         
     )
