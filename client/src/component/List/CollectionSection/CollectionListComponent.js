@@ -1,59 +1,68 @@
 import { EnvironmentFilled, SecurityScanFilled } from '@ant-design/icons';
 import { Card, List, Pagination, Spin } from 'antd';
 import Text from 'antd/lib/typography/Text';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { selectCollectionServiceList } from '../../../entities/CallbackMethod';
 import ListSearchBar from '../SearchSection/ListSearchBar'
 import InfiniteScroll from 'react-infinite-scroller'
 
 function CollectionListComponent(props) {
-    const [SearchTerm, setSearchTerm] = useState(""); //검색어
+    //const [SearchTerm, setSearchTerm] = useState(""); //검색어
     const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
     const [DisplayList, setDisplayList] = useState([]);
     const [HasMoreItems, setHasMoreItems] = useState(true);
-    const [StartPage, setStartPage] = useState(0);
+    const [SearchLoading, setSearchLoading] = useState(false);
 
-    const loader = <div className="demo-loading-container"> <Spin /> </div>;
+    const loader = <div className="demo-loading-container"> <Spin /> </div>; //다음 페이지 로딩 될때의 로딩바
+
+    const SearchTermRef = useRef("")
+
     const onSearchHandler=(value)=>{
-        // setDisplayList([])
-        setSearchTerm(value);
+        SearchTermRef.current = value;
     }
     
     const onLoadItems =(page)=>{
-        //setStartPage(page)
-        startPage.current = page;
-        console.log(page);
         let body={
             countPerPage : CountPerPage,
             startRowNumber : (((page - 1) * CountPerPage)+1),
             endRowNumber : (page * CountPerPage),
             page : page,
-            searchTerm : SearchTerm
+            searchTerm : SearchTermRef.current
         }
         selectCollectionServiceList(body)
         .then(response=>{
-            if(response.objList){
-                setDisplayList([...DisplayList,...response.objList]) 
-                console.log([...DisplayList,...response.objList]);
-                if([...DisplayList,...response.objList].length<CountPerPage*page){
+            if(page === 1){
+                setDisplayList(response.objList);
+                if(response.objList.length<CountPerPage*page){
                     setHasMoreItems(false)
                 }
+            }else{
+                if(response.objList){
+                    setDisplayList([...DisplayList,...response.objList]) 
+                    console.log([...DisplayList,...response.objList]);
+                    if([...DisplayList,...response.objList].length<CountPerPage*page){
+                        setHasMoreItems(false)
+                    }
+                }
             }
+            setSearchLoading(false);
         })
     }
     const enterSearchButton =()=>{
         console.log("엔터버튼")
-        startPage.current = 0;
         onLoadItems(1)
+        setHasMoreItems(true);
+        setSearchLoading(true); //검색할때 인피니트 스크롤 초기화
     }
-    const startPage = useRef(0)
-
     return (
         <>
             <ListSearchBar onInputChange={onSearchHandler} searchButtonHandler={enterSearchButton}/>
             <hr/>
+            {!
+            SearchLoading
+            &&
             <InfiniteScroll
-            pageStart={startPage.current}
+            pageStart={0}
             loadMore={onLoadItems}
             hasMore={HasMoreItems}
             loader={loader}
@@ -85,6 +94,8 @@ function CollectionListComponent(props) {
                     )}
                 />
             </InfiniteScroll>
+            }
+            
         </>
     )
 }

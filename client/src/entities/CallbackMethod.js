@@ -72,7 +72,15 @@ export const getCollectionService=(seq_no)=>{
  * **/
 export const selectCollectionServiceList=(body)=>{
     return new Promise((resolve,reject)=>{
-        axios.post("/gis/eng/colList",body)
+        axios.post("/gis/eng/selectColList",body)
+        .then(response=>{
+            resolve(response.data)
+        })
+    })
+}
+export const getCollectionServiceListCount=(body)=>{
+    return new Promise((resolve,reject)=>{
+        axios.post("/gis/eng/getColListCount",body)
         .then(response=>{
             resolve(response.data)
         })
