@@ -8,7 +8,7 @@ const pageQueue = new Queue();
 
 function InfiniteScrollComponent(props) {
 
-    const {CountPerPage,ListContent,LoadNextPage,searchTerm} = props;
+    const {CountPerPage,ListContent,LoadNextPage} = props;
     const [DisplayList, setDisplayList] = useState([]);
     const [HasMoreItems, setHasMoreItems] = useState(true);
     const [Loading, setLoading] = useState(false);
@@ -46,7 +46,6 @@ function InfiniteScrollComponent(props) {
             loader={loader}
             useWindow={false}
         >
-            {console.log("새로 그려지나",searchTerm)}
             {ListContent(DisplayList)}
         </InfiniteScroll>
     )

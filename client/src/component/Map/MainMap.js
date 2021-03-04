@@ -31,14 +31,14 @@ function MainMap() {
     getMarineZoneList().then(result => {
       dispatch(MarineZoneListInit(result));
     })
-    selectCollectionServiceList().then(response=>{
-      if(response.data.success){
-        dispatch(CollectionListInit(response.data.objList))
-      }else{
-        message.error(response.data.err.hint)
-      }
+    // selectCollectionServiceList().then(response=>{
+    //   if(response.data.success){
+    //     dispatch(CollectionListInit(response.data.objList))
+    //   }else{
+    //     message.error(response.data.err.hint)
+    //   }
       
-    })
+    // })
     map.addLayer(InvService.getInvServiceLayer())
     setMapTargetSet(true);
 

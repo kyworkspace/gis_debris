@@ -1,12 +1,6 @@
-import { Card, Checkbox, List } from 'antd';
-import Text from 'antd/lib/typography/Text';
-import React, { useLayoutEffect, useRef, useState } from 'react'
-import InfiniteScrollComponent from '../../utils/InfiniteScrollComponent';
-import ListSearchBar from '../SearchSection/ListSearchBar';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 function LayerListComponent() {
-    const [CountPerPage, setCountPerPage] = useState(10)
-    const [ContentList, setContentList] = useState([])
     const wholeList = useRef(
         Array(100).fill('').map((item,idx)=>{
             let obj = new Object();
@@ -17,41 +11,73 @@ function LayerListComponent() {
             return obj;
         })
     )
-
-    const onSearchHandler = (value)=>{
-        const filteredList = wholeList.current.filter(item=>{return item.layer_name.indexOf(value)>-1})
-        console.log(filteredList);
-        setContentList(filteredList);
-    }
-    const ListContent=(DisplayList)=>{
-        return <List
-                    dataSource={DisplayList}
-                    renderItem={item => (
-                        <List.Item style={{ justifyContent: "center" }}>
-                            <Card title={item.layer_name} bordered={false} style={{ width: "350px" }}
-                                actions={[
-                                    <Checkbox >표출여부</Checkbox>,
-                                ]}
-                            >
-                                <Text>인피니트 : {item.test}</Text>
-                                
-                            </Card>
-                        </List.Item>
-                    )}
-                />
-    }
+    const [CountPerPage, setCountPerPage] = useState(8)
+    // const [DisPlayList, setDisPlayList] = useState([])
+    const [pageInterval, setpageInterval] = useState(8)
+    const [CurrentPage, setCurrentPage] = useState(1)
+    
+    const divRef = useRef();
+    const currentPageRef = useRef(1);
+    const DisplayListRef = useRef([]);
 
     useLayoutEffect(() => {
-        const filteredList = wholeList.current
-        setContentList(filteredList);
-    }, [ContentList])
+        console.log()
+        let addList = wholeList.current.filter((item,idx)=>{
+            if(item.seq_no>=0 && item.seq_no<=CountPerPage){
+                return item;
+            }
+        })
+        // setDisPlayList(addList)
+        DisplayListRef.current = addList;
+    }, [])
 
+    
+
+    const displayListLoad=(page)=>{
+        console.log("새로고침")
+        let addList = wholeList.current.filter((item,idx)=>{
+            if(item.seq_no>=((page-1)*pageInterval)+1 && item.seq_no<=(pageInterval*page)){
+                return item;
+            }
+        })
+        console.log(...DisplayListRef.current,...addList)
+        
+        DisplayListRef.current = [...DisplayListRef.current,...addList]
+
+        return DisplayListRef.current;
+    }
+    const memoList = useMemo(() => displayListLoad(CurrentPage), [CurrentPage])
+
+    const infiniteScroll = () => {
+        const { documentElement, body } = document;
+        if(divRef.current){
+            const st = divRef.current.scrollTop;
+            const ch = divRef.current.clientHeight;
+            const sh = divRef.current.scrollHeight;
+
+            if(st+ch >=sh){
+                console.log("페이지 바뀜")
+                currentPageRef.current = currentPageRef.current+1;
+                console.log(currentPageRef.current);
+                setCurrentPage(currentPageRef.current)
+            }
+        }
+
+      };
+    useEffect(() => {
+        window.addEventListener("scroll", infiniteScroll, true);
+        return () => {
+            window.removeEventListener("scroll", infiniteScroll);
+        }
+    }, [])
+    const renderDiv = memoList.map((item,idx)=>{
+        return <div style={{border:'solid', height:'300px'}} key={idx}>{item.layer_name}</div>
+    })
+    
     return (
-        <>
-        <ListSearchBar onInputChange={onSearchHandler}/>
-            <hr/>
-        <InfiniteScrollComponent ContentList={ContentList} CountPerPage={CountPerPage} IndexColumn="seq_no" ListContent={ListContent}/>
-        </>
+        <div ref={divRef} style={{height:'800px', backgroundColor:'violet',overflow:'auto'}}>
+            {renderDiv}
+        </div>
     )
 }
 

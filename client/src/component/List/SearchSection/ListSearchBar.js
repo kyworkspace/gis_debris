@@ -7,6 +7,9 @@ function ListSearchBar(props) {
         setSearchTerm(e.currentTarget.value)
         props.onInputChange(e.currentTarget.value)
     }
+    const onSearchButtonHandler=()=>{
+        props.searchButtonHandler();
+    }
     return (
         <div
                 style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto', marginRight: 20 }}
@@ -17,6 +20,7 @@ function ListSearchBar(props) {
                     enterButton
                     value={SearchTerm}
                     onChange={onSearchHandler}
+                    onSearch={onSearchButtonHandler}
                 />
             </div>
     )

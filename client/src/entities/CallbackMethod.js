@@ -74,7 +74,7 @@ export const selectCollectionServiceList=(body)=>{
     return new Promise((resolve,reject)=>{
         axios.post("/gis/eng/colList",body)
         .then(response=>{
-            resolve(response)
+            resolve(response.data)
         })
     })
 }
