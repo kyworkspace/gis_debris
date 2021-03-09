@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import 'antd/dist/antd.css';
 import { Layout} from 'antd';
 import FooterComponent from '../Footer/Footer';
@@ -33,7 +33,7 @@ function LeftNav() {
         //테이블 데이터 소스 바꿔줄것
     }
     const onDetailMenu = useCallback(
-        () => {
+        (item) => {
         //리스트 표출 여부
         setGridDisplay(false);
         //상세 창 표출 여부
@@ -49,7 +49,7 @@ function LeftNav() {
         },
         [],
     )
-    
+
     return (
         <>
         <Layout style={{ minHeight: '100vh' }}>
