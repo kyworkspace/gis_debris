@@ -32,20 +32,24 @@ function LeftNav() {
         setType(type);
         //테이블 데이터 소스 바꿔줄것
     }
-    const onDetailMenu =(item)=>{
+    const onDetailMenu = useCallback(
+        () => {
         //리스트 표출 여부
         setGridDisplay(false);
         //상세 창 표출 여부
         setDetailDisplay(true)
-
         setDetailItem(item);
-    }
-    const onDetailSectionHide=()=>{
-        setDetailDisplay(false);
-        setGridDisplay(true);
-    }
- 
-
+        },
+        [],
+    )
+    const onDetailSectionHide = useCallback(
+        () => {
+            setDetailDisplay(false);
+            setGridDisplay(true);
+        },
+        [],
+    )
+    
     return (
         <>
         <Layout style={{ minHeight: '100vh' }}>

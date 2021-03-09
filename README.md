@@ -182,3 +182,6 @@ app.use('/uploads', express.static('uploads'));
 - 개선기회가 되면 반드시 수정해서 만들어보겠음
 - 결국 react infinite scroll을 사용했으며, 검색하는 경우 해당 컴포넌트 부분을 초기화해서 리렌더링 하는 방식으로 startPage를 초기화 함
 - 해당 부분은 수거자원 목록에서 확인가능
+
+### 2021-03-09
+ - 최적화 작업 진행중

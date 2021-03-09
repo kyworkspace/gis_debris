@@ -16,26 +16,31 @@ function TableList(props) {
     const ListinReducer = useSelector(state => state.mapReducer); //리듀서에서 가져온 항목
     const type = props.type;
 
-    const onViewDetail = (item) => { // 상세보기
-        props.detailDisplay(item)
-    }
-    const onMoveToPoint = (item) => { //좌표로 위치 이동
-        //좌표가 있을때만 실행
-        if (item.coordinate) {
-            mapMove(item.coordinate)
-        } else {
-            message.warning("저장된 좌표가 없습니다.")
-        }
-        switch (type) {
-            case "invList":
-                InvService.invServiceDisplay(item.seq)
-                break;
+    const onViewDetail = useCallback( // 상세보기
+        (item) => {
+            props.detailDisplay(item)
+        },
+        [],
+    )
+    const onMoveToPoint = useCallback(
+        (item) => {
+            //좌표가 있을때만 실행
+            if (item.coordinate) {
+                mapMove(item.coordinate)
+            } else {
+                message.warning("저장된 좌표가 없습니다.")
+            }
+            switch (type) {
+                case "invList":
+                    InvService.invServiceDisplay(item.seq)
+                    break;
 
-            default:
-                break;
-        }
-    }
-
+                default:
+                    break;
+            }
+        },
+        [],
+    )
     const changeList=(type)=>{
         switch (type) {
             case "invList":
