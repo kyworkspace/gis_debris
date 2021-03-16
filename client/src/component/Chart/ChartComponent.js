@@ -38,55 +38,60 @@ const colorArray={
 function ChartComponent(props) {
     const {data} = props;
     console.log(data)
+    let sortedData = data.sort((a,b)=>{
+        let ayear = a.col_year||a.inv_year
+        let byear = b.col_year||b.inv_year
+        return ayear-byear
+      });
     const dataList = {
       //x축 라벨 ==> 년도
-        labels: data.map(item=>{return item.col_year||item.inv_year}),
+        labels: sortedData.map(item=>{return item.col_year||item.inv_year}),
         datasets: [
           {
             label: '수거량',
-            data: data.map(item=>{return item.col_amount}),
+            data: sortedData.map(item=>{return item.col_amount}),
             fill: false,
             backgroundColor: colorArray.red.backgroundColor,
             borderColor: colorArray.red.borderColor,
           },
           {
             label: '조사량',
-            data: data.map(item=>{return item.inv_amount}),
+            data: sortedData.map(item=>{return item.inv_amount}),
             fill: false,
             backgroundColor: colorArray.blue.backgroundColor,
             borderColor: colorArray.blue.borderColor,
           },
           {
             label: '어망',
-            data: data.map(item=>{return item.col_fishing_net}),
+            data: sortedData.map(item=>{return item.col_fishing_net}),
             fill: false,
             backgroundColor: colorArray.brown.backgroundColor,
             borderColor: colorArray.brown.borderColor,
           },
           {
             label: '고철류',
-            data: data.map(item=>{return item.col_scrap}),
+            data: sortedData.map(item=>{return item.col_scrap}),
             fill: false,
             backgroundColor: colorArray.green.backgroundColor,
             borderColor: colorArray.green.borderColor,
           },
           {
             label: '그물',
-            data: data.map(item=>{return item.col_nettrap}),
+            data: sortedData.map(item=>{return item.col_nettrap}),
             fill: false,
             backgroundColor: colorArray.yellow.backgroundColor,
             borderColor: colorArray.yellow.borderColor,
           },
           {
             label: '로프',
-            data: data.map(item=>{return item.col_rope}),
+            data: sortedData.map(item=>{return item.col_rope}),
             fill: false,
             backgroundColor: colorArray.orange.backgroundColor,
             borderColor: colorArray.orange.borderColor,
           },
           {
             label: '기타',
-            data: data.map(item=>{return item.col_etc}),
+            data: sortedData.map(item=>{return item.col_etc}),
             fill: false,
             backgroundColor: colorArray.purple.backgroundColor,
             borderColor: colorArray.purple.borderColor,
