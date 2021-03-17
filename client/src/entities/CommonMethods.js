@@ -8,8 +8,12 @@ import Axios from 'axios';
  * 공통적으로 쓰이는 함수를 처리하는 곳
  * **********************************/
 
-
-//좌표 이동 함수
+/***
+ * 좌표 이동 함수 
+ * 
+ * [] 형태로 경도, 위도 필요
+ * 
+ * **/
 export const mapMove = (coordinate) => {
   view.animate({
     center: coordinate,
