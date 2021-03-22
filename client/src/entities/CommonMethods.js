@@ -171,14 +171,28 @@ export const pictureInsert = (file)=>{
 /**
  * 무한 스크롤할때 페이지 순차 처리할 큐
  * **/
-export class Queue {
-  constructor() {
-      this._arr = [];
-    }
-    enqueue(item) {
-      this._arr.push(item);
-    }
-    dequeue() {
-      return this._arr.shift();
-    }
+// export class Queue {
+//   constructor() {
+//       this._arr = [];
+//     }
+//     enqueue(item) {
+//       this._arr.push(item);
+//     }
+//     dequeue() {
+//       return this._arr.shift();
+//     }
+// }
+
+/**
+ *  * 날짜 계산해서 yyyy-mm-ddThh24:mi  형태로 바꿔주는거 
+ * **/
+export const dateToString=(Date)=>{
+
+  const year = Date.getFullYear()-1;
+  const month = Date.getMonth()+1>=10?Date.getMonth()+1:"0"+(Date.getMonth()+1);
+  const date = Date.getDate();
+  const hour = Date.getHours()>=10 ? Date.getHours() : "0"+Date.getHours();
+  const min = Date.getMinutes()>=10 ? Date.getMinutes() : "0"+Date.getMinutes();
+
+  return year+"-"+month+"-"+date+"T"+hour+":"+min;
 }

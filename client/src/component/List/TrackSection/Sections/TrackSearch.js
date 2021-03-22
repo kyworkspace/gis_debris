@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { dateToString } from '../../../../entities/CommonMethods';
 
 const shipType=[
     {
@@ -45,14 +46,11 @@ const useStyles = makeStyles((theme) => ({
   })
 );
 const today = new Date();
-//페이지 열릴때 기본 날짜 현재달 -1
-const year = today.getFullYear();
-const month = today.getMonth()+1>=10?today.getMonth():"0"+(today.getMonth()+1);
-const date = today.getDate();
-const hour = today.getHours()>=10 ? today.getHours() : "0"+today.getHours();
-const min = today.getMinutes()>=10 ? today.getMinutes() : "0"+today.getMinutes();
-const startDate = year+"-"+(month-1>10?month-1:"0"+(month-1))+"-"+date+"T"+hour+":"+min;
-const endDate = year+"-"+month+"-"+date+"T"+hour+":"+min;
+//페이지 열릴때 기본 날짜 현재날짜 -7
+const past = new Date();
+past.setDate(today.getDate()-7)
+const startDate = dateToString(past);
+const endDate = dateToString(today);
   
 function TrackSearch(props) {
     const classes = useStyles();

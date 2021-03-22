@@ -12,6 +12,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {message} from 'antd';
 import TrackRows from './Sections/TrackRows';
 import { selectTrackList } from '../../../entities/CallbackMethod';
+import { dateToString } from '../../../entities/CommonMethods';
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -50,14 +51,11 @@ const columns =[
     }
 
 ]
-let dateTime = new Date();
-const year = dateTime.getFullYear();
-const month = dateTime.getMonth()+1>10? (dateTime.getMonth()+1):"0"+(dateTime.getMonth()+1);
-const date = dateTime.getDate() > 10 ? dateTime.getDate() : "0"+dateTime.getDate();
-const hour = dateTime.getHours()>10 ? dateTime.getHours() : "0"+dateTime.getHours();
-const min = dateTime.getMinutes()>10 ? dateTime.getMinutes() : "0"+dateTime.getMinutes();
-const startDate = year+"-"+(month-1>10?month-1:"0"+(month-1))+"-"+date+"T"+hour+":"+min;
-const endDate = year+"-"+month+"-"+date+"T"+hour+":"+min;
+const dateTime = new Date();
+const past = new Date();
+past.setDate(dateTime.getDate()-7)
+const startDate = dateToString(past);
+const endDate = dateToString(dateTime)
 
 function TrackListComponent() {
     const classes = useStyles();
