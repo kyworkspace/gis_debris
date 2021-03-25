@@ -168,6 +168,7 @@ export const pictureInsert = (file)=>{
   })
 }
 
+
 /**
  * 무한 스크롤할때 페이지 순차 처리할 큐
  * **/
@@ -188,11 +189,23 @@ export const pictureInsert = (file)=>{
  * **/
 export const dateToString=(Date)=>{
 
-  const year = Date.getFullYear()-1;
+  const year = Date.getFullYear();
   const month = Date.getMonth()+1>=10?Date.getMonth()+1:"0"+(Date.getMonth()+1);
   const date = Date.getDate();
   const hour = Date.getHours()>=10 ? Date.getHours() : "0"+Date.getHours();
   const min = Date.getMinutes()>=10 ? Date.getMinutes() : "0"+Date.getMinutes();
 
   return year+"-"+month+"-"+date+"T"+hour+":"+min;
+}
+
+/**
+ * JSON TO Array
+ * **/
+export const JsonToArray=(object)=>{
+  let returnArr = [];
+  const jsonKeys = Object.keys(object);
+  for(let i =0 ;i <jsonKeys.length ; i++ ){
+    returnArr.push(object[jsonKeys[i]]);
+  }
+  return returnArr;
 }

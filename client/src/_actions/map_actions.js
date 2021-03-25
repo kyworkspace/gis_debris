@@ -8,7 +8,7 @@ import {
     LOAD_MARINE_ZONE_LIST,
     SELECT_VECTOR_LAYER,
     ADD_TRACK_TARGET_TO_STORE,
-    SET_TRACK_VISIBILITY
+    SET_TRACK_VISIBILITY,
 } from './types';
 
 export function LoadMarineZone(){
@@ -64,12 +64,18 @@ export function MarineZoneListInit(response){
     let marineZoneList = parser.readFeatures(response);
     let marineZoneListConvert = marineZoneList.map((item,i)=>{
         let property = item.getProperties();
+        let coordis = item.getGeometry().getCoordinates()[0][0];
+        let area = [];
+        coordis.forEach(item => {
+            area.push(item[0]+" "+item[1]);
+        });
         let convertResult = {
             ...property,
             seq : (i+1),
             id : property.salareano+property.salareasub,
             name : property.lreareano + "-" + property.salareasub,
-            coordinate : getCenter(item.getGeometry().getExtent())
+            coordinate : getCenter(item.getGeometry().getExtent()),
+            area : area
         }
         return convertResult;
     })
@@ -88,7 +94,7 @@ export function setSelectVectorLayer(selectedVectorLayer){
 }
 
 export function AddTrackTargetToStore(Feature){
-    Feature.key = Feature.mmsi;
+    Feature.key = Feature.id;
     return {
         type : ADD_TRACK_TARGET_TO_STORE,
         payload : Feature

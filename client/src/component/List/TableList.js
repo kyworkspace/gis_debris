@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { Button, message, PageHeader } from 'antd';
 import { useSelector } from 'react-redux';
 import { mapMove } from '../../entities/CommonMethods';
@@ -11,14 +11,16 @@ import VideoListComponent from './CCTVSection/VideoListComponent';
 import { DeleteOutlined } from '@ant-design/icons';
 import { trackSource, videoSource } from '../../entities/FeatureLayer';
 import CollectionListComponent from './CollectionSection/CollectionListComponent';
+import { DETAIL_DISPLAY, MenuTypeContext, MOVE_TO_PREV } from '../Navbar/MainComponent';
 
 function TableList(props) {
+    const {menu,dispatch} = useContext(MenuTypeContext)
     const ListinReducer = useSelector(state => state.mapReducer); //리듀서에서 가져온 항목
-    const type = props.type;
+    //const type = props.type;
 
     const onViewDetail = useCallback( // 상세보기
         (item) => {
-            props.detailDisplay(item)
+            dispatch({type : DETAIL_DISPLAY, item})
         },
         [],
     )
@@ -30,7 +32,7 @@ function TableList(props) {
             } else {
                 message.warning("저장된 좌표가 없습니다.")
             }
-            switch (type) {
+            switch (menu) {
                 case "invList":
                     InvService.invServiceDisplay(item.seq)
                     break;
@@ -41,8 +43,8 @@ function TableList(props) {
         },
         [],
     )
-    const changeList=(type)=>{
-        switch (type) {
+    const changeList=(menu)=>{
+        switch (menu) {
             case "invList":
                 return {
                     title : "조사사업 목록",
@@ -67,7 +69,7 @@ function TableList(props) {
                     List : [],
                     title : "항적조회",
                     clearLayer : ()=>trackSource.clear(),
-                    component : <TrackListComponent moveToPoint={onMoveToPoint} viewDetail={onViewDetail} />
+                    component : <TrackListComponent/>
                 }
             case "videoList":
                 return {
@@ -86,12 +88,12 @@ function TableList(props) {
                 break;
         }
     }
-    const contentList = useMemo(() => changeList(type), [type])
+    const contentList = useMemo(() => changeList(menu), [menu])
     return (
         <React.Fragment>
             <PageHeader
                 className="site-page-header"
-                onBack={() => props.listHide()}
+                onBack={() => dispatch({type:MOVE_TO_PREV})}
                 title={[contentList.title,<Button type="primary" shape="round" onClick={contentList.clearLayer}><DeleteOutlined /></Button>]}
             />
             { contentList.component }

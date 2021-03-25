@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import 'ol/ol.css';
 import { useDispatch, useSelector } from "react-redux";
 import { InvestigationListInit, MarineZoneListInit } from '../../_actions/map_actions';
+import { ShipListInit } from '../../_actions/ship_actions';
 import { MainMap as map } from '../../entities/MapLayer';
 import { InvService} from '../../entities/InvestigationZone'
 import { getMarineZoneList } from '../../entities/MarineZone';
@@ -32,14 +33,6 @@ function MainMap() {
     getMarineZoneList().then(result => {
       dispatch(MarineZoneListInit(result));
     })
-    // selectCollectionServiceList().then(response=>{
-    //   if(response.data.success){
-    //     dispatch(CollectionListInit(response.data.objList))
-    //   }else{
-    //     message.error(response.data.err.hint)
-    //   }
-      
-    // })
     map.addLayer(InvService.getInvServiceLayer())
     setMapTargetSet(true);
 

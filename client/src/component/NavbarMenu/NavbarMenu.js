@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo, useContext } from 'react'
 import { Menu } from 'antd';
 import {
   DesktopOutlined,
@@ -8,28 +8,35 @@ import {
   UserOutlined,
   VideoCameraOutlined
 } from '@ant-design/icons';
+import { MenuTypeContext, MENU_CHANGE } from '../Navbar/MainComponent';
 
 const { SubMenu } = Menu;
 
-function NavbarMenu(props) {
+const NavbarMenu=memo(() =>{
+  const {type,dispatch} = useContext(MenuTypeContext)
+
+  const onMenuSelect =(menu)=>{
+    dispatch({type:MENU_CHANGE,menu})
+  }
+
   return (
     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-      <Menu.Item key="2" icon={<DesktopOutlined />} onClick={() => props.menuSelect("trackList")}>
+      <Menu.Item key="2" icon={<DesktopOutlined />} onClick={() => onMenuSelect("trackList")}>
         항적정보
       </Menu.Item>
-      <Menu.Item key="3" icon={<DesktopOutlined />} onClick={() => props.menuSelect("invList")}>
+      <Menu.Item key="3" icon={<DesktopOutlined />} onClick={() => onMenuSelect("invList")}>
         조사사업
       </Menu.Item>
-      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={() => props.menuSelect("colList")}>
+      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={() => onMenuSelect("colList")}>
         수거사업
       </Menu.Item>
-      <Menu.Item key="5" icon={<DesktopOutlined />} onClick={() => props.menuSelect("marineZoneList")}>
+      <Menu.Item key="5" icon={<DesktopOutlined />} onClick={() => onMenuSelect("marineZoneList")}>
         오염현황(해구)
       </Menu.Item>
-      <Menu.Item key="6" icon={<VideoCameraOutlined />} onClick={() => props.menuSelect("videoList")}>
+      <Menu.Item key="6" icon={<VideoCameraOutlined />} onClick={() => onMenuSelect("videoList")}>
         CCTV 정보
       </Menu.Item>
-      <Menu.Item key="7" icon={<PieChartOutlined />} onClick={() => props.menuSelect("LayerList")}>
+      <Menu.Item key="7" icon={<PieChartOutlined />} onClick={() => onMenuSelect("LayerList")}>
         레이어정보
       </Menu.Item>
       {/* <SubMenu key="sub1" icon={<PieChartOutlined />} title="조사사업">
@@ -47,6 +54,6 @@ function NavbarMenu(props) {
       </Menu.Item>
     </Menu>
   )
-}
+})
 
 export default NavbarMenu

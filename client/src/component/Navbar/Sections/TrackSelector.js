@@ -20,8 +20,8 @@ function TrackSelector(props) {
             dataIndex : "input"
         },
         {
-            title : "MMSI",
-            dataIndex : "mmsi"
+            title : "선박번호",
+            dataIndex : "id"
         },
         {
             title : "선박명",
@@ -57,7 +57,7 @@ function TrackSelector(props) {
             })
         }else{
             setTrackVisibilityInStore(searchParam)
-            removeTrackHisRecord(searchParam.mmsi)
+            removeTrackHisRecord(searchParam.id)
         }
     }
     //TrackList 조절하는 Effect

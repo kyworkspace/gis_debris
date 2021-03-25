@@ -48,11 +48,12 @@ const useStyles = makeStyles((theme) => ({
 const today = new Date();
 //페이지 열릴때 기본 날짜 현재날짜 -7
 const past = new Date();
-past.setDate(today.getDate()-7)
+past.setDate(today.getDate()-1)
 const startDate = dateToString(past);
 const endDate = dateToString(today);
   
 function TrackSearch(props) {
+    const {btnState,searchHandler}  = props;
     const classes = useStyles();
     const [ShipType, setShipType] = useState(1);
     const [StartDate, setStartDate] = useState(startDate);
@@ -85,7 +86,7 @@ function TrackSearch(props) {
             startDate : StartDate,
             endDate : EndDate
         }
-        props.searchHandler(variable);
+        searchHandler(variable);
     }
     return (
         <form className={classes.root} noValidate autoComplete="off" onSubmit={onSearchHandler}>
@@ -130,10 +131,10 @@ function TrackSearch(props) {
                         />
                     </div>
                     <div style={{textAlign:"right"}}>
-                        <Button variant="contained" color="secondary" style={{margin:5}} onClick={onResetHandler}>
+                        <Button variant="contained" color="secondary" style={{margin:5}} onClick={onResetHandler} disabled={btnState}>
                             초기화
                         </Button>
-                        <Button variant="contained" color="primary" style={{margin:5}} onClick={onSearchHandler}>
+                        <Button variant="contained" color="primary" style={{margin:5}} onClick={onSearchHandler} disabled={btnState}>
                             검색
                         </Button>
                     </div>

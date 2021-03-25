@@ -1,9 +1,11 @@
 import { Card } from 'antd'
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { MenuTypeContext, MENU_CHANGE } from '../../Navbar/MainComponent';
 
 function MarineZoneDetailComponent(props) {
-    const {item} = props;
+    const {detailItem,dispatch} = useContext(MenuTypeContext)
+    const item = detailItem;
         
     const contents=[
         {
@@ -42,7 +44,7 @@ function MarineZoneDetailComponent(props) {
             id: 4,
             title : "선박항적정보",
             detailFunction:(item)=>{
-                console.log("선박항적정보 상세",item)
+                dispatch({type : MENU_CHANGE, menu: "trackList", detailItem : item.area})
             },
             moveToFunction:(item)=>{
                 console.log("선박항적정보 위치이동",item)

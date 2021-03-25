@@ -1,5 +1,5 @@
 import React from 'react';
-import LeftNav from '../component/Navbar/LeftNav';
+import MainComponent from '../component/Navbar/MainComponent';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,7 +16,7 @@ function App() {
     <Router>
         <div>
           <Switch >
-            <Route exact path="/" component={LeftNav}/>
+            <Route exact path="/" component={MainComponent}/>
             <Route exact path="/MarineZoneDetail/:marineZoneId" component={WindowSectionModal}/>
           </Switch>
         </div>

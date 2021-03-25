@@ -8,7 +8,7 @@ function ListSearchBar(props) {
         props.onInputChange(e.currentTarget.value)
     }
     const onSearchButtonHandler=()=>{
-        props.searchButtonHandler();
+        //props.searchButtonHandler();
     }
     return (
         <div

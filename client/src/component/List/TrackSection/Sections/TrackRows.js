@@ -21,6 +21,25 @@ const useRowStyles = makeStyles({
   });
 const { RangePicker } = DatePicker;
 
+const VpassTrackConverter = (vpassTrack)=>{
+   
+   let trackList = vpassTrack.map(item=>{
+     let obj = new Object();
+    obj.mmsi = item.rfid_id;
+    obj.cog = item.rfid_cog;
+    obj.sog = item.rfid_sog;
+    obj.geom_lon = item.rfid_lon/600000;
+    obj.geom_lat = item.rfid_lat/600000;
+    obj.heading = item.rfid_hdg;
+    obj.rot = item.rfid_cog;
+
+    return obj;
+   })
+
+   return trackList;
+}
+
+
 function TrackRows(props) {
     const dispatch = useDispatch();
 
@@ -34,7 +53,7 @@ function TrackRows(props) {
         setStartDate(str[0]);
         setendDate(str[1]);
     }
-    const onTrackDiplayHandler=(mmsi)=>{
+    const onTrackDiplayHandler=(shipId)=>{
       if(startDate === ""){
         alert("항적조회 시작날짜를 선택해주십시오")
         return ;
@@ -43,9 +62,13 @@ function TrackRows(props) {
         alert("항적조회 종료날짜를 선택해주십시오")
         return ;
       }
-
+      if(shipId.length > 8){
+        alert("RFID 만 확인 가능합니다.")
+        return ;
+      }
+      
       let body={
-        mmsi : mmsi,
+        id : shipId,
         name : row.ship_ko_nm,
         startDate : startDate,
         endDate : endDate,
@@ -56,7 +79,9 @@ function TrackRows(props) {
           if(response.data.trackList.length===0){
             message.info("조회된 항적이 없습니다.")
           }else{
-            parseShipHisRecords(response.data.trackList,mmsi)
+            console.log(shipId)
+            
+            parseShipHisRecords(VpassTrackConverter(response.data.trackList),shipId);
             //리덕스에 추가함
             dispatch(AddTrackTargetToStore(body));
             rerenderNotification("TrackChoice");
@@ -76,7 +101,7 @@ function TrackRows(props) {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell align="right">{row.mmsi_id}</TableCell>
+          <TableCell align="right">{row.mmsi_id === '0' ? row.rfid_id=== '0' ? row.ship_id : row.rfid_id : row.mmsi_id}</TableCell>
           <TableCell align="right">{row.ship_ko_nm}</TableCell>
           <TableCell align="right">{props.timeViewer ?<p> {stringToDate(row.record_time)}<br/>{stringToTime(row.record_time)} </p>:stringToDate(row.record_time) }</TableCell>
         </TableRow>
@@ -112,7 +137,7 @@ function TrackRows(props) {
                 </Typography>
                 <hr/>
                 <RangePicker showTime style={{width:350}} onChange={onRangePickerHandler} defaultValue={null}/>
-                <Button type="primary" icon={<SearchOutlined />} onClick={()=>onTrackDiplayHandler(row.mmsi_id)}>
+                <Button type="primary" icon={<SearchOutlined />} onClick={()=>onTrackDiplayHandler(row.mmsi_id === '0' ? row.rfid_id=== '0' ? row.ship_id : row.rfid_id : row.mmsi_id)}>
                     Search
                 </Button>
               </Box>

@@ -47,8 +47,14 @@ export const getTrackList=(body)=>{
  * @param endDate
  * ****/
 export const selectTrackList=(body)=>{
+    // var config = {
+    //     onUploadProgress: function(progressEvent) {
+    //       var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+    //       console.log(percentCompleted);
+    //     }
+    //   };
     return new Promise((resolve,reject)=>{
-        axios.post("/gis/track/list",body)        
+        axios.post("/gis/track/list",body )        
         .then(response=>{
             resolve(response)
         })
@@ -86,6 +92,20 @@ export const getCollectionServiceListCount=(body)=>{
         })
     })
 }
+/**
+ * 선박 목록
+ * ***/
+ export const selectShipInfoList = (shipIdList)=>{
+     let body = {
+         ids : shipIdList
+     }
+    return new Promise((resolve,reject)=>{
+      axios.post("/gis/track/selectShipList",body)
+      .then(response=>{
+          resolve(response.data);
+      })
+    })
+  }
 /**
  * File 업로드
  * @param OBJECT

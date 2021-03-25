@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { PageHeader } from 'antd';
 import InvestigationDetailComponent from './InvestigationSection/InvestigationDetailComponent';
 import MarineZoneDetailComponent from './MarineZoneSection/MarineZoneDetailComponent';
+import { MenuTypeContext, MOVE_TO_PREV } from '../Navbar/MainComponent';
 
 
-function TableDetail(props) {
-
+function TableDetail() {
+    const {menu,dispatch,detailItem} = useContext(MenuTypeContext)
     const [Title, setTitle] = useState("");
 
     useEffect(() => {
-        switch (props.type) {
+        switch (menu) {
             case "invList":  
                 setTitle("조사사업 상세정보")
                 break;
             case "marineZoneList" :
-                setTitle(`${props.detailItem.name} 해구 정보 목록`)
+                setTitle(`${detailItem.name} 해구 정보 목록`)
                 break;
             case "trackList" :
                 break;
@@ -27,13 +28,12 @@ function TableDetail(props) {
         <div >
             <PageHeader
                 className="site-page-header"
-                onBack={() => props.listHide()}
+                onBack={() => dispatch({type : MOVE_TO_PREV})}
                 title={Title}
             />
             <hr/>
-            {props.type==="invList" &&  <InvestigationDetailComponent item={props.detailItem}/> }
-            {props.type==="marineZoneList" &&  <MarineZoneDetailComponent item={props.detailItem}/> }
-            
+            {menu==="invList" &&  <InvestigationDetailComponent item={detailItem}/> }
+            {menu==="marineZoneList" &&  <MarineZoneDetailComponent/> }
         </div>
     )
 }
