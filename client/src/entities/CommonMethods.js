@@ -230,3 +230,24 @@ export const VpassTrackConverter = (vpassTrack)=>{
 
   return trackList;
 }
+export const trackTermSearch=(startDate,term)=>{
+  let returnStr = [];
+  for(let i = 0 ; i < term+1; i++){
+      let startTerm = new Date(startDate);
+      let tmpDate = new Date();
+      tmpDate.setFullYear(startTerm.getFullYear());
+      tmpDate.setMonth(startTerm.getMonth());
+      tmpDate.setDate(startTerm.getDate()+i);
+      
+      returnStr.push(`th_track_${dateyyyymmdd(tmpDate)}`);
+  }
+  return returnStr;
+  
+}
+const dateyyyymmdd=(Date)=>{
+  let year = Date.getFullYear();
+  let month = Date.getMonth()+1 >= 10 ? Date.getMonth()+1 : "0"+(Date.getMonth()+1);
+  let date = Date.getDate() >= 10 ? Date.getDate() : "0"+Date.getDate();
+
+  return year+""+month+""+date;
+}

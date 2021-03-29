@@ -2,15 +2,17 @@ import { IconButton,TableCell,TableRow,Collapse,Box,makeStyles } from '@material
 import { SearchOutlined } from '@ant-design/icons';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import {stringToDate,stringToTime, VpassTrackConverter} from '../../../../entities/CommonMethods';
+import {stringToDate,stringToTime, trackTermSearch, VpassTrackConverter} from '../../../../entities/CommonMethods';
 import { Button, DatePicker, Divider, message, Typography  } from 'antd';
 import { Descriptions } from 'antd';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {parseShipHisRecords} from '../../../../entities/TrackHistory'
 import {useDispatch} from 'react-redux';
 import {AddTrackTargetToStore} from '../../../../_actions/map_actions'
 import { rerenderNotification } from '../../../Notification/Notification';
 import { getTrackList } from '../../../../entities/CallbackMethod';
+import async from 'async'
+import { TrackSearchContext } from '../TrackListComponent';
 
 const useRowStyles = makeStyles({
     root: {
@@ -25,7 +27,7 @@ const { RangePicker } = DatePicker;
 
 function TrackRows(props) {
     const dispatch = useDispatch();
-
+    const context = useContext(TrackSearchContext)
     const { row } = props;
     const [startDate, setStartDate] = useState("");
     const [endDate, setendDate] = useState("")
@@ -50,27 +52,57 @@ function TrackRows(props) {
         return ;
       }
       
-      let body={
-        id : shipId,
-        name : row.ship_ko_nm,
-        startDate : startDate,
-        endDate : endDate,
-        visible : true
-      }
-      getTrackList(body).then(response=>{
-        if(response.data.success){
-          if(response.data.trackList.length===0){
-            message.info("조회된 항적이 없습니다.")
-          }else{
-            parseShipHisRecords(VpassTrackConverter(response.data.trackList),shipId);
-            //리덕스에 추가함
-            dispatch(AddTrackTargetToStore(body));
-            rerenderNotification("TrackChoice");
-          }
-        }else{
-          message.error(response.data.err.hint)
+      
+      let term = new Date(new Date(endDate)-new Date(startDate))/86400000;
+      let tableList = trackTermSearch(startDate,term);
+      let trackList = [];
+      context.setLoadingTrack(true);
+      context.setEndDate(new Date(endDate).toLocaleDateString()); 
+      console.log(tableList);
+      async.forEach(tableList, function(tableName,callback){
+        let body={
+          id : shipId,
+          name : row.ship_ko_nm,
+          tableName : tableName,
+          visible : true
         }
-      })
+        context.setSearchingDate(tableName);
+
+        getTrackList(body).then(response=>{
+
+          if(response.data.success){
+            context.setLoadingTrackPercent(Math.floor((tableList.indexOf(tableName)+1)/tableList.length *100))
+            if(response.data.trackList.length===0){
+              console.log(tableName+" 테이블 값 없음")
+              callback();
+            }else{
+              trackList.push(...response.data.trackList);
+              console.log(tableName+" 테이블 조회 완료")
+              callback();  
+            }
+          }
+        })
+
+      },function(err){
+        if(err) return alert("에러발생")
+        console.log('조회 완료')
+        
+        //항적 표시
+        parseShipHisRecords(VpassTrackConverter(trackList),shipId);
+        //리덕스 추가
+        dispatch(AddTrackTargetToStore({
+          id : shipId,
+          name : row.ship_ko_nm,
+          startDate : startDate,
+          endDate : endDate,
+          visible : true
+        }));
+        // 항적상자 오픈
+        rerenderNotification("TrackChoice");
+        //로딩 끝내기
+        context.setLoadingTrack(false);
+      });
+      
   }
 
     

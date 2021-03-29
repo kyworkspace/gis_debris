@@ -25,16 +25,8 @@ router.post("/track",(req,res)=>{
     const client = new Client(config.TrackDBAccess)
     client.connect();
 
-    let {id,startDate,endDate} = req.body
-    let startTerm = new Date(startDate)
-    let endTerm = new Date(endDate);
-    let term = new Date(endTerm-startTerm)/86400000;
-
-    let tableList = trackTermSearch(startTerm,term);
-
-    let trackList = [];
-    async.forEach(tableList,function(tableName,callback){
-        let queryString =
+    let {id,tableName} = req.body
+    let queryString =
 	   ` select * from 
 			${tableName} tt
 		where
@@ -43,17 +35,13 @@ router.post("/track",(req,res)=>{
 		rfid_id = '${id}'
         order by rfid_revdate 
 		`
-        client.query(queryString, async function(err,queryRes,fields){
-            await trackList.push(...queryRes.rows);
-            callback();
-        })
-    },function(err){ 
+    console.log(queryString);
+    client.query(queryString, function(err,queryRes,fields){
         client.end();
         if(err){
             return res.status(400).json({success : false,err});
         }else{
-            console.log(trackList.length);
-            return res.status(200).json({success : true,trackList}) ;
+            return res.status(200).json({success : true,trackList:queryRes.rows,tableName}) ;
         }
     })
 })
@@ -89,7 +77,6 @@ router.post("/list", (req,res)=>{
             ""
 		}
 		`
-        console.log(queryString)
         client.query(queryString, async function(err,queryRes,fields){            
             await queryRes.rows.forEach(item=>{
                 shipInAreaList[item.rfid_id ] = item.rfid_id;
