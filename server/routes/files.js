@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const fs = require('fs')
 const config = require("../config/key");
 
 /**
@@ -47,7 +48,17 @@ var storage = multer.diskStorage({
  //이미지를 여러개 받을때는 array('키',최대 갯수)로 한다. 하면 되는데 안되서...files를 map으로 돌려서 업로드 하도록 함
  var uploadPicture = multer({ storage: storage }).single("file")
 
+ const makeFolder = (dir) => {
+  if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+  } else {
+  }
+}
+
 router.post('/upload/picture',(req,res)=>{
+  //폴더 확인 및 생성
+  makeFolder(`./uploads/pictures`)
+
   uploadPicture(req,res,(err)=>{
       //실패했을때
       if(err) return res.json({success:false, err});
