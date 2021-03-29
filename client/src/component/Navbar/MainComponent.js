@@ -61,6 +61,12 @@ const reducer = (state,action)=>{
         case LIST_DISPLAY:
             return{
                 ...state,
+                prevMenu:{
+                    menu : state.menu,
+                    listDisplay : state.listDisplay,
+                    detailDisplay : state.detailDisplay,
+                    detailItem : state.detailItem,
+                },
                 listDisplay : true,
                 detailDisplay : false,
                 detailItem : {},
@@ -68,6 +74,12 @@ const reducer = (state,action)=>{
         case DETAIL_DISPLAY:
             return{
                 ...state,
+                prevMenu:{
+                    menu : state.menu,
+                    listDisplay : state.listDisplay,
+                    detailDisplay : state.detailDisplay,
+                    detailItem : state.detailItem,
+                },
                 detailItem : action.item,
                 listDisplay : false,
                 detailDisplay : true,
