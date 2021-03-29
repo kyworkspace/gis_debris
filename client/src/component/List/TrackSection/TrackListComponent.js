@@ -52,9 +52,12 @@ const columns =[
     }
 
 ]
-const dateTime = new Date();
-const past = new Date();
+//검색 초기 날짜
+const dateTime = new Date(2021,0,1);
+const past = new Date(2021,0,1);
 past.setDate(dateTime.getDate()-1)
+console.log('dateTime.toDateString',dateTime.toDateString())
+console.log('past.toDateString',past.toDateString())
 const startDate = dateToString(past);
 const endDate = dateToString(dateTime)
 
@@ -93,22 +96,24 @@ const TrackListComponent=() =>{
         selectTrackList(body)
         .then(response=>{
             if(response.data.success){
-                if(response.data.shipInAreaList){
-                    console.log('선박 호출 완료')
-                    message.success("항적이 있는 선박을 조회하였습니다.")
+                const {shipInAreaList} = response.data;
+                message.success("항적이 있는 선박을 조회하였습니다.")
+                if(Object.keys(shipInAreaList).length > 0 ){
                     message.info("선박정보를 호출합니다.")
-                    selectShipInfoList(JsonToArray(response.data.shipInAreaList))
+                    selectShipInfoList(JsonToArray(shipInAreaList))
                     .then(response=>{
                         if(response.success){
                             setTrackList(response.shipList);
                             message.info("선박정보를 호출하였습니다.")
+                            setLoading(false)
                         }else{
-                          message.error("선박정보 호출에 실패하였습니다.")  
+                        message.error("선박정보 호출에 실패하였습니다.")  
+                        setLoading(false)
                         }
                     })
-                    setLoading(false)
                 }else{
-                    setLoading(true)
+                    message.info("항적 기록이 없습니다.")
+                    setLoading(false)
                 }
             }else{
                 console.log(response.data.err)

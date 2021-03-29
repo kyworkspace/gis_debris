@@ -6,6 +6,7 @@ import {setTrackHistoryVisibility} from '../../../_actions/map_actions'
 import TrackDisplayButton from './TrackDisplayButton';
 import { parseShipHisRecords, removeTrackHisRecord } from '../../../entities/TrackHistory';
 import { getTrackList } from '../../../entities/CallbackMethod';
+import { VpassTrackConverter } from '../../../entities/CommonMethods';
 
 function TrackSelector(props) {
     const title ="항적선택"
@@ -49,10 +50,11 @@ function TrackSelector(props) {
     const [TrackList, setTrackList] = useState([])
     
     const onTrackDisplay=(searchParam)=>{
+        console.log(searchParam)
         if(searchParam.visible){
             getTrackList(searchParam)
             .then(response=>{
-                parseShipHisRecords(response.data.trackList,searchParam.mmsi)
+                parseShipHisRecords(VpassTrackConverter(response.data.trackList),searchParam.id);
                 setTrackVisibilityInStore(searchParam)
             })
         }else{

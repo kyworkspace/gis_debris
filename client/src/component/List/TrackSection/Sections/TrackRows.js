@@ -2,7 +2,7 @@ import { IconButton,TableCell,TableRow,Collapse,Box,makeStyles } from '@material
 import { SearchOutlined } from '@ant-design/icons';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import {stringToDate,stringToTime} from '../../../../entities/CommonMethods';
+import {stringToDate,stringToTime, VpassTrackConverter} from '../../../../entities/CommonMethods';
 import { Button, DatePicker, Divider, message, Typography  } from 'antd';
 import { Descriptions } from 'antd';
 import React, { useState } from 'react'
@@ -21,23 +21,6 @@ const useRowStyles = makeStyles({
   });
 const { RangePicker } = DatePicker;
 
-const VpassTrackConverter = (vpassTrack)=>{
-   
-   let trackList = vpassTrack.map(item=>{
-     let obj = new Object();
-    obj.mmsi = item.rfid_id;
-    obj.cog = item.rfid_cog;
-    obj.sog = item.rfid_sog;
-    obj.geom_lon = item.rfid_lon/600000;
-    obj.geom_lat = item.rfid_lat/600000;
-    obj.heading = item.rfid_hdg;
-    obj.rot = item.rfid_cog;
-
-    return obj;
-   })
-
-   return trackList;
-}
 
 
 function TrackRows(props) {
@@ -79,8 +62,6 @@ function TrackRows(props) {
           if(response.data.trackList.length===0){
             message.info("조회된 항적이 없습니다.")
           }else{
-            console.log(shipId)
-            
             parseShipHisRecords(VpassTrackConverter(response.data.trackList),shipId);
             //리덕스에 추가함
             dispatch(AddTrackTargetToStore(body));

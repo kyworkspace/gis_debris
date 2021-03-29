@@ -191,7 +191,7 @@ export const dateToString=(Date)=>{
 
   const year = Date.getFullYear();
   const month = Date.getMonth()+1>=10?Date.getMonth()+1:"0"+(Date.getMonth()+1);
-  const date = Date.getDate();
+  const date = Date.getDate()>=10?Date.getDate():"0"+(Date.getDate());
   const hour = Date.getHours()>=10 ? Date.getHours() : "0"+Date.getHours();
   const min = Date.getMinutes()>=10 ? Date.getMinutes() : "0"+Date.getMinutes();
 
@@ -208,4 +208,25 @@ export const JsonToArray=(object)=>{
     returnArr.push(object[jsonKeys[i]]);
   }
   return returnArr;
+}
+
+/**
+ * VPASS -> 공통양식으로 값바꿔줌
+ * **/
+export const VpassTrackConverter = (vpassTrack)=>{
+   
+  let trackList = vpassTrack.map(item=>{
+    let obj = new Object();
+   obj.mmsi = item.rfid_id;
+   obj.cog = item.rfid_cog;
+   obj.sog = item.rfid_sog;
+   obj.geom_lon = item.rfid_lon/600000;
+   obj.geom_lat = item.rfid_lat/600000;
+   obj.heading = item.rfid_hdg;
+   obj.rot = item.rfid_cog;
+
+   return obj;
+  })
+
+  return trackList;
 }
