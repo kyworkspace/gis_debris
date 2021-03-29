@@ -1,61 +1,41 @@
-import { Spin } from 'antd';
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
-import InfiniteScroll from 'react-infinite-scroller'
-import PropType from 'prop-types';
-import {Queue} from '../../entities/CommonMethods.js'
-
-const pageQueue = new Queue();
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 function InfiniteScrollComponent(props) {
+    const divRef = useRef();
 
-    const {CountPerPage,ListContent,LoadNextPage} = props;
-    const [DisplayList, setDisplayList] = useState([]);
-    const [HasMoreItems, setHasMoreItems] = useState(true);
-    const [Loading, setLoading] = useState(false);
+    const [CurrentPage, setCurrentPage] = useState(1)
 
-    const [PageStart, setPageStart] = useState(0)
+    const currentPageRef = useRef(1);
+    useMemo(() => props.pageLoad(CurrentPage), [CurrentPage])
 
-    const onLoadItems =(page)=>{
-        pageQueue.enqueue(page)
-        if(Loading) return;
-        setLoading(true);
-        let addList = [...DisplayList];
-        while(pageQueue._arr.length>0){
-            let callPage = pageQueue.dequeue()
-            LoadNextPage(callPage)
-            .then(response=>{
-                if(response.success){
-                    addList.push(...response.objList)
-                    setLoading(false)
-                }
-            })
+    const infiniteScroll = () => {
+        console.log("???")
+        if(divRef.current ){
+            const st = divRef.current.scrollTop;
+            const ch = divRef.current.clientHeight;
+            const sh = divRef.current.scrollHeight;
+            if(st+ch >=sh){
+                currentPageRef.current = currentPageRef.current+1;
+                console.log(`currentPageRef.current : ${currentPageRef.current}`)
+                setCurrentPage(currentPageRef.current)
+            }
         }
-        setDisplayList(addList);
-        setPageStart(page)
-        if(addList.length<=CountPerPage*page){
-            setHasMoreItems(false)
+
+      };
+
+    useEffect(() => {
+            divRef.current.addEventListener("scroll", infiniteScroll, true);
+        return () => {
+            window.removeEventListener("scroll", infiniteScroll);
         }
-    }
-    const loader = <div className="demo-loading-container"> <Spin /> </div>;
-    
+    }, [])
+
     return (
-        <InfiniteScroll
-            pageStart={PageStart}
-            loadMore={onLoadItems}
-            hasMore={HasMoreItems}
-            loader={loader}
-            useWindow={false}
-        >
-            {ListContent(DisplayList)}
-        </InfiniteScroll>
+        <div ref={divRef} style={{height:'950px', overflowY:'auto'}} className="infiniteScrollDiv">
+            {/* {props.renderFunc} */}
+            {props.children}
+        </div>
     )
-}
-
-InfiniteScrollComponent.propTypes={
-    ContentList:PropType.array,
-    CountPerPage:PropType.number,
-    IndexColumn:PropType.string,
-    ListContent:PropType.func
 }
 
 export default InfiniteScrollComponent

@@ -5,7 +5,8 @@ import {
     LOAD_MARINE_ZONE_LIST,
     SELECT_VECTOR_LAYER,
     ADD_TRACK_TARGET_TO_STORE,
-    SET_TRACK_VISIBILITY
+    SET_TRACK_VISIBILITY,
+    SHIP_LIST_INIT
 } from '../_actions/types';
  
 
@@ -29,7 +30,7 @@ export default function(state={},action){
                 //같은거 검색했는지 찾고 있으면 삭제
                 let removeIdx = -1;
                 state.selectedTrackTarget.map((item,idx)=>{
-                    if(item.mmsi === action.payload.mmsi){
+                    if(item.id === action.payload.id){
                         removeIdx = idx;
                     }
                 })
@@ -48,18 +49,15 @@ export default function(state={},action){
             return {...state, selectedTrackTarget :TargetList}
         case SET_TRACK_VISIBILITY:
             //리덕스에 배열형태로 저장
-            let VisibleList=[];
+            let VisibleList=[...state.selectedTrackTarget];
             //기존에 저장된거 있으면 그거 스프레드로 이어붙일거임
-            if(state.selectedTrackTarget){
+            if(VisibleList){
                 //같은거 검색했는지 찾고 있으면 visible false
-                state.selectedTrackTarget.map((item,idx)=>{
-                    if(item.mmsi === action.payload.mmsi){
+                VisibleList.map((item,idx)=>{
+                    if(item.id === action.payload.id){
                         item.visible = action.payload.visible
                     }
                 })
-                VisibleList = [
-                    ...state.selectedTrackTarget
-                ]
             }
             return {...state,selectedTrackTarget : VisibleList}
         default:

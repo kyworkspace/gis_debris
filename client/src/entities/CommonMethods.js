@@ -8,8 +8,12 @@ import Axios from 'axios';
  * 공통적으로 쓰이는 함수를 처리하는 곳
  * **********************************/
 
-
-//좌표 이동 함수
+/***
+ * 좌표 이동 함수 
+ * 
+ * [] 형태로 경도, 위도 필요
+ * 
+ * **/
 export const mapMove = (coordinate) => {
   view.animate({
     center: coordinate,
@@ -164,17 +168,65 @@ export const pictureInsert = (file)=>{
   })
 }
 
+
 /**
  * 무한 스크롤할때 페이지 순차 처리할 큐
  * **/
-export class Queue {
-  constructor() {
-      this._arr = [];
-    }
-    enqueue(item) {
-      this._arr.push(item);
-    }
-    dequeue() {
-      return this._arr.shift();
-    }
+// export class Queue {
+//   constructor() {
+//       this._arr = [];
+//     }
+//     enqueue(item) {
+//       this._arr.push(item);
+//     }
+//     dequeue() {
+//       return this._arr.shift();
+//     }
+// }
+
+/**
+ *  * 날짜 계산해서 yyyy-mm-ddThh24:mi  형태로 바꿔주는거 
+ * **/
+export const dateToString=(Date)=>{
+
+  const year = Date.getFullYear();
+  const month = Date.getMonth()+1>=10?Date.getMonth()+1:"0"+(Date.getMonth()+1);
+  const date = Date.getDate()>=10?Date.getDate():"0"+(Date.getDate());
+  const hour = Date.getHours()>=10 ? Date.getHours() : "0"+Date.getHours();
+  const min = Date.getMinutes()>=10 ? Date.getMinutes() : "0"+Date.getMinutes();
+
+  return year+"-"+month+"-"+date+"T"+hour+":"+min;
+}
+
+/**
+ * JSON TO Array
+ * **/
+export const JsonToArray=(object)=>{
+  let returnArr = [];
+  const jsonKeys = Object.keys(object);
+  for(let i =0 ;i <jsonKeys.length ; i++ ){
+    returnArr.push(object[jsonKeys[i]]);
+  }
+  return returnArr;
+}
+
+/**
+ * VPASS -> 공통양식으로 값바꿔줌
+ * **/
+export const VpassTrackConverter = (vpassTrack)=>{
+   
+  let trackList = vpassTrack.map(item=>{
+    let obj = new Object();
+   obj.mmsi = item.rfid_id;
+   obj.cog = item.rfid_cog;
+   obj.sog = item.rfid_sog;
+   obj.geom_lon = item.rfid_lon/600000;
+   obj.geom_lat = item.rfid_lat/600000;
+   obj.heading = item.rfid_hdg;
+   obj.rot = item.rfid_cog;
+
+   return obj;
+  })
+
+  return trackList;
 }

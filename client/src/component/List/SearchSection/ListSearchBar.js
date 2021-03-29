@@ -8,11 +8,11 @@ function ListSearchBar(props) {
         props.onInputChange(e.currentTarget.value)
     }
     const onSearchButtonHandler=()=>{
-        props.searchButtonHandler();
+        //props.searchButtonHandler();
     }
     return (
         <div
-                style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto', marginRight: 20 }}
+                style={{ display: 'flex', justifyContent: 'center', margin: '1rem auto'}}
             >
                 <Search
                     placeholder={props.placeholder ? props.placeholder : "검색어를 입력해주세요"}

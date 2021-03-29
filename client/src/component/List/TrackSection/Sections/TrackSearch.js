@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { dateToString } from '../../../../entities/CommonMethods';
 
 const shipType=[
     {
@@ -44,17 +45,16 @@ const useStyles = makeStyles((theme) => ({
     },
   })
 );
-const today = new Date();
-//페이지 열릴때 기본 날짜 현재달 -1
-const year = today.getFullYear();
-const month = today.getMonth()+1>=10?today.getMonth():"0"+(today.getMonth()+1);
-const date = today.getDate();
-const hour = today.getHours()>=10 ? today.getHours() : "0"+today.getHours();
-const min = today.getMinutes()>=10 ? today.getMinutes() : "0"+today.getMinutes();
-const startDate = year+"-"+(month-1>10?month-1:"0"+(month-1))+"-"+date+"T"+hour+":"+min;
-const endDate = year+"-"+month+"-"+date+"T"+hour+":"+min;
+//초기 날짜
+const today = new Date(2021,0,1);
+//페이지 열릴때 기본 날짜 현재날짜 -7
+const past = new Date(2021,0,1);
+past.setDate(today.getDate()-1)
+const startDate = dateToString(past);
+const endDate = dateToString(today);
   
 function TrackSearch(props) {
+    const {btnState,searchHandler}  = props;
     const classes = useStyles();
     const [ShipType, setShipType] = useState(1);
     const [StartDate, setStartDate] = useState(startDate);
@@ -87,7 +87,7 @@ function TrackSearch(props) {
             startDate : StartDate,
             endDate : EndDate
         }
-        props.searchHandler(variable);
+        searchHandler(variable);
     }
     return (
         <form className={classes.root} noValidate autoComplete="off" onSubmit={onSearchHandler}>
@@ -132,10 +132,10 @@ function TrackSearch(props) {
                         />
                     </div>
                     <div style={{textAlign:"right"}}>
-                        <Button variant="contained" color="secondary" style={{margin:5}} onClick={onResetHandler}>
+                        <Button variant="contained" color="secondary" style={{margin:5}} onClick={onResetHandler} disabled={btnState}>
                             초기화
                         </Button>
-                        <Button variant="contained" color="primary" style={{margin:5}} onClick={onSearchHandler}>
+                        <Button variant="contained" color="primary" style={{margin:5}} onClick={onSearchHandler} disabled={btnState}>
                             검색
                         </Button>
                     </div>

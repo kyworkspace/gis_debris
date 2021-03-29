@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import TrackSearch from './Sections/TrackSearch'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -11,7 +11,9 @@ import TableRow from '@material-ui/core/TableRow';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {message} from 'antd';
 import TrackRows from './Sections/TrackRows';
-import { selectTrackList } from '../../../entities/CallbackMethod';
+import { selectShipInfoList, selectTrackList } from '../../../entities/CallbackMethod';
+import { dateToString, JsonToArray } from '../../../entities/CommonMethods';
+import { MenuTypeContext } from '../../Navbar/MainComponent';
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme)=>({
 const columns =[
     {
         id:"mmsi_id",
-        label : "MMSI",
+        label : "MMSI/RFID",
         minWidth : 50,
         maxWidth : 100,
         align :'center'
@@ -50,22 +52,26 @@ const columns =[
     }
 
 ]
-let dateTime = new Date();
-const year = dateTime.getFullYear();
-const month = dateTime.getMonth()+1>10? (dateTime.getMonth()+1):"0"+(dateTime.getMonth()+1);
-const date = dateTime.getDate() > 10 ? dateTime.getDate() : "0"+dateTime.getDate();
-const hour = dateTime.getHours()>10 ? dateTime.getHours() : "0"+dateTime.getHours();
-const min = dateTime.getMinutes()>10 ? dateTime.getMinutes() : "0"+dateTime.getMinutes();
-const startDate = year+"-"+(month-1>10?month-1:"0"+(month-1))+"-"+date+"T"+hour+":"+min;
-const endDate = year+"-"+month+"-"+date+"T"+hour+":"+min;
+//검색 초기 날짜
+const dateTime = new Date(2021,0,1);
+const past = new Date(2021,0,1);
+past.setDate(dateTime.getDate()-1)
+console.log('dateTime.toDateString',dateTime.toDateString())
+console.log('past.toDateString',past.toDateString())
+const startDate = dateToString(past);
+const endDate = dateToString(dateTime)
 
-function TrackListComponent() {
+
+
+const TrackListComponent=() =>{
+
+    const {detailItem} = useContext(MenuTypeContext) //영역임
+    
     const classes = useStyles();
     const [Loading, setLoading] = useState(true);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [TrackList, setTrackList] = useState([]);
-    const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
         searchTrackList();
@@ -84,14 +90,30 @@ function TrackListComponent() {
         if(parameter){
             body = parameter
         }
+        if(detailItem){
+            body.area = detailItem;
+        }
         selectTrackList(body)
         .then(response=>{
             if(response.data.success){
-                if(response.data.obj){
-                    setTrackList(response.data.obj);
-                    setLoading(false)
+                const {shipInAreaList} = response.data;
+                message.success("항적이 있는 선박을 조회하였습니다.")
+                if(Object.keys(shipInAreaList).length > 0 ){
+                    message.info("선박정보를 호출합니다.")
+                    selectShipInfoList(JsonToArray(shipInAreaList))
+                    .then(response=>{
+                        if(response.success){
+                            setTrackList(response.shipList);
+                            message.info("선박정보를 호출하였습니다.")
+                            setLoading(false)
+                        }else{
+                        message.error("선박정보 호출에 실패하였습니다.")  
+                        setLoading(false)
+                        }
+                    })
                 }else{
-                    setLoading(true)
+                    message.info("항적 기록이 없습니다.")
+                    setLoading(false)
                 }
             }else{
                 console.log(response.data.err)
@@ -111,7 +133,7 @@ function TrackListComponent() {
 
     return (
         <div style={{maxWidth:"500px"}}>
-            <TrackSearch searchHandler={searchTrackList}/>
+            <TrackSearch searchHandler={searchTrackList} btnState = {Loading}/>
             {Loading && 
                 <div className={classes.root}>
                     <LinearProgress />
@@ -137,7 +159,7 @@ function TrackListComponent() {
                     </TableHead>
                     <TableBody>
                     {TrackList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(item=>(
-                        <TrackRows row={item} key={item.mmsi_id}/>
+                        <TrackRows row={item} key={item.ship_id}/>
                     ))}
                         
                     </TableBody>

@@ -47,8 +47,34 @@ router.post("/getInvAndColDataInMarinezone",(req,res)=>{
     
     
 })
+router.post("/getColListCount",(req,res)=>{
+    const {Client} = require("pg");
+    const client = new Client(config.DBAccess);
+    client.connect();
+    let {searchTerm,startRowNumber,endRowNumber}=req.body;
+    let queryString=`
+        select 
+            count(*)
+        from tb_odm_col_ser2
+        where 1=1
+        ${searchTerm !==null ? 
+        `and (
+            col_region like '%${searchTerm}%'
+            or col_city like '%${searchTerm}%'
+            ${typeof searchTerm === "number" ? `or col_year = ${searchTerm}`:""}
+        )`
+        :""
+        }
+    `
+    client.query(queryString,(err,queryRes)=>{
+        if(err) return res.json({success:false,err})
+        let listCount= queryRes.rows[0].count;
+        client.end();
+        return res.status(200).json({success:true,listCount})
+    })
+});
 
-router.post("/colList",(req,res)=>{
+router.post("/selectColList",(req,res)=>{ //수거사업 리스트
     const {Client} = require("pg");
     const client = new Client(config.DBAccess);
     client.connect();
@@ -63,18 +89,18 @@ router.post("/colList",(req,res)=>{
                     *
                 from tb_odm_col_ser2
                 where 1=1
-                ${searchTerm && 
+                ${searchTerm? 
                 `and (
-                    col_region like '${searchTerm}'
-                    or col_city like '${searchTerm}'
+                    col_region like '%${searchTerm}%'
+                    or col_city like '%${searchTerm}%'
                     ${typeof searchTerm === "number" ? `or col_year = ${searchTerm}`:""}
                 )`
+                :""
                 }
             )as A
         ) as B
         where rowNumber between ${startRowNumber} and ${endRowNumber}
     `
-    console.log(queryString)
     client.query(queryString,(err,queryRes)=>{
         if(err) return res.json({success:false,err})
         let objList= [];
