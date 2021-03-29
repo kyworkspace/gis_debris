@@ -53,11 +53,9 @@ const columns =[
 
 ]
 //검색 초기 날짜
-const dateTime = new Date(2021,0,1);
-const past = new Date(2021,0,1);
+const dateTime = new Date(2020,0,2);
+const past = new Date(2020,0,2);
 past.setDate(dateTime.getDate()-1)
-console.log('dateTime.toDateString',dateTime.toDateString())
-console.log('past.toDateString',past.toDateString())
 const startDate = dateToString(past);
 const endDate = dateToString(dateTime)
 

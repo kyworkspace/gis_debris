@@ -11,6 +11,7 @@ router.post("/selectShipList",(req,res)=>{
     client.connect();
     let {ids} = req.body;
     let queryString = `select * from ship_t_tb_newdb where rfid_id in (${ids.map(item=>`'${item}'`).toString()})`;
+    // let queryString = `select * from ship_t_tb_newdb where rfid_id in (${ids.map(item=>`'${item.rfid_id}'`).toString()})`;
     client.query( queryString,(err,queryRes)=>{
         if(err) return res.json({success:false,err})
 
@@ -77,13 +78,13 @@ router.post("/list", (req,res)=>{
     // }
     async.forEach(tableList,function(tableName,callback){
         let queryString =
-	   ` select rfid_id from 
+	   ` select distinct rfid_id from 
 			${tableName} tt
 		where
 		1=1
 		${Object.keys(area).length > 0 ?
 			`and ( select st_contains( ST_GeomFromText('POLYGON(( ${area.toString()} ))')
-			, st_astext(ST_GeomFromText('POINT(' || (tt.rfid_lon / 600000) || ' ' || tt.rfid_lat/600000 || ')'))) ) = true`
+			, tt.geom)) = true`
             :
             ""
 		}
@@ -91,7 +92,6 @@ router.post("/list", (req,res)=>{
         console.log(queryString)
         client.query(queryString, async function(err,queryRes,fields){            
             await queryRes.rows.forEach(item=>{
-                console.log("길이 : ",queryRes.rows.length)
                 shipInAreaList[item.rfid_id ] = item.rfid_id;
             })
             callback();
@@ -123,8 +123,8 @@ const trackTermSearch=(startDate,term)=>{
 }
 const dateyyyymmdd=(Date)=>{
     let year = Date.getFullYear();
-    let month = Date.getMonth()+1 > 10 ? Date.getMonth()+1 : "0"+(Date.getMonth()+1);
-    let date = Date.getDate() > 10 ? Date.getDate() : "0"+Date.getDate();
+    let month = Date.getMonth()+1 >= 10 ? Date.getMonth()+1 : "0"+(Date.getMonth()+1);
+    let date = Date.getDate() >= 10 ? Date.getDate() : "0"+Date.getDate();
 
     return year+""+month+""+date;
 }

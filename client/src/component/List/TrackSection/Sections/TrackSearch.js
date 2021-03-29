@@ -46,9 +46,9 @@ const useStyles = makeStyles((theme) => ({
   })
 );
 //초기 날짜
-const today = new Date(2021,0,1);
+const today = new Date(2020,0,2);
 //페이지 열릴때 기본 날짜 현재날짜 -7
-const past = new Date(2021,0,1);
+const past = new Date(2020,0,2);
 past.setDate(today.getDate()-1)
 const startDate = dateToString(past);
 const endDate = dateToString(today);
