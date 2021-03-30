@@ -161,17 +161,21 @@ const TrackListComponent=() =>{
                 </div>
             }
             {!Loading &&
-                <>
+                <div style={{maxHeight:'850px', overflowY:'auto'}}>
                 {LoadingTrack && <div style={{
                     minWidth:'100%', 
-                    minHeight:'900px', 
-                    backgroundColor:'black',
-                    opacity:'0.8', 
+                    minHeight:'100%', 
+                    backgroundColor:'white',
+                    opacity:'0.9', 
                     position:'absolute',
                     }}>
                         <Progress percent={LoadingTrackPercent} 
-                        status="active"
+                        
                         type="circle"
+                        strokeColor={{
+                            '0%': '#108ee9',
+                            '100%': '#87d068',
+                          }}
                         style={{
                             position:'absolute',
                             top: "18%",
@@ -182,11 +186,13 @@ const TrackListComponent=() =>{
                             position : 'absolute',
                             top : '32%',
                             left : '20%',
-                            color : 'white'
+                            color : 'black'
                         }}
                         >{SearchingDate}를 조회 중입니다.</Text>
                         </div>}
-                <Paper className={classes.root} style={{pointerEvents:`${LoadingTrack ? 'none':""}`}}>
+                <Paper className={classes.root} 
+                style={{pointerEvents:`${LoadingTrack ? 'none':""}`}}
+                >
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -221,7 +227,7 @@ const TrackListComponent=() =>{
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            </>
+            </div>
             }
             </TrackSearchContext.Provider>
         </div>

@@ -2,7 +2,9 @@ import { Switch } from 'antd'
 import React, { useState } from 'react'
 
 function TrackDisplayButton(props) {
-    const [Input, setInput] = useState(props.info.visible);
+    
+    const {loading,visible} = props.info;
+    const [Input, setInput] = useState(visible);
 
     const onUnCheckButton =()=>{
         setInput(!Input)
@@ -14,7 +16,7 @@ function TrackDisplayButton(props) {
     }
 
     return (
-        <Switch checked={Input} checkedChildren="표시" unCheckedChildren="미표시" onChange={()=>onUnCheckButton()}/>
+        <Switch checked={Input} checkedChildren="표시" unCheckedChildren="미표시" onChange={onUnCheckButton} loading={loading}/>
     )
 }
 

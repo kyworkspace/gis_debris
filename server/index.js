@@ -9,8 +9,8 @@ const port = process.env.PORT || 5000
 
 
 app.use(cors())
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit:'10mb', extended:true}));
+app.use(bodyParser.json({limit:'10mb'}));
 
 
 app.get("/",(req,res)=>res.send("HELLO WORLD"));

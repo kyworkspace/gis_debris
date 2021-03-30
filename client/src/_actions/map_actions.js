@@ -95,6 +95,7 @@ export function setSelectVectorLayer(selectedVectorLayer){
 
 export function AddTrackTargetToStore(Feature){
     Feature.key = Feature.id;
+    Feature.loading = false;
     return {
         type : ADD_TRACK_TARGET_TO_STORE,
         payload : Feature

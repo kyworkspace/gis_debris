@@ -222,7 +222,7 @@ export const VpassTrackConverter = (vpassTrack)=>{
    obj.sog = item.rfid_sog;
    obj.geom_lon = item.rfid_lon/600000;
    obj.geom_lat = item.rfid_lat/600000;
-   obj.heading = item.rfid_hdg;
+   obj.heading = item.rfid_cog;//hdg 값 이상함
    obj.rot = item.rfid_cog;
 
    return obj;
@@ -230,6 +230,8 @@ export const VpassTrackConverter = (vpassTrack)=>{
 
   return trackList;
 }
+
+//항적 검색용 테이블 이름 만들어주는 메서드
 export const trackTermSearch=(startDate,term)=>{
   let returnStr = [];
   for(let i = 0 ; i < term+1; i++){
@@ -244,6 +246,7 @@ export const trackTermSearch=(startDate,term)=>{
   return returnStr;
   
 }
+//날짜를 yyyymmdd로 바꿔주는거
 const dateyyyymmdd=(Date)=>{
   let year = Date.getFullYear();
   let month = Date.getMonth()+1 >= 10 ? Date.getMonth()+1 : "0"+(Date.getMonth()+1);

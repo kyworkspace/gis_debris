@@ -10,7 +10,7 @@ export const rerenderNotification=(key)=>{
 
 
 function Notification(props) {
-    
+      
   const {title,description,duration,callButton,notificationKey} = props;
   const [NotificationOpened, setNotificationOpened] = useState(false)
 
