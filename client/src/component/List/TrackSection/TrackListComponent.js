@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import TrackSearch from './Sections/TrackSearch'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -9,11 +9,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {message} from 'antd';
+import {message, Progress} from 'antd';
 import TrackRows from './Sections/TrackRows';
 import { selectShipInfoList, selectTrackList } from '../../../entities/CallbackMethod';
 import { dateToString, JsonToArray } from '../../../entities/CommonMethods';
 import { MenuTypeContext } from '../../Navbar/MainComponent';
+import Text from 'antd/lib/typography/Text';
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -61,15 +62,37 @@ const endDate = dateToString(dateTime)
 
 
 
+export const TrackSearchContext = createContext({
+    setSearchingDate : ()=>{},
+    setEndDate : ()=>{},
+    setLoadingTrackPercent : ()=>{},
+    setLoadingTrack :()=>{}
+})
+
+
 const TrackListComponent=() =>{
 
     const {detailItem} = useContext(MenuTypeContext) //영역임
     
     const classes = useStyles();
     const [Loading, setLoading] = useState(true);
+    
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [TrackList, setTrackList] = useState([]);
+
+    //항적조회중일때 표출 항목
+    const [LoadingTrack, setLoadingTrack] = useState(false)
+    const [SearchingDate, setSearchingDate] = useState("")
+    const [EndDate, setEndDate] = useState("")
+    const [LoadingTrackPercent, setLoadingTrackPercent] = useState(0)
+    // context 초기값
+    const SearchingTrack={
+        setSearchingDate  : setSearchingDate, //검색중인날짜
+        setEndDate : setEndDate, //종료 날짜
+        setLoadingTrackPercent : setLoadingTrackPercent, //진행률
+        setLoadingTrack : setLoadingTrack //로딩중인지 아닌지
+    }
 
     useEffect(() => {
         searchTrackList();
@@ -128,9 +151,9 @@ const TrackListComponent=() =>{
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
-
     return (
         <div style={{maxWidth:"500px"}}>
+            <TrackSearchContext.Provider value={SearchingTrack}>
             <TrackSearch searchHandler={searchTrackList} btnState = {Loading}/>
             {Loading && 
                 <div className={classes.root}>
@@ -138,7 +161,32 @@ const TrackListComponent=() =>{
                 </div>
             }
             {!Loading &&
-                <Paper className={classes.root}>
+                <>
+                {LoadingTrack && <div style={{
+                    minWidth:'100%', 
+                    minHeight:'900px', 
+                    backgroundColor:'black',
+                    opacity:'0.8', 
+                    position:'absolute',
+                    }}>
+                        <Progress percent={LoadingTrackPercent} 
+                        status="active"
+                        type="circle"
+                        style={{
+                            position:'absolute',
+                            top: "18%",
+                            left : "30%"
+                        }}/>
+                        <Text
+                        style={{
+                            position : 'absolute',
+                            top : '32%',
+                            left : '20%',
+                            color : 'white'
+                        }}
+                        >{SearchingDate}를 조회 중입니다.</Text>
+                        </div>}
+                <Paper className={classes.root} style={{pointerEvents:`${LoadingTrack ? 'none':""}`}}>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -173,7 +221,9 @@ const TrackListComponent=() =>{
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
+            </>
             }
+            </TrackSearchContext.Provider>
         </div>
     )
 }
