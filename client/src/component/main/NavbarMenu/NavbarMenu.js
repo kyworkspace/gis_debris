@@ -4,8 +4,6 @@ import {
   DesktopOutlined,
   PieChartOutlined,
   FileOutlined,
-  TeamOutlined,
-  UserOutlined,
   VideoCameraOutlined
 } from '@ant-design/icons';
 import { MenuTypeContext, MENU_CHANGE } from '../MainComponent';
@@ -13,7 +11,7 @@ import { MenuTypeContext, MENU_CHANGE } from '../MainComponent';
 const { SubMenu } = Menu;
 
 const NavbarMenu=memo(() =>{
-  const {type,dispatch} = useContext(MenuTypeContext)
+  const {dispatch} = useContext(MenuTypeContext)
 
   const onMenuSelect =(menu)=>{
     dispatch({type:MENU_CHANGE,menu})

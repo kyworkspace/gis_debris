@@ -1,6 +1,6 @@
 import { Card } from 'antd'
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { MenuTypeContext, MENU_CHANGE } from '../../main/MainComponent';
 
 function MarineZoneDetailComponent(props) {

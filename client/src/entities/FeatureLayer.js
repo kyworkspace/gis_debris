@@ -7,7 +7,6 @@ import {Vector as VectorLayer} from 'ol/layer'
 import {Vector as VectorSource} from 'ol/source'
 import { MainMap as Map } from './MapLayer';
 import {Feature} from 'ol';
-import {Point,LineString} from 'ol/geom'
 import videoPoint from '../Images/CCTV/CCTV_point.png'
 /*****************************
  * 객체가 표출되는 레이어를 처리하는 곳

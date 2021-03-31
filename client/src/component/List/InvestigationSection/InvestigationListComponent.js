@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Card, List, message, Typography,Input,Pagination } from 'antd';
+import { Card, List, Typography,Input,Pagination } from 'antd';
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
 import ListSearchBar from '../SearchSection/ListSearchBar';
 
 const {Text} = Typography;
-const {Search} = Input;
 
 function InvestigationListComponent(props) {
 

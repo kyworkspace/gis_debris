@@ -3,7 +3,6 @@ import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import { OSM } from 'ol/source';
-import {Select} from 'ol/interaction'
 
 /*****************************
  * 맵 및 맵 타일 레이어를 처리하는 곳

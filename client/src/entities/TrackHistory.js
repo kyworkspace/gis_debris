@@ -1,12 +1,11 @@
 import 'ol/ol.css';
 import {Feature} from 'ol';
 import {Style,Stroke,Icon} from 'ol/style'
-import {MainMap} from './MapLayer'
 import {mapMove} from './CommonMethods'
 import {Point,LineString} from 'ol/geom'
 import $ from 'jquery'
 import trackImage from '../Images/track/trackingRecordedShip.png'
-import {trackLayer, trackSource} from './FeatureLayer'
+import {trackSource} from './FeatureLayer'
 /***********************
  * 항적정보를 처리하는 곳
  ***********************/
