@@ -100,6 +100,9 @@ function TrackRows(props) {
         // 항적상자 오픈
         rerenderNotification("TrackChoice");
         //로딩 끝내기
+        context.setEndDate("");
+        context.setLoadingTrackPercent(0);
+        context.setSearchingDate("");
         context.setLoadingTrack(false);
       });
       

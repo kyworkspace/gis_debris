@@ -149,37 +149,41 @@ const TrackListComponent = () => {
                 }
                 {!Loading &&
                     // 스크롤바 안보이게
-                    <div style={{ maxHeight: '850px', minWidth: '450px', overflowY: 'auto' }} className="LeftSideListMenu">
-                        {LoadingTrack && <div style={{
-                            minWidth: '100%',
-                            minHeight: '100%',
-                            backgroundColor: 'white',
-                            opacity: '0.9',
-                            position: 'absolute',
-                        }}>
-                            <Progress percent={LoadingTrackPercent}
+                    <>
+                    {LoadingTrack && <div style={{
+                        minWidth: '100%',
+                        minHeight: '760px',
+                        backgroundColor: 'white',
+                        opacity: '0.9',
+                        position: 'absolute',
+                        zIndex : 2
+                    }}>
+                        <Progress percent={LoadingTrackPercent}
 
-                                type="circle"
-                                strokeColor={{
-                                    '0%': '#108ee9',
-                                    '100%': '#87d068',
-                                }}
-                                style={{
-                                    position: 'absolute',
-                                    top: "18%",
-                                    left: "30%"
-                                }} />
-                            <Text
-                                style={{
-                                    position: 'absolute',
-                                    top: '32%',
-                                    left: '20%',
-                                    color: 'black'
-                                }}
-                            >{SearchingDate}를 조회 중입니다.</Text>
-                        </div>}
+                            type="circle"
+                            strokeColor={{
+                                '0%': '#108ee9',
+                                '100%': '#87d068',
+                            }}
+                            style={{
+                                position: 'absolute',
+                                top: "18%",
+                                left: "30%"
+                            }} />
+                        <Text
+                            style={{
+                                position: 'absolute',
+                                top: '35%',
+                                left: '20%',
+                                color: 'black'
+                            }}
+                        >{SearchingDate ? `${SearchingDate}를 조회 하였습니다.` : "데이터를 조회 중입니다."}</Text>
+                    </div>}
+
+                    <div style={{ maxHeight: '760px', minWidth: '450px', overflowY: 'auto' }} className="LeftSideListMenu">
+                        
                         <Paper className={classes.root}
-                            style={{ pointerEvents: `${LoadingTrack ? 'none' : ""}` }}
+                            // style={{ pointerEvents: `${LoadingTrack ? 'none' : ""}` }}
                         >
                             <TableContainer className={classes.container}>
                                 <Table stickyHeader aria-label="sticky table">
@@ -216,6 +220,7 @@ const TrackListComponent = () => {
                             />
                         </Paper>
                     </div>
+                    </>
                 }
             </TrackSearchContext.Provider>
         </div>
