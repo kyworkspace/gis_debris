@@ -6,9 +6,18 @@ import { Point, LineString } from 'ol/geom'
 import $ from 'jquery'
 import trackImage from '../Images/track/trackingRecordedShip.png'
 import { trackSource } from './FeatureLayer'
+import {dateyyyymmdd} from "./CommonMethods"
 /***********************
  * 항적정보를 처리하는 곳
  ***********************/
+
+const lineColors = [
+  'rgba( 255, 0, 0, 0.9 )'
+  
+  ,'rgba( 0, 0, 255, 0.9 )'
+
+  ,'rgba( 0, 255, 0, 0.9 )'
+]
 
 // 포인트색
 const trackSearchDefaultPointColor = '#FA2020';
@@ -61,7 +70,7 @@ const records2line = function (coords, params) {
 
   line.setStyle(new Style({
     stroke: new Stroke({
-      color: params.lineColor ? params.lineColor : 'rgba( 255, 72, 101, 0.9 )',
+      color: params ? params : 'rgba( 255, 72, 101, 0.9 )',
       width: 2
     })
   }));
@@ -84,7 +93,8 @@ export const parseShipHisRecords = function (records, mmsi) {
   }
 
   let coords4line = [];
-
+  let pastDate = dateyyyymmdd(new Date(records[0].rev_date));
+  let colorIdx = 0;
 
   $.each(records, function (idx, record) {
     // DB에 저장된거는 로컬 타임으로 저장됨. 
@@ -109,7 +119,42 @@ export const parseShipHisRecords = function (records, mmsi) {
     if (!isCoord(coord)) return true;
 
     if (coord) {
-      coords4line.push(coord);
+      
+      //날짜가 달라지면 피쳐 그리기 ㅋ
+      // console.log("pastDate",pastDate,"now  :",dateyyyymmdd(new Date(record.rev_date)))
+      // console.log(lineColors[colorIdx]);
+      if(pastDate !== dateyyyymmdd(new Date(record.rev_date))){ //날짜가 다를때
+        let line = records2line(coords4line, lineColors[colorIdx]);
+        if (line) {
+          line.setProperties({
+            visible: true,
+            featureType: 'SHIP_RECORD_LINE',
+            ship_id: params.searchKey,
+            recordType: (params.network_type === '' ? 'all' : params.network_type)
+          });
+          trackSource.addFeature(line);
+        }
+        coords4line = [];
+        coords4line.push(coord);
+        colorIdx  = colorIdx +1;
+        pastDate = dateyyyymmdd(new Date(record.rev_date));
+      }else{
+        coords4line.push(coord);
+        if(idx === records.length-1){
+          let line = records2line(coords4line, lineColors[colorIdx]);
+        if (line) {
+          line.setProperties({
+            visible: true,
+            featureType: 'SHIP_RECORD_LINE',
+            ship_id: params.searchKey,
+            recordType: (params.network_type === '' ? 'all' : params.network_type)
+          });
+          trackSource.addFeature(line);
+        }
+        }
+      }
+      
+
       if (record.heading > 360)
         record.heading = record.cog;
       let heading = record.heading * Math.PI / 180
@@ -143,23 +188,24 @@ export const parseShipHisRecords = function (records, mmsi) {
   });
 
 
-  if (coords4line.length >= 2) {
-    let line = records2line(coords4line, params);
-    if (line) {
-      line.setProperties({
-        visible: true,
-        featureType: 'SHIP_RECORD_LINE',
-        ship_id: params.searchKey,
-        recordType: (params.network_type === '' ? 'all' : params.network_type)
-      });
-      trackSource.addFeature(line);
+  // if (coords4line.length >= 2) {
+  //   let line = records2line(coords4line, params);
+  //   if (line) {
+  //     line.setProperties({
+  //       visible: true,
+  //       featureType: 'SHIP_RECORD_LINE',
+  //       ship_id: params.searchKey,
+  //       recordType: (params.network_type === '' ? 'all' : params.network_type)
+  //     });
+  //     trackSource.addFeature(line);
 
-      //  첫번째 포인트로 화면을 이동한다.
-      let firstCoord = coords4line[0];
-      mapMove(firstCoord);
-    }
-  }
-
+  //     //  첫번째 포인트로 화면을 이동한다.
+  //     let firstCoord = coords4line[0];
+  //     mapMove(firstCoord);
+  //   }
+  // }
+  let firstCoord = [records[0].geom_lon, records[0].geom_lat];
+  mapMove(firstCoord);
 
   //   enc.on('click', function(evt) {
   //       var feature = enc.forEachFeatureAtPixel(evt.pixel,

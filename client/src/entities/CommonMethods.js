@@ -218,7 +218,7 @@ export const VpassTrackConverter = (vpassTrack) => {
   let trackList = vpassTrack.map(item => {
     let obj = {};
     obj.mmsi = item.rfid_id;
-    obj.rev_date = new Date(item.rfid_revdate).toLocaleString();
+    obj.rev_date = new Date(item.rfid_revdate).toLocaleDateString();
     obj.cog = item.rfid_cog;
     obj.sog = item.rfid_sog;
     obj.geom_lon = item.rfid_lon / 600000;
@@ -248,7 +248,7 @@ export const trackTermSearch = (startDate, term) => {
 
 }
 //날짜를 yyyymmdd로 바꿔주는거
-const dateyyyymmdd = (Date) => {
+export const dateyyyymmdd = (Date) => {
   let year = Date.getFullYear();
   let month = Date.getMonth() + 1 >= 10 ? Date.getMonth() + 1 : "0" + (Date.getMonth() + 1);
   let date = Date.getDate() >= 10 ? Date.getDate() : "0" + Date.getDate();
