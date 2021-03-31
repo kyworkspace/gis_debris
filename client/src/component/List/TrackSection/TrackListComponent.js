@@ -78,7 +78,7 @@ const TrackListComponent=() =>{
     const [Loading, setLoading] = useState(true);
     
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(15);
     const [TrackList, setTrackList] = useState([]);
 
     //항적조회중일때 표출 항목
@@ -219,7 +219,7 @@ const TrackListComponent=() =>{
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
+                    rowsPerPageOptions={[15, 25, 50,100]}
                     component="div"
                     count={TrackList.length}
                     rowsPerPage={rowsPerPage}
