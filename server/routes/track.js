@@ -37,6 +37,7 @@ router.post("/track", (req, res) => {
 		rfid_id = '${id}'
         order by rfid_revdate 
 		`
+    console.log(queryString)
     client.query(queryString, function (err, queryRes, fields) {
         client.end();
         if (err) {

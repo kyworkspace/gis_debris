@@ -1,7 +1,7 @@
 import 'ol/ol.css';
 import MousePosition from 'ol/control/MousePosition'
 import { createStringXY } from 'ol/coordinate';
-import {view} from './MapLayer'
+import { view } from './MapLayer'
 import Axios from 'axios';
 
 /************************************
@@ -154,16 +154,16 @@ export const funcDegressToDMS = (ldDegress) => {
  * 루트 파일에 업로드함
  * 경로는 uploads/pictures
  * **/
-export const pictureInsert = (file)=>{
+export const pictureInsert = (file) => {
   const formData = new FormData();
-      const config ={
-          header : {'content-type':'multipart/form-data'}
-      }
-      formData.append("file",file)
-  return new Promise((resolve,reject)=>{
-      Axios.post("/gis/file/upload/picture",formData,config)
-      .then(response=>{
-          resolve(response);
+  const config = {
+    header: { 'content-type': 'multipart/form-data' }
+  }
+  formData.append("file", file)
+  return new Promise((resolve, reject) => {
+    Axios.post("/gis/file/upload/picture", formData, config)
+      .then(response => {
+        resolve(response);
       })
   })
 }
@@ -187,24 +187,24 @@ export const pictureInsert = (file)=>{
 /**
  *  * 날짜 계산해서 yyyy-mm-ddThh24:mi  형태로 바꿔주는거 
  * **/
-export const dateToString=(Date)=>{
+export const dateToString = (Date) => {
 
   const year = Date.getFullYear();
-  const month = Date.getMonth()+1>=10?Date.getMonth()+1:"0"+(Date.getMonth()+1);
-  const date = Date.getDate()>=10?Date.getDate():"0"+(Date.getDate());
-  const hour = Date.getHours()>=10 ? Date.getHours() : "0"+Date.getHours();
-  const min = Date.getMinutes()>=10 ? Date.getMinutes() : "0"+Date.getMinutes();
+  const month = Date.getMonth() + 1 >= 10 ? Date.getMonth() + 1 : "0" + (Date.getMonth() + 1);
+  const date = Date.getDate() >= 10 ? Date.getDate() : "0" + (Date.getDate());
+  const hour = Date.getHours() >= 10 ? Date.getHours() : "0" + Date.getHours();
+  const min = Date.getMinutes() >= 10 ? Date.getMinutes() : "0" + Date.getMinutes();
 
-  return year+"-"+month+"-"+date+"T"+hour+":"+min;
+  return year + "-" + month + "-" + date + "T" + hour + ":" + min;
 }
 
 /**
  * JSON TO Array
  * **/
-export const JsonToArray=(object)=>{
+export const JsonToArray = (object) => {
   let returnArr = [];
   const jsonKeys = Object.keys(object);
-  for(let i =0 ;i <jsonKeys.length ; i++ ){
+  for (let i = 0; i < jsonKeys.length; i++) {
     returnArr.push(object[jsonKeys[i]]);
   }
   return returnArr;
@@ -213,44 +213,45 @@ export const JsonToArray=(object)=>{
 /**
  * VPASS -> 공통양식으로 값바꿔줌
  * **/
-export const VpassTrackConverter = (vpassTrack)=>{
-   
-  let trackList = vpassTrack.map(item=>{
-    let obj = new Object();
-   obj.mmsi = item.rfid_id;
-   obj.cog = item.rfid_cog;
-   obj.sog = item.rfid_sog;
-   obj.geom_lon = item.rfid_lon/600000;
-   obj.geom_lat = item.rfid_lat/600000;
-   obj.heading = item.rfid_cog;//hdg 값 이상함
-   obj.rot = item.rfid_cog;
+export const VpassTrackConverter = (vpassTrack) => {
 
-   return obj;
+  let trackList = vpassTrack.map(item => {
+    let obj = {};
+    obj.mmsi = item.rfid_id;
+    obj.rev_date = new Date(item.rfid_revdate).toLocaleString();
+    obj.cog = item.rfid_cog;
+    obj.sog = item.rfid_sog;
+    obj.geom_lon = item.rfid_lon / 600000;
+    obj.geom_lat = item.rfid_lat / 600000;
+    obj.heading = item.rfid_cog;//hdg 값 이상함
+    obj.rot = item.rfid_cog;
+
+    return obj;
   })
 
   return trackList;
 }
 
 //항적 검색용 테이블 이름 만들어주는 메서드
-export const trackTermSearch=(startDate,term)=>{
+export const trackTermSearch = (startDate, term) => {
   let returnStr = [];
-  for(let i = 0 ; i < term+1; i++){
-      let startTerm = new Date(startDate);
-      let tmpDate = new Date();
-      tmpDate.setFullYear(startTerm.getFullYear());
-      tmpDate.setMonth(startTerm.getMonth());
-      tmpDate.setDate(startTerm.getDate()+i);
-      
-      returnStr.push(`th_track_${dateyyyymmdd(tmpDate)}`);
+  for (let i = 0; i < term + 1; i++) {
+    let startTerm = new Date(startDate);
+    let tmpDate = new Date();
+    tmpDate.setFullYear(startTerm.getFullYear());
+    tmpDate.setMonth(startTerm.getMonth());
+    tmpDate.setDate(startTerm.getDate() + i);
+
+    returnStr.push(`th_track_${dateyyyymmdd(tmpDate)}`);
   }
   return returnStr;
-  
+
 }
 //날짜를 yyyymmdd로 바꿔주는거
-const dateyyyymmdd=(Date)=>{
+const dateyyyymmdd = (Date) => {
   let year = Date.getFullYear();
-  let month = Date.getMonth()+1 >= 10 ? Date.getMonth()+1 : "0"+(Date.getMonth()+1);
-  let date = Date.getDate() >= 10 ? Date.getDate() : "0"+Date.getDate();
+  let month = Date.getMonth() + 1 >= 10 ? Date.getMonth() + 1 : "0" + (Date.getMonth() + 1);
+  let date = Date.getDate() >= 10 ? Date.getDate() : "0" + Date.getDate();
 
-  return year+""+month+""+date;
+  return year + "" + month + "" + date;
 }
