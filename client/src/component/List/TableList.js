@@ -14,7 +14,7 @@ import CollectionListComponent from './CollectionSection/CollectionListComponent
 import { DETAIL_DISPLAY, MenuTypeContext, MOVE_TO_PREV } from '../main/MainComponent';
 
 function TableList(props) {
-    const {menu,dispatch} = useContext(MenuTypeContext)
+    const {menu,dispatch,detailItem} = useContext(MenuTypeContext)
     const ListinReducer = useSelector(state => state.mapReducer); //리듀서에서 가져온 항목
     //const type = props.type;
 
@@ -67,7 +67,7 @@ function TableList(props) {
             case "trackList":
                 return {
                     List : [],
-                    title : "항적조회",
+                    title : Object.keys(detailItem).length > 0 ? `${detailItem.name} 항적 조회` : "항적 조회",
                     clearLayer : ()=>trackSource.clear(),
                     component : <TrackListComponent/>
                 }
@@ -94,7 +94,7 @@ function TableList(props) {
             <PageHeader
                 className="site-page-header"
                 onBack={() => dispatch({type:MOVE_TO_PREV})}
-                title={[contentList.title,<Button type="primary" shape="round" onClick={contentList.clearLayer}><DeleteOutlined /></Button>]}
+                title={[contentList.title,<Button type="primary" shape="round" id="clearLayer" onClick={contentList.clearLayer}><DeleteOutlined /></Button>]}
             />
             { contentList.component }
         </React.Fragment>

@@ -44,7 +44,7 @@ function MarineZoneDetailComponent(props) {
             id: 4,
             title : "선박항적정보",
             detailFunction:(item)=>{
-                dispatch({type : MENU_CHANGE, menu: "trackList", detailItem : item.area})
+                dispatch({type : MENU_CHANGE, menu: "trackList", detailItem : item})
             },
             moveToFunction:(item)=>{
                 console.log("선박항적정보 위치이동",item)

@@ -4,7 +4,7 @@ import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectVectorLayer } from '../../../_actions/map_actions'
 import { selectedMarineZone } from '../../../entities/CommonMethods'
-import { MainMap as map } from '../../../entities/MapLayer'
+import { MainMap} from '../../../entities/MapLayer'
 import { Vector as VectorLayer } from 'ol/layer'
 import { Polygon } from 'ol/geom';
 import { Feature } from 'ol';
@@ -73,11 +73,12 @@ function MarinZoneListComponent(props) {
             i++;
         }
 
-        console.log(map.getLayers().getArray());
+        console.log(MainMap.getLayers().getArray());
 
-        map.getLayers().getArray().forEach(item => {
+        MainMap.getLayers().getArray().forEach(item => {
             if (item.values_.name === "SelectedVectorLayer") {
-                map.removeLayer(item)
+                MainMap.removeLayer(item)
+                document.querySelector("#clearLayer").click();
             }
         })
         var polygon = new Polygon([array]);
@@ -88,7 +89,7 @@ function MarinZoneListComponent(props) {
             name: "SelectedVectorLayer",
             source: SelectedMarineZoneSource
         });
-        map.addLayer(selectedVectorLayer)
+        MainMap.addLayer(selectedVectorLayer)
         var selectedStyle = new Style({
             stroke: new Stroke({
                 color: 'rgb(051, 255, 255)',

@@ -73,7 +73,7 @@ router.post("/list", (req, res) => {
 			${tableName} tt
 		where
 		1=1
-		${Object.keys(area).length > 0 ?
+		${area > 0 ?
                 `and ( select st_contains( ST_GeomFromText('POLYGON(( ${area.toString()} ))')
 			, tt.geom)) = true`
                 :

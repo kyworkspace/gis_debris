@@ -72,8 +72,7 @@ export const TrackSearchContext = createContext({
 
 const TrackListComponent = () => {
 
-    const { detailItem } = useContext(MenuTypeContext) //영역임
-
+    const { detailItem } = useContext(MenuTypeContext) //해구정보
     const classes = useStyles();
     const [Loading, setLoading] = useState(true);
 
@@ -104,7 +103,6 @@ const TrackListComponent = () => {
         //shipType
         //startDate
         //endDate
-        console.log(parameter)
         let body = {
             startDate: startDate,
             endDate: endDate
@@ -113,7 +111,7 @@ const TrackListComponent = () => {
             body = parameter
         }
         if (detailItem) {
-            body.area = detailItem;
+            body.area = detailItem.area;
         }
         selectTrackList(body)
             .then(response => {
