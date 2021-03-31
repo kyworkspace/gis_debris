@@ -84,7 +84,8 @@ function TrackSelector() {
                 setTrackVisibilityInStore({...searchParam,loading : false})
                 // 활성 창 닫음
                 // 표시 중인 로딩이 바뀌지 않아서 강제로 리렌더링 하기위한 방법
-                notification.close("TrackChoice")
+                //notification.close("TrackChoice")
+                document.getElementById("trackSelector").click()
               });
         }else{
             setTrackVisibilityInStore(searchParam)
@@ -109,7 +110,7 @@ function TrackSelector() {
     }, [TrackList])
 
     return (
-        <Notification title={title} description={ Description } callButton="항적 선택" notificationKey="TrackChoice" notificationStyle={notificationStyle}/>
+        <Notification title={title} description={ Description } callButton="항적 선택" buttonId="trackSelector" notificationKey="TrackChoice" notificationStyle={notificationStyle}/>
     )
 }
 
