@@ -10,7 +10,8 @@ router.post("/selectShipList",(req,res)=>{
     const client = new Client(config.TrackDBAccess)
     client.connect();
     let {ids} = req.body;
-    let queryString = `select * from ship_t_tb_newdb where rfid_id in (${ids.map(item=>`'${item}'`).toString()})`;
+    let queryString = `select * from ship_t_tb_newdb where rfid_id in (${ids.map(item=>`'${item}'`).toString()}) order by rfid_id`;
+    
     // let queryString = `select * from ship_t_tb_newdb where rfid_id in (${ids.map(item=>`'${item.rfid_id}'`).toString()})`;
     client.query( queryString,(err,queryRes)=>{
         if(err) return res.json({success:false,err})
@@ -35,7 +36,6 @@ router.post("/track",(req,res)=>{
 		rfid_id = '${id}'
         order by rfid_revdate 
 		`
-    console.log(queryString);
     client.query(queryString, function(err,queryRes,fields){
         client.end();
         if(err){
@@ -78,6 +78,10 @@ router.post("/list", (req,res)=>{
 		}
 		`
         client.query(queryString, async function(err,queryRes,fields){            
+            if(err){
+                console.log(err)
+                return callback();
+            } 
             await queryRes.rows.forEach(item=>{
                 shipInAreaList[item.rfid_id ] = item.rfid_id;
             })

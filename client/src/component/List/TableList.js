@@ -11,7 +11,7 @@ import VideoListComponent from './CCTVSection/VideoListComponent';
 import { DeleteOutlined } from '@ant-design/icons';
 import { trackSource, videoSource } from '../../entities/FeatureLayer';
 import CollectionListComponent from './CollectionSection/CollectionListComponent';
-import { DETAIL_DISPLAY, MenuTypeContext, MOVE_TO_PREV } from '../Navbar/MainComponent';
+import { DETAIL_DISPLAY, MenuTypeContext, MOVE_TO_PREV } from '../main/MainComponent';
 
 function TableList(props) {
     const {menu,dispatch} = useContext(MenuTypeContext)

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import 'ol/ol.css';
 import { useDispatch, useSelector } from "react-redux";
-import { InvestigationListInit, MarineZoneListInit } from '../../_actions/map_actions';
-import { ShipListInit } from '../../_actions/ship_actions';
-import { MainMap as map } from '../../entities/MapLayer';
-import { InvService} from '../../entities/InvestigationZone'
-import { getMarineZoneList } from '../../entities/MarineZone';
-import LayerSelector from '../Navbar/Sections/LayerSelector';
-import TrackSelector from '../Navbar/Sections/TrackSelector';
+import { InvestigationListInit, MarineZoneListInit } from '../../../_actions/map_actions';
+import { MainMap as map } from '../../../entities/MapLayer';
+import { InvService} from '../../../entities/InvestigationZone'
+import { getMarineZoneList } from '../../../entities/MarineZone';
+import LayerSelector from '../Sections/LayerSelector/LayerSelector';
+import TrackSelector from '../Sections/trackSelector/TrackSelector';
 import ContextMenuComponent from './Section/ContextMenuComponent'
 
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";

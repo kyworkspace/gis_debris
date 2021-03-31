@@ -38,7 +38,6 @@ export default function(state={},action){
                 if(removeIdx >-1){
                     state.selectedTrackTarget.splice(removeIdx,1);
                 }
-                
                 TargetList = [
                     ...state.selectedTrackTarget
                 ]
@@ -56,6 +55,7 @@ export default function(state={},action){
                 VisibleList.map((item,idx)=>{
                     if(item.id === action.payload.id){
                         item.visible = action.payload.visible
+                        item.loading = action.payload.loading
                     }
                 })
             }

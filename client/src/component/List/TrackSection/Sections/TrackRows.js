@@ -56,9 +56,11 @@ function TrackRows(props) {
       let term = new Date(new Date(endDate)-new Date(startDate))/86400000;
       let tableList = trackTermSearch(startDate,term);
       let trackList = [];
+
+      let CompletedTableCount = 0;
       context.setLoadingTrack(true);
       context.setEndDate(new Date(endDate).toLocaleDateString()); 
-      console.log(tableList);
+
       async.forEach(tableList, function(tableName,callback){
         let body={
           id : shipId,
@@ -66,27 +68,25 @@ function TrackRows(props) {
           tableName : tableName,
           visible : true
         }
-        context.setSearchingDate(tableName);
+        
 
         getTrackList(body).then(response=>{
-
           if(response.data.success){
-            context.setLoadingTrackPercent(Math.floor((tableList.indexOf(tableName)+1)/tableList.length *100))
+            CompletedTableCount = CompletedTableCount+1;
+            //진행도
+            context.setLoadingTrackPercent(Math.floor(CompletedTableCount/tableList.length *100))
+            context.setSearchingDate(tableName);
             if(response.data.trackList.length===0){
-              console.log(tableName+" 테이블 값 없음")
               callback();
             }else{
               trackList.push(...response.data.trackList);
-              console.log(tableName+" 테이블 조회 완료")
               callback();  
             }
           }
         })
 
       },function(err){
-        if(err) return alert("에러발생")
-        console.log('조회 완료')
-        
+        if(err) return alert("에러발생")        
         //항적 표시
         parseShipHisRecords(VpassTrackConverter(trackList),shipId);
         //리덕스 추가
@@ -114,7 +114,7 @@ function TrackRows(props) {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell align="right">{row.mmsi_id === '0' ? row.rfid_id=== '0' ? row.ship_id : row.rfid_id : row.mmsi_id}</TableCell>
+          <TableCell align="right">{row.rfid_id === '0' ? row.mmsi_id=== '0' ? row.ship_id : row.mmsi_id : row.rfid_id}</TableCell>
           <TableCell align="right">{row.ship_ko_nm}</TableCell>
           <TableCell align="right">{props.timeViewer ?<p> {stringToDate(row.record_time)}<br/>{stringToTime(row.record_time)} </p>:stringToDate(row.record_time) }</TableCell>
         </TableRow>
@@ -126,6 +126,7 @@ function TrackRows(props) {
                     title={row.ship_ko_nm}
                     bordered
                     column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+                    size="small"
                 >
                     <Descriptions.Item label="선주명">{row.owner_name}</Descriptions.Item>
                     <Descriptions.Item label="주소">{row.owner_address}</Descriptions.Item>
@@ -137,9 +138,10 @@ function TrackRows(props) {
                     title="선박 제원정보"
                     bordered
                     column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
+                    size="small"
                 >
-                    <Descriptions.Item label="길이">{row.ship_length}</Descriptions.Item>
-                    <Descriptions.Item label="넓이">{row.ship_width}</Descriptions.Item>
+                    <Descriptions.Item label="길이" >{row.ship_length}</Descriptions.Item>
+                    <Descriptions.Item label="넓이" >{row.ship_width}</Descriptions.Item>
                     <Descriptions.Item label="깊이">{row.ship_depth}</Descriptions.Item>
                     <Descriptions.Item label="톤수">{row.total_ton}</Descriptions.Item>
                     <Descriptions.Item label="엔진출력">{row.engine_kw}</Descriptions.Item>
@@ -150,8 +152,8 @@ function TrackRows(props) {
                 </Typography>
                 <hr/>
                 <RangePicker showTime style={{width:350}} onChange={onRangePickerHandler} defaultValue={null}/>
-                <Button type="primary" icon={<SearchOutlined />} onClick={()=>onTrackDiplayHandler(row.mmsi_id === '0' ? row.rfid_id=== '0' ? row.ship_id : row.rfid_id : row.mmsi_id)}>
-                    Search
+                <Button type="primary" icon={<SearchOutlined />} onClick={()=>onTrackDiplayHandler(row.rfid_id === '0' ? row.mmsi_id=== '0' ? row.ship_id : row.mmsi_id : row.rfid_id)}>
+                    
                 </Button>
               </Box>
             </Collapse>

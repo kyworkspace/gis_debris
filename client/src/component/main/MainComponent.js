@@ -2,13 +2,13 @@ import React, { createContext, useCallback, useEffect, useMemo, useReducer, useS
 import 'antd/dist/antd.css';
 import { Layout} from 'antd';
 import FooterComponent from '../Footer/Footer';
-import Site from '../Site/Site';
+import Site from './Site/Site';
 import logo_small from '../../Images/logo_small.png'
 import logo_large from '../../Images/logo_large.png'
-import NavbarMenu from '../NavbarMenu/NavbarMenu';
+import NavbarMenu from './NavbarMenu/NavbarMenu';
 import TableList from '../List/TableList';
 import TableDetail from '../Detail/TableDetail';
-import UtilBox from '../Map/Section/UtilBox';
+import UtilBox from './Map/Section/UtilBox';
 
 
 

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Notification from '../../Notification/Notification'
+import Notification from '../../../Notification/Notification'
 import { List, Tabs } from 'antd';
-import {MainMap} from '../../../entities/MapLayer'
-import OSMLayer from '../../../Images/mapLayer/OSMLayer.jpg'
-import VWorldBaseMap from '../../../Images/mapLayer/VWorldBaseMap.jpg'
-import VWorldGrayMap from '../../../Images/mapLayer/VWorldGrayMap.jpg'
+import {MainMap} from '../../../../entities/MapLayer'
+import OSMLayer from '../../../../Images/mapLayer/OSMLayer.jpg'
+import VWorldBaseMap from '../../../../Images/mapLayer/VWorldBaseMap.jpg'
+import VWorldGrayMap from '../../../../Images/mapLayer/VWorldGrayMap.jpg'
 import FeatureLayerList from './FeatureLayerList';
-import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
 
 
 const { TabPane } = Tabs;
