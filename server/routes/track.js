@@ -73,15 +73,14 @@ router.post("/list", (req, res) => {
 			${tableName} tt
 		where
 		1=1
-		${area > 0 ?
+		${area ?
                 `and ( select st_contains( ST_GeomFromText('POLYGON(( ${area.toString()} ))')
 			, tt.geom)) = true`
                 :
                 ""
             }) a left join ship_t_tb_newdb sttn on a.rfid_id = sttn.rfid_id where 1=1 ${shipName ? `and sttn.ship_ko_nm like '%${shipName}%'` : ""}
 		`
-
-        console.log(queryString);
+        console.log(queryString)
         client.query(queryString, async function (err, queryRes, fields) {
             if (err) {
                 console.log(err)
