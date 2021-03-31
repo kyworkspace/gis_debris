@@ -152,7 +152,7 @@ const TrackListComponent=() =>{
       setPage(0);
     };
     return (
-        <div style={{maxWidth:"500px"}}>
+        <div style={{minWidth:"450px"}}>
             <TrackSearchContext.Provider value={SearchingTrack}>
             <TrackSearch searchHandler={searchTrackList} btnState = {Loading}/>
             {Loading && 
@@ -161,7 +161,8 @@ const TrackListComponent=() =>{
                 </div>
             }
             {!Loading &&
-                <div style={{maxHeight:'850px', overflowY:'auto'}}>
+                // 스크롤바 안보이게
+                <div style={{maxHeight:'850px',minWidth:'450px', overflowY:'auto'}} className="LeftSideListMenu">
                 {LoadingTrack && <div style={{
                     minWidth:'100%', 
                     minHeight:'100%', 

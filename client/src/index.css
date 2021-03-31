@@ -17,6 +17,9 @@ code {
 .image-gallery {
   width: 380px;
 }
+/* 스크롤바 안보이게 하는 CSS 
+  LeftSideListMenu
+*/
 .LeftSideListMenu::-webkit-scrollbar{
   display: none;
 }

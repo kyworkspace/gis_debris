@@ -11,7 +11,7 @@ export const rerenderNotification=(key)=>{
 
 function Notification(props) {
       
-  const {title,description,duration,callButton,notificationKey} = props;
+  const {title,description,duration,callButton,notificationKey,buttonId} = props;
   const [NotificationOpened, setNotificationOpened] = useState(false)
 
   const onClickCloseButton = ()=>{
@@ -41,7 +41,7 @@ function Notification(props) {
   };
     return (
             <Affix style={{zIndex:1, position:'absolute', top:props.notificationStyle.top, right:props.notificationStyle.right}}>
-                <Button type="primary" onClick={() => openNotification()} shape="round">
+                <Button type="primary" onClick={() => openNotification()} shape="round" id={buttonId}>
                 {callButton}
                 </Button>
             </Affix>
