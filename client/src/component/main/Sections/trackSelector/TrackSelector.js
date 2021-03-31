@@ -1,12 +1,12 @@
 import { notification, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
-import Notification from '../../Notification/Notification'
+import Notification from '../../../Notification/Notification'
 import { useDispatch, useSelector } from 'react-redux';
-import {setTrackHistoryVisibility} from '../../../_actions/map_actions'
+import {setTrackHistoryVisibility} from '../../../../_actions/map_actions'
 import TrackDisplayButton from './TrackDisplayButton';
-import { parseShipHisRecords, removeTrackHisRecord } from '../../../entities/TrackHistory';
-import { getTrackList } from '../../../entities/CallbackMethod';
-import { trackTermSearch, VpassTrackConverter } from '../../../entities/CommonMethods';
+import { parseShipHisRecords, removeTrackHisRecord } from '../../../../entities/TrackHistory';
+import { getTrackList } from '../../../../entities/CallbackMethod';
+import { trackTermSearch, VpassTrackConverter } from '../../../../entities/CommonMethods';
 import async from 'async'
 
 function TrackSelector() {

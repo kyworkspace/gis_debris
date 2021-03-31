@@ -8,7 +8,7 @@ import {
   UserOutlined,
   VideoCameraOutlined
 } from '@ant-design/icons';
-import { MenuTypeContext, MENU_CHANGE } from '../Navbar/MainComponent';
+import { MenuTypeContext, MENU_CHANGE } from '../MainComponent';
 
 const { SubMenu } = Menu;
 

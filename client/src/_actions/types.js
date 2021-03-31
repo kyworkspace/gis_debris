@@ -12,4 +12,3 @@ export const LOAD_COL_LIST = 'LOAD_COL_LIST';
 export const SELECT_VECTOR_LAYER = 'select_vector_layer';
 export const ADD_TRACK_TARGET_TO_STORE = 'ADD_TRACK_TARGET_TO_STORE'
 export const SET_TRACK_VISIBILITY = 'SET_TRACK_VISIBILITY';
-export const SHIP_LIST_INIT = "SHIP_LIST_INIT";

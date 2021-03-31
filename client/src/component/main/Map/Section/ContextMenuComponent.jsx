@@ -1,8 +1,8 @@
 import { message } from 'antd';
 import React, { memo, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
-import { mapMove } from '../../../entities/CommonMethods';
-import {MainMap} from '../../../entities/MapLayer'
+import { mapMove } from '../../../../entities/CommonMethods';
+import {MainMap} from '../../../../entities/MapLayer'
 
 let clickedPoint = null 
 let clickedFeature = null;

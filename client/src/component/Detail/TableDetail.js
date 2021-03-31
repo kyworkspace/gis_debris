@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { PageHeader } from 'antd';
 import InvestigationDetailComponent from './InvestigationSection/InvestigationDetailComponent';
 import MarineZoneDetailComponent from './MarineZoneSection/MarineZoneDetailComponent';
-import { MenuTypeContext, MOVE_TO_PREV } from '../Navbar/MainComponent';
+import { MenuTypeContext, MOVE_TO_PREV } from '../main/MainComponent';
 
 
 function TableDetail() {

@@ -13,7 +13,7 @@ import {message, Progress} from 'antd';
 import TrackRows from './Sections/TrackRows';
 import { selectShipInfoList, selectTrackList } from '../../../entities/CallbackMethod';
 import { dateToString, JsonToArray } from '../../../entities/CommonMethods';
-import { MenuTypeContext } from '../../Navbar/MainComponent';
+import { MenuTypeContext } from '../../main/MainComponent';
 import Text from 'antd/lib/typography/Text';
 
 const useStyles = makeStyles((theme)=>({

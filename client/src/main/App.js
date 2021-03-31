@@ -1,5 +1,5 @@
 import React from 'react';
-import MainComponent from '../component/Navbar/MainComponent';
+import MainComponent from '../component/main/MainComponent';
 import {
   BrowserRouter as Router,
   Switch,
