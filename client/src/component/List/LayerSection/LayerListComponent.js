@@ -1,7 +1,7 @@
 import { EnvironmentFilled, SecurityScanFilled } from '@ant-design/icons';
-import { Card, message } from 'antd';
+import { Card } from 'antd';
 import Text from 'antd/lib/typography/Text';
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getCollectionServiceListCount, selectCollectionServiceList } from '../../../entities/CallbackMethod';
 import InfiniteScrollComponent from '../../utils/InfiniteScrollComponent';
 import ListSearchBar from '../SearchSection/ListSearchBar';

@@ -63,14 +63,14 @@ export const formatLat = (latitude, flag) => {
     val = 'N/A';
   } else {
     if (Number(latitude) > 0) {
-      if (flag == 0) {
+      if (flag === 0) {
         val = "N " + lat.d + "º " + lat.m + "' " + convertZero(Number(lat.s)) + '"';
       } else {
         val = "N " + Number(latitude).toPrecision(8) + "º";
       }
       //            val = "N " + lat.d + "º " + lat.m + "' " + Number(lat.s).toFixed(2) + '"';
     } else {
-      if (flag == 0) {
+      if (flag === 0) {
         val = "S " + Math.abs(Number(lat.d)) + "º " + lat.m + "' " + convertZero(Number(lat.s)) + '"';
       } else {
         val = "S " + Math.abs(Number(latitude)).toPrecision(8) + "º";
@@ -90,14 +90,14 @@ export const formatLon = (longitude, flag) => {
   } else {
     if (Number(longitude) > 0) {
 
-      if (flag == 0) {
+      if (flag === 0) {
         val = "E " + lon.d + "º " + lon.m + "' " + convertZero(Number(lon.s)) + '"';
       } else {
         val = "E " + Number(longitude).toPrecision(9) + "º";
       }
       //          val = "E "+lon.d+"º "+lon.m+"' "+Number(lon.s).toFixed(2)+'"';
     } else {
-      if (flag == 0) {
+      if (flag === 0) {
         val = "W " + Math.abs(Number(lon.d)) + "º " + lon.m + "' " + convertZero(Number(lon.s)) + '"';
       } else {
         val = "W " + Math.abs(Number(longitude)).toPrecision(9) + "º";
@@ -118,9 +118,9 @@ export const convertZero = (value) => {
   } else {
     var fix = Number(value).toFixed(2);
     for (var i = fix.length - 1; i < 0; i++) {
-      if (fix[i] == "0") {
+      if (fix[i] === "0") {
         fix.substring(0, fix.length - 1);
-      } else if (fix[i] == ".") {
+      } else if (fix[i] === ".") {
         fix.substring(0, fix.length - 1);
         break;
       } else {

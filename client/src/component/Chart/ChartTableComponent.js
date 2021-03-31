@@ -1,7 +1,6 @@
 import React from 'react'
-import { Table, Tag, Space,Typography } from 'antd';
+import { Table, Typography } from 'antd';
 
-const { Column, ColumnGroup } = Table;
 const {Text} = Typography;
 function ChartTableComponent(props) {
 

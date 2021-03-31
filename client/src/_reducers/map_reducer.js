@@ -6,7 +6,6 @@ import {
     SELECT_VECTOR_LAYER,
     ADD_TRACK_TARGET_TO_STORE,
     SET_TRACK_VISIBILITY,
-    SHIP_LIST_INIT
 } from '../_actions/types';
  
 
