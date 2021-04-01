@@ -13,10 +13,9 @@ import { Button, message, Modal } from 'antd';
 import FileUploadComponent from '../../utils/FileUploadComponent';
 import { deleteFileAll, FileUpload, selectFileList } from '../../../entities/CallbackMethod';
 
-function InvestigationDetailComponent(props) {
+function CollectionDetailComponent(props) {
     const {item} = props;
     console.log({item})
-
 
     const useStyles = makeStyles({
         table: {
@@ -35,8 +34,6 @@ function InvestigationDetailComponent(props) {
     const fileRef = useRef();
 
     const coordinateAllDisplay = (coordinate) =>{
-        console.log(coordinate,"====coordinate")
-
         if(!coordinate) return false;
         let coordinateArr = coordinate.split(",")
         let component = coordinateArr.map(item=>(
@@ -44,10 +41,11 @@ function InvestigationDetailComponent(props) {
                         )) ;
         return component;
     }
+    
 
     useEffect(() => {
         let body = {
-            target_table : 'tb_odm_inv2',
+            target_table : 'tb_odm_col_ser2',
             target_seq : item.seq
         }
         selectFileList(body)
@@ -75,7 +73,7 @@ function InvestigationDetailComponent(props) {
     const modalOk = () => {
         setModalSubmitLoading(true);
         let body = {
-            target_table : "tb_odm_inv2",
+            target_table : "tb_odm_col_ser2",
             target_seq : item.seq,
             files : fileRef.current
         }
@@ -137,35 +135,51 @@ function InvestigationDetailComponent(props) {
           <TableBody>
             <TableRow>
                 <TableCell align="right">사업명</TableCell>
-                <TableCell align="center">{item.name}</TableCell>
+                <TableCell align="center">{item.col_ser_dtl}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell align="right">발주처</TableCell>
-                <TableCell align="center">{item.agent}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell align="right">면적</TableCell>
-                <TableCell align="center">{item.area}</TableCell>
+                <TableCell align="center">{item.col_ord_agent}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell align="right">지역</TableCell>
-                <TableCell align="center">{item.city} &nbsp; {item.region} </TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell align="right">장소</TableCell>
-                <TableCell align="center">{item.place}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell align="right">출처</TableCell>
-                <TableCell align="center">{item.source}</TableCell>
+                <TableCell align="center">{item.col_city} &nbsp; {item.col_region} </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell align="right">년도</TableCell>
-                <TableCell align="center">{item.year}</TableCell>
+                <TableCell align="center">{item.col_year}</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell align="right">수거면적(ha)</TableCell>
+                <TableCell align="center">{item.col_area}</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell align="right">수거량(ton)</TableCell>
+                <TableCell align="center">{item.col_amount}</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell align="right">페어망(ton)</TableCell>
+                <TableCell align="center">{item.col_fishing_net}</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell align="right">고철류(ton)</TableCell>
+                <TableCell align="center">{item.col_scrap}</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell align="right">로프류(ton)</TableCell>
+                <TableCell align="center">{item.col_rope}</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell align="right">통발류(ton)</TableCell>
+                <TableCell align="center">{item.col_nettrap}</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell align="right">기타(ton)</TableCell>
+                <TableCell align="center">{item.col_etc}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell align="right">좌표</TableCell>
-                <TableCell align="center">{coordinateAllDisplay(item.coordinateAll)}</TableCell>
+                <TableCell align="center">{coordinateAllDisplay(item.col_coor1)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -196,4 +210,4 @@ function InvestigationDetailComponent(props) {
     )
 }
 
-export default InvestigationDetailComponent
+export default CollectionDetailComponent
