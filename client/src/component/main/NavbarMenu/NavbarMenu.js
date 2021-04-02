@@ -19,22 +19,22 @@ const NavbarMenu=memo(() =>{
 
   return (
     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-      <Menu.Item key="2" icon={<DesktopOutlined />} onClick={() => onMenuSelect("trackList")}>
+      <Menu.Item id="trackList" key="2" icon={<DesktopOutlined />} onClick={() => onMenuSelect("trackList")}>
         항적정보
       </Menu.Item>
-      <Menu.Item key="3" icon={<DesktopOutlined />} onClick={() => onMenuSelect("invList")}>
+      <Menu.Item id="invList" key="3" icon={<DesktopOutlined />} onClick={() => onMenuSelect("invList")}>
         조사사업
       </Menu.Item>
-      <Menu.Item key="4" icon={<DesktopOutlined />} onClick={() => onMenuSelect("colList")}>
+      <Menu.Item id="colList" key="4" icon={<DesktopOutlined />} onClick={() => onMenuSelect("colList")}>
         수거사업
       </Menu.Item>
-      <Menu.Item key="5" icon={<DesktopOutlined />} onClick={() => onMenuSelect("marineZoneList")}>
+      <Menu.Item id="marineZoneList" key="5" icon={<DesktopOutlined />} onClick={() => onMenuSelect("marineZoneList")}>
         오염현황(해구)
       </Menu.Item>
-      <Menu.Item key="6" icon={<VideoCameraOutlined />} onClick={() => onMenuSelect("videoList")}>
+      <Menu.Item id="videoList" key="6" icon={<VideoCameraOutlined />} onClick={() => onMenuSelect("videoList")}>
         CCTV 정보
       </Menu.Item>
-      <Menu.Item key="7" icon={<PieChartOutlined />} onClick={() => onMenuSelect("LayerList")}>
+      <Menu.Item id="LayerList" key="7" icon={<PieChartOutlined />} onClick={() => onMenuSelect("LayerList")}>
         레이어정보
       </Menu.Item>
       {/* <SubMenu key="sub1" icon={<PieChartOutlined />} title="조사사업">

@@ -45,6 +45,7 @@ export const SET_SEARCHKEYWORD = "SET_SEARCHKEYWORD";
 const reducer = (state, action) => {
     switch (action.type) {
         case MENU_CHANGE:
+            
             let item = {};
             if (action.detailItem) {
                 item = action.detailItem
@@ -93,16 +94,26 @@ const reducer = (state, action) => {
                 searchKeyword : "",
             }
         case MOVE_TO_PREV:
-            let prevState = state.prevMenu;
+        
+            let prevState = state.prevMenu;// 이전 메뉴 정보 ㅇㅋ?
             let menu, detailItem, listDisplay, detailDisplay, prevKeyword;
-            if (Object.keys(prevState).length !== 0) { //기존 메뉴 정보가 있을때
+
+            console.log(prevState);
+            if (prevState.menu !== "") { //기존 메뉴 정보가 있을때
 
                 menu = prevState.menu;
+
+                if(document.getElementById(menu).classList.contains("ant-menu-item-selected")){
+                    
+                }else{
+                    document.getElementById(state.menu).classList.remove("ant-menu-item-selected");  //지금 메뉴 비활성화
+                    document.getElementById(menu).classList.add("ant-menu-item-selected"); //이전 메뉴 활성화
+                }
                 listDisplay = prevState.listDisplay;
                 detailDisplay = prevState.detailDisplay;
                 detailItem = prevState.detailItem;
                 prevKeyword = state.prevMenu.searchKeyword;
-
+                
             } else if (state.detailDisplay) { // 기존 메뉴 정보가 없는데 상세화면 이라면 해당 메뉴의 리스트로
                 menu = state.menu
                 listDisplay = true;
@@ -119,7 +130,7 @@ const reducer = (state, action) => {
                 menu: menu,
                 listDisplay: listDisplay,
                 detailDisplay: detailDisplay,
-                prevMenu: {},
+                prevMenu: {menu : ""},
                 detailItem: detailItem,
                 searchKeyword : prevKeyword
 
