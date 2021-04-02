@@ -12,11 +12,11 @@ import ImageSlider from '../../utils/ImageSlider';
 import { Button, message, Modal } from 'antd';
 import FileUploadComponent from '../../utils/FileUploadComponent';
 import { deleteFileAll, FileUpload, selectFileList } from '../../../entities/CallbackMethod';
+import { formatLat, formatLon } from '../../../entities/CommonMethods'
+
 
 function InvestigationDetailComponent(props) {
     const {item} = props;
-    console.log({item})
-
 
     const useStyles = makeStyles({
         table: {
@@ -35,13 +35,18 @@ function InvestigationDetailComponent(props) {
     const fileRef = useRef();
 
     const coordinateAllDisplay = (coordinate) =>{
-        console.log(coordinate,"====coordinate")
-
         if(!coordinate) return false;
         let coordinateArr = coordinate.split(",")
-        let component = coordinateArr.map(item=>(
-                         <div>{item}</div>
-                        )) ;
+        let component = coordinateArr.map(item=>{
+            const splitItem = item.split(" ")
+            console.log(item)
+            return (
+             <>
+            <div>{formatLat(Number(splitItem[1]),0)}</div>
+            <div>{formatLon(Number(splitItem[0]),0)}</div>
+            </>
+            )
+        }) ;
         return component;
     }
 

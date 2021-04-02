@@ -10,6 +10,7 @@ function TableDetail() {
     const {menu,dispatch,detailItem} = useContext(MenuTypeContext)
     const [Title, setTitle] = useState("");
 
+
     useEffect(() => {
         switch (menu) {
             case "invList":  
@@ -18,7 +19,7 @@ function TableDetail() {
             case "colList" :
                 setTitle("수거사업 상세정보") 
                 break;   
-            case "marineZoneList" :
+            case "marineZoneList" : 
                 setTitle(`${detailItem.name} 해구 정보 목록`)
                 break;
             case "trackList" :
@@ -43,4 +44,4 @@ function TableDetail() {
     )
 }
 
-export default TableDetail
+export default TableDetail;

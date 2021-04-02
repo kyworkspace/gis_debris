@@ -1,30 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState} from 'react'
 import { Card, List, Typography,Input,Pagination } from 'antd';
 import { SecurityScanFilled, EnvironmentFilled } from '@ant-design/icons';
 import ListSearchBar from '../SearchSection/ListSearchBar';
+import {MenuTypeContext, SET_SEARCHKEYWORD} from '../../main/MainComponent'
+
 
 const {Text} = Typography;
 
 function InvestigationListComponent(props) {
 
-    const {contentList} = props;
+    const {contentList} = props;// 전체 리스트
 
-    const [DisplayList, setDisplayList] = useState([]);
-    const [ListPage, setListPage] = useState(1) //첫시작 페이지
-    const [SearchTerm, setSearchTerm] = useState(""); //검색어
+    const {dispatch, searchKeyword} = useContext(MenuTypeContext); //context
+    const [DisplayList, setDisplayList] = useState([]); //표출 리스트
+    const [ListPage, setListPage] = useState(1) //페이지 번호
+    const [SearchTerm, setSearchTerm] = useState(searchKeyword); //검색어
     const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
-    const [TotalCount, setTotalCount] = useState(0)
-    const [SinglePage, setSinglePage] = useState(false);
+    const [TotalCount, setTotalCount] = useState(0) //전체 갯수
+    const [SinglePage, setSinglePage] = useState(false); // 페이징 기능이 필요한지 아닌지(검색결과가 8개 이하인지 아닌지)
     
+
+
     useEffect(() => {
-        let tmpList = contentList.filter(x=>x.seq>=(((ListPage-1)*CountPerPage)+1) && x.seq<=(ListPage*CountPerPage));
-        setTotalCount(contentList.length);
-        setDisplayList(tmpList);
+        console.log(SearchTerm)
+        SearchList(SearchTerm,ListPage)
+        // let tmpList = contentList.filter(x=>x.seq>=(((ListPage-1)*CountPerPage)+1) && x.seq<=(ListPage*CountPerPage));
+        // setTotalCount(contentList.length);
+        // setDisplayList(tmpList);
     }, [contentList])
 
     const onSearchHandler=(value)=>{
         SearchList(value,1)
         setSearchTerm(value);
+        dispatch({type: SET_SEARCHKEYWORD, keyword: value})
     }
     const SearchList=(value,page)=>{
         let newList = contentList.filter(x=>

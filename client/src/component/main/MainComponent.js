@@ -21,22 +21,26 @@ export const MenuTypeContext = createContext({
     detailDisplay: false, //상세보여줄건지
     dispatch: () => { }, //디스패치
     detailItem: {}, //상세보기 할때 아이템
+    searchKeyword : "", //검색어 항목
 })
 const initialState = {
-    menu: "",
-    listDisplay: false,
-    detailDisplay: false,
-    prevMenu: {
+    prevMenu: { //이전메뉴
         menu: "",
         listDisplay: false,
         detailDisplay: false,
+        searchKeyword : ""
     },
+    menu: "",
+    listDisplay: false,
+    detailDisplay: false,
     detailItem: {},
+    searchKeyword : "",
 }
 export const MENU_CHANGE = "MENU_CHANGE";
 export const LIST_DISPLAY = "LIST_DISPLAY";
 export const DETAIL_DISPLAY = "DETAIL_DISPLAY";
 export const MOVE_TO_PREV = "MOVE_TO_PREV";
+export const SET_SEARCHKEYWORD = "SET_SEARCHKEYWORD";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -52,11 +56,13 @@ const reducer = (state, action) => {
                     listDisplay: state.listDisplay,
                     detailDisplay: state.detailDisplay,
                     detailItem: state.detailItem,
+                    searchKeyword : state.searchKeyword
                 },
                 menu: action.menu,
                 listDisplay: true,
                 detailDisplay: false,
                 detailItem: item,
+                searchKeyword : "",
             }
         case LIST_DISPLAY:
             return {
@@ -79,27 +85,30 @@ const reducer = (state, action) => {
                     listDisplay: state.listDisplay,
                     detailDisplay: state.detailDisplay,
                     detailItem: state.detailItem,
+                    searchKeyword : state.searchKeyword
                 },
                 detailItem: action.item,
                 listDisplay: false,
                 detailDisplay: true,
+                searchKeyword : "",
             }
         case MOVE_TO_PREV:
             let prevState = state.prevMenu;
-            let menu, detailItem, listDisplay, detailDisplay;
-            if (Object.keys(prevState).length !== 0) {
+            let menu, detailItem, listDisplay, detailDisplay, prevKeyword;
+            if (Object.keys(prevState).length !== 0) { //기존 메뉴 정보가 있을때
+
                 menu = prevState.menu;
                 listDisplay = prevState.listDisplay;
                 detailDisplay = prevState.detailDisplay;
                 detailItem = prevState.detailItem;
+                prevKeyword = state.prevMenu.searchKeyword;
 
-            } else if (state.detailDisplay) { //상세화면이면 목록으로
+            } else if (state.detailDisplay) { // 기존 메뉴 정보가 없는데 상세화면 이라면 해당 메뉴의 리스트로
                 menu = state.menu
                 listDisplay = true;
                 detailDisplay = false;
                 detailItem = {}
-
-            } else {//목록 사라지기
+            } else {//라스트 목록이면 사라지기
                 menu = "";
                 listDisplay = false;
                 detailDisplay = false;
@@ -111,7 +120,14 @@ const reducer = (state, action) => {
                 listDisplay: listDisplay,
                 detailDisplay: detailDisplay,
                 prevMenu: {},
-                detailItem: detailItem
+                detailItem: detailItem,
+                searchKeyword : prevKeyword
+
+            }
+        case SET_SEARCHKEYWORD :
+            return {
+                ...state,
+                searchKeyword : action.keyword
             }
         default:
             break;
@@ -121,14 +137,15 @@ const reducer = (state, action) => {
 function MainComponent() {
     const [Collapesd, setCollapesd] = useState(true);
     const [ListPosition, setListPosition] = useState('80px')
+
     const [state, dispatch] = useReducer(reducer, initialState)
-    const { menu, listDisplay, detailDisplay, detailItem } = state;
+    const { menu, listDisplay, detailDisplay, detailItem, searchKeyword } = state;
 
     const onCollapse = (collapse) => {//사이드바 접고 펼치는 함수
         collapse ? setListPosition('80px') : setListPosition('200px')
         setCollapesd(collapse)
     }
-    const value = { menu, dispatch, detailItem };
+    const value = { menu, dispatch, detailItem , searchKeyword };
     return (
         <>
             <Layout style={{ minHeight: '100vh' }}>

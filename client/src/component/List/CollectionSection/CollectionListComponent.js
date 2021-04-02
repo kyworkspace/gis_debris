@@ -1,12 +1,14 @@
 import { EnvironmentFilled, SecurityScanFilled } from '@ant-design/icons';
 import { Card, List, Pagination, Spin } from 'antd';
 import Text from 'antd/lib/typography/Text';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { selectCollectionServiceList } from '../../../entities/CallbackMethod';
 import ListSearchBar from '../SearchSection/ListSearchBar'
 import InfiniteScroll from 'react-infinite-scroller'
+import {MenuTypeContext, SET_SEARCHKEYWORD} from '../../main/MainComponent'
 
 function CollectionListComponent(props) {
+    const {dispatch,searchKeyword} = useContext(MenuTypeContext);
     const [CountPerPage, setCountPerPage] = useState(8); //페이지당 갯수
     const [DisplayList, setDisplayList] = useState([]); //표출 리스트
     const [HasMoreItems, setHasMoreItems] = useState(true); //더이상 있는지 없는지
@@ -14,10 +16,12 @@ function CollectionListComponent(props) {
 
     const loader = <div className="demo-loading-container"> <Spin /> </div>; //다음 페이지 로딩 될때의 로딩바
 
-    const SearchTermRef = useRef("")
+    const SearchTermRef = useRef(searchKeyword)
 
-    const onSearchHandler=(value)=>{
-        SearchTermRef.current = value;
+    const onSearchHandler=(keyword)=>{
+        //리듀서를 통해서 바꾸고 싶은 값 searchKeyword = value
+        dispatch({type : SET_SEARCHKEYWORD, keyword})
+        SearchTermRef.current = keyword;
     }
     
     const onLoadItems =(page)=>{ // 스크롤 로더
@@ -53,7 +57,7 @@ function CollectionListComponent(props) {
     }
     return (
         <>
-            <ListSearchBar onInputChange={onSearchHandler} searchButtonHandler={enterSearchButton}/>
+            <ListSearchBar onInputChange={onSearchHandler} searchButtonHandler={enterSearchButton} />
             <hr/>
             {!
             SearchLoading

@@ -12,6 +12,8 @@ import ImageSlider from '../../utils/ImageSlider';
 import { Button, message, Modal } from 'antd';
 import FileUploadComponent from '../../utils/FileUploadComponent';
 import { deleteFileAll, FileUpload, selectFileList } from '../../../entities/CallbackMethod';
+import { formatLat, formatLon } from '../../../entities/CommonMethods'
+
 
 function CollectionDetailComponent(props) {
     const {item} = props;
@@ -34,19 +36,33 @@ function CollectionDetailComponent(props) {
     const fileRef = useRef();
 
     const coordinateAllDisplay = (coordinate) =>{
+        //데이터 구조가 
+        //["34.45456454 126.654564564 , 35.54564564 128.56487897"]
         if(!coordinate) return false;
         let coordinateArr = coordinate.split(",")
-        let component = coordinateArr.map(item=>(
-                         <div>{item}</div>
-                        )) ;
+        
+        let component = coordinateArr.map(item=>{
+            const splitItem = item.split(" ")
+            return (
+             <>
+            <div>{formatLat(Number(splitItem[1]),0)}</div>
+            <div>{formatLon(Number(splitItem[0]),0)}</div>
+            </>
+            )
+        });
         return component;
     }
+
+
+
     
+
+
 
     useEffect(() => {
         let body = {
             target_table : 'tb_odm_col_ser2',
-            target_seq : item.seq
+            target_seq : item.seq_no
         }
         selectFileList(body)
         .then(response=>{
@@ -74,7 +90,7 @@ function CollectionDetailComponent(props) {
         setModalSubmitLoading(true);
         let body = {
             target_table : "tb_odm_col_ser2",
-            target_seq : item.seq,
+            target_seq : item.seq_no,
             files : fileRef.current
         }
         if(Files){ //기존에 파일있으면 삭제
@@ -188,7 +204,7 @@ function CollectionDetailComponent(props) {
 
       <Modal
           visible={ModalVisible}
-          title={`${item.year}년 ${item.city} ${item.name} 사진등록`}
+          title={`${item.col_year}년 ${item.col_city} ${item.col_ser_dtl} 사진등록`}
           onOk={modalOk}
           onCancel={modalCancel}
           footer={[
@@ -202,7 +218,7 @@ function CollectionDetailComponent(props) {
           height={800}
           width={800}
         >
-        <FileUploadComponent existfiles = {Files} refreshFunction={updateFiles}/>
+        <FileUploadComponent existfiles = {Files} refreshFunction={updateFiles}/> 
         </Modal>
 
 

@@ -1,8 +1,10 @@
 import Search from 'antd/lib/input/Search';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { MenuTypeContext } from '../../main/MainComponent';
 
 function ListSearchBar(props) {
-    const [SearchTerm, setSearchTerm] = useState("")
+    const {searchKeyword} = useContext(MenuTypeContext);
+    const [SearchTerm, setSearchTerm] = useState(searchKeyword)
     const onSearchHandler =(e)=>{
         setSearchTerm(e.currentTarget.value)
         props.onInputChange(e.currentTarget.value)
